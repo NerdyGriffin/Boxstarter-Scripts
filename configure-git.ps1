@@ -33,8 +33,8 @@ try {
 	git config --global --list
 
 	Write-Debug 'The script completed successfully' -ForegroundColor Green
-	Write-ChocolateySuccess 'nerdygriffin.Test'
+	Write-ChocolateySuccess 'nerdygriffin.Configure-Git'
 } catch {
-	Write-ChocolateyFailure 'nerdygriffin.Test' $($_.Exception.Message)
+	Write-ChocolateyFailure 'nerdygriffin.Configure-Git' $($_.Exception.Message)
 	throw
 }
