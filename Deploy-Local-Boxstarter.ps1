@@ -55,6 +55,17 @@ try {
 			Invoke-BoxStarterBuild $Package.PackageName
 			Start-Sleep -Seconds 2
 		}
+		# Do the same for the deploy script (kept out of the array because we don't want it to install itself)
+		$Package = [PackageInfo]::new('nerdygriffin.Deploy-Local-Boxstarter', (Join-Path $PSScriptRoot 'Deploy-Local-Boxstarter.ps1'))
+		Write-Host ''
+		#--- Create or Update the builds of the packages in the local repo ---
+		if (Test-Path (Join-Path $Boxstarter.LocalRepo $Package.PackageName)) {
+			Remove-Item -Path (Join-Path $Boxstarter.LocalRepo $Package.PackageName) -Recurse -Force
+		}
+		New-BoxstarterPackage -Name $Package.PackageName -path (Join-Path $PSScriptRoot 'tools')
+		Get-Content $Package.SourcePath | Set-Content (Join-Path (Join-Path $Boxstarter.LocalRepo $Package.PackageName) '\tools\ChocolateyInstall.ps1') ` -Force
+		Invoke-BoxStarterBuild $Package.PackageName
+		Start-Sleep -Seconds 2
 	}
 
 	$ConfirmInstall = Read-Host 'Would you like to rebuild the packages in the local repo? [y/n]'
@@ -76,8 +87,8 @@ try {
 	Write-Debug 'The script completed successfully'
 	Write-Debug 'You may view the log file at' $Boxstarter.Log
 
-	Write-ChocolateySuccess 'nerdygriffin.Deploy-Boxstarter'
+	Write-ChocolateySuccess 'nerdygriffin.Deploy-Local-Boxstarter'
 } catch {
-	Write-ChocolateyFailure 'nerdygriffin.Deploy-Boxstarter' $($_.Exception.Message)
+	Write-ChocolateyFailure 'nerdygriffin.Deploy-Local-Boxstarter' $($_.Exception.Message)
 	throw
 }
