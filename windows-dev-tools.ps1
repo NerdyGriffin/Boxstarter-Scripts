@@ -18,6 +18,17 @@ try {
 	choco install -y git --package-parameters="'/WindowsTerminal'"
 	refreshenv
 
+	choco upgrade -y powershell
+	choco install -y au
+
+	choco upgrade -y powershell-core
+	choco install -y azure-cli
+	choco install -y microsoft-windows-terminal
+	choco install -y poshgit
+	choco install -y oh-my-posh
+	choco install -y posh-github
+	Install-Module -Force Az
+
 	#--- Install/Update PowerShellGet and PackageManagement
 	Set-PSRepository -Name 'PSGallery' -InstallationPolicy Trusted
 	# Install-PackageProvider Nuget -Force -Verbose
@@ -28,16 +39,9 @@ try {
 	# Update-Module -AcceptLicense -Verbose
 	Get-Module
 
+	Enable-UAC
 	Enable-MicrosoftUpdate
 	Install-WindowsUpdate -acceptEula
-
-	choco install -y powershell-core
-	choco install -y azure-cli
-	choco install -y microsoft-windows-terminal
-	choco install -y poshgit
-	choco install -y oh-my-posh
-	choco install -y posh-github
-	Install-Module -Force Az
 
 	#--- Install & Configure the Powerline Modules
 	try {
@@ -224,12 +228,13 @@ try {
 	if (-Not(Test-Path 'C:\GitHub')) { New-Item -Path 'C:\GitHub' -Type Directory }
 	if (-Not(Test-Path (Join-Path $env:USERPROFILE 'GitHub'))) { New-Item -Path (Join-Path $env:USERPROFILE 'GitHub') -Type SymbolicLink -Target 'C:\GitHub' }
 
+	Enable-UAC
 	Enable-MicrosoftUpdate
 	Install-WindowsUpdate -acceptEula
 
 	Write-Debug 'The script completed successfully' -ForegroundColor Green
-	Write-ChocolateySuccess 'nerdygriffin.Test'
+	Write-ChocolateySuccess 'nerdygriffin.DevTools'
 } catch {
-	Write-ChocolateyFailure 'nerdygriffin.Test' $($_.Exception.Message)
+	Write-ChocolateyFailure 'nerdygriffin.DevTools' $($_.Exception.Message)
 	throw
 }

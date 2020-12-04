@@ -51,12 +51,13 @@ try {
 	choco install -y docker-for-windows
 	choco install -y vscode-docker
 
+	Enable-UAC
 	Enable-MicrosoftUpdate
 	Install-WindowsUpdate -acceptEula
 
 	Write-Debug 'The script completed successfully' -ForegroundColor Cyan
-	Write-ChocolateySuccess 'nerdygriffin.Test'
+	Write-ChocolateySuccess 'nerdygriffin.WSL'
 } catch {
-	Write-ChocolateyFailure 'nerdygriffin.Test' $($_.Exception.Message)
+	Write-ChocolateyFailure 'nerdygriffin.WSL' $($_.Exception.Message)
 	throw
 }
