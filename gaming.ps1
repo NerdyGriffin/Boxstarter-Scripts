@@ -79,15 +79,11 @@ try {
 		choco install -y unity-hub
 	}
 
-	#--- Windows Settings ---
-	Disable-BingSearch
-	Disable-GameBarTips
-
 	Enable-UAC
 	Enable-MicrosoftUpdate
 	Install-WindowsUpdate -acceptEula
 
-	Write-Debug 'The script completed successfully' -ForegroundColor Green
+	Write-Debug 'The script completed successfully'
 	Write-ChocolateySuccess 'nerdygriffin.Gaming'
 } catch {
 	Write-ChocolateyFailure 'nerdygriffin.Gaming' $($_.Exception.Message)

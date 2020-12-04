@@ -1,6 +1,5 @@
 #https://gist.github.com/jessfraz/7c319b046daa101a4aaef937a20ff41f
 #--- Uninstall unecessary applications that come with Windows out of the box ---
-
 try {
 	# 3D Builder
 	# Get-AppxPackage Microsoft.3DBuilder | Remove-AppxPackage
@@ -120,7 +119,7 @@ try {
 	#--- Windows Settings ---
 	# Some from: @NickCraver's gist https://gist.github.com/NickCraver/7ebf9efbfd0c3eab72e9
 
-	Write-Debug 'The script completed successfully' -ForegroundColor Green
+	Write-Debug 'The script completed successfully'
 	Write-ChocolateySuccess 'nerdygriffin.RemoveWindowsApps'
 } catch {
 	Write-ChocolateyFailure 'nerdygriffin.RemoveWindowsApps' $($_.Exception.Message)

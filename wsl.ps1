@@ -55,7 +55,7 @@ try {
 	Enable-MicrosoftUpdate
 	Install-WindowsUpdate -acceptEula
 
-	Write-Debug 'The script completed successfully' -ForegroundColor Cyan
+	Write-Debug 'The script completed successfully'
 	Write-ChocolateySuccess 'nerdygriffin.WSL'
 } catch {
 	Write-ChocolateyFailure 'nerdygriffin.WSL' $($_.Exception.Message)

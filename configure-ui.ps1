@@ -57,8 +57,6 @@ try {
 	# To disable P2P update downloads completely:
 	#Set-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\DeliveryOptimization\Config -Name DODownloadMode -Type DWord -Value 0
 
-	Write-Debug 'The script completed successfully' -ForegroundColor Green
-
 	Write-ChocolateySuccess 'nerdygriffin.Configure-UI'
 } catch {
 	Write-ChocolateyFailure 'nerdygriffin.Configure-UI' $($_.Exception.Message)

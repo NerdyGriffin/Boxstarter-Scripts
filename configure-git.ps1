@@ -32,7 +32,9 @@ try {
 	}
 	git config --global --list
 
-	Write-Debug 'The script completed successfully' -ForegroundColor Green
+	Enable-UAC
+
+	Write-Debug 'The script completed successfully'
 	Write-ChocolateySuccess 'nerdygriffin.Configure-Git'
 } catch {
 	Write-ChocolateyFailure 'nerdygriffin.Configure-Git' $($_.Exception.Message)

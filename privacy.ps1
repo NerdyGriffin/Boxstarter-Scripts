@@ -48,7 +48,7 @@ try {
 	Set-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection -Name AllowTelemetry -Type DWord -Value 0
 	Get-Service DiagTrack, Dmwappushservice | Stop-Service | Set-Service -StartupType Disabled
 
-	Write-Debug 'The script completed successfully' -ForegroundColor Green
+	Write-Debug 'The script completed successfully'
 	Write-ChocolateySuccess 'nerdygriffin.Privacy'
 } catch {
 	Write-ChocolateyFailure 'nerdygriffin.Privacy' $($_.Exception.Message)

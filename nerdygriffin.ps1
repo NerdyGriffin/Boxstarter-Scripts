@@ -116,7 +116,7 @@ try {
 	Enable-MicrosoftUpdate
 	Install-WindowsUpdate -acceptEula
 
-	Write-Debug 'The script completed successfully' -ForegroundColor Green
+	Write-Debug 'The script completed successfully'
 	Write-ChocolateySuccess 'nerdygriffin.DefaultInstall'
 } catch {
 	Write-ChocolateyFailure 'nerdygriffin.DefaultInstall' $($_.Exception.Message)

@@ -232,7 +232,7 @@ try {
 	Enable-MicrosoftUpdate
 	Install-WindowsUpdate -acceptEula
 
-	Write-Debug 'The script completed successfully' -ForegroundColor Green
+	Write-Debug 'The script completed successfully'
 	Write-ChocolateySuccess 'nerdygriffin.DevTools'
 } catch {
 	Write-ChocolateyFailure 'nerdygriffin.DevTools' $($_.Exception.Message)

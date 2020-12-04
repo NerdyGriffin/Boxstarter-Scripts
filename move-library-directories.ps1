@@ -35,7 +35,11 @@ try {
 		Create-SymLink -Path (Join-Path $env:UserProfile 'Downloads') -Value (Join-Path 'D:\Users' $env:Username 'Downloads') -ErrorAction SilentlyContinue
 	}
 
-	Write-Debug 'The script completed successfully' -ForegroundColor Green
+	Enable-UAC
+	Enable-MicrosoftUpdate
+	Install-WindowsUpdate -acceptEula
+
+	Write-Debug 'The script completed successfully'
 	Write-ChocolateySuccess 'nerdygriffin.Move-Libraries'
 } catch {
 	Write-ChocolateyFailure 'nerdygriffin.Move-Libraries' $($_.Exception.Message)
