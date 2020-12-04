@@ -87,7 +87,7 @@ try {
 	Write-Debug 'The script completed successfully'
 	Write-Debug 'You may view the log file at' $Boxstarter.Log
 
-	Write-ChocolateySuccess 'nerdygriffin.Deploy-Local-Boxstarter'
+	try { Write-ChocolateySuccess 'nerdygriffin.Deploy-Local-Boxstarter' } catch {}
 } catch {
 	Write-ChocolateyFailure 'nerdygriffin.Deploy-Local-Boxstarter' $($_.Exception.Message)
 	throw
