@@ -59,8 +59,8 @@ try {
 
 	Write-Debug 'The script completed successfully' -ForegroundColor Green
 
-	Write-ChocolateySuccess 'nerdygriffin.ConfigureUI'
+	Write-ChocolateySuccess 'nerdygriffin.Configure-UI'
 } catch {
-	Write-ChocolateyFailure 'nerdygriffin.ConfigureUI' $($_.Exception.Message)
+	Write-ChocolateyFailure 'nerdygriffin.Configure-UI' $($_.Exception.Message)
 	throw
 }

@@ -49,8 +49,8 @@ try {
 	Get-Service DiagTrack, Dmwappushservice | Stop-Service | Set-Service -StartupType Disabled
 
 	Write-Debug 'The script completed successfully' -ForegroundColor Green
-	Write-ChocolateySuccess 'nerdygriffin.Test'
+	Write-ChocolateySuccess 'nerdygriffin.Privacy'
 } catch {
-	Write-ChocolateyFailure 'nerdygriffin.Test' $($_.Exception.Message)
+	Write-ChocolateyFailure 'nerdygriffin.Privacy' $($_.Exception.Message)
 	throw
 }

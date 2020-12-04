@@ -121,8 +121,8 @@ try {
 	# Some from: @NickCraver's gist https://gist.github.com/NickCraver/7ebf9efbfd0c3eab72e9
 
 	Write-Debug 'The script completed successfully' -ForegroundColor Green
-	Write-ChocolateySuccess 'nerdygriffin.Test'
+	Write-ChocolateySuccess 'nerdygriffin.RemoveWindowsApps'
 } catch {
-	Write-ChocolateyFailure 'nerdygriffin.Test' $($_.Exception.Message)
+	Write-ChocolateyFailure 'nerdygriffin.RemoveWindowsApps' $($_.Exception.Message)
 	throw
 }

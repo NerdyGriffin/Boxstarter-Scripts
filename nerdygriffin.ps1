@@ -112,12 +112,13 @@ try {
 	Disable-BingSearch
 	Disable-GameBarTips
 
+	Enable-UAC
 	Enable-MicrosoftUpdate
 	Install-WindowsUpdate -acceptEula
 
 	Write-Debug 'The script completed successfully' -ForegroundColor Green
-	Write-ChocolateySuccess 'nerdygriffin.Test'
+	Write-ChocolateySuccess 'nerdygriffin.DefaultInstall'
 } catch {
-	Write-ChocolateyFailure 'nerdygriffin.Test' $($_.Exception.Message)
+	Write-ChocolateyFailure 'nerdygriffin.DefaultInstall' $($_.Exception.Message)
 	throw
 }
