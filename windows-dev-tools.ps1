@@ -131,6 +131,13 @@ try {
 	#--- Configure Git ---
 	Install-BoxstarterPackage -PackageName 'https://raw.githubusercontent.com/NerdyGriffin/Multipurpose-Boxstarter-Scripts/main/configure-git.ps1'
 
+	#--- Chocolatey and Boxstarter Package Dev Tools
+	choco install -y Chocolatey-AutoUpdater
+	choco install -y ChocolateyPackageUpdater
+	try { choco install -y ChocolateyDeploymentUtils } catch {}
+	choco install -y boxstarter.chocolatey
+	choco install -y Boxstarter.TestRunner
+
 	#--- Assorted Dev Tools and Dependencies
 	choco install -y androidstudio
 	choco install -y arduino
