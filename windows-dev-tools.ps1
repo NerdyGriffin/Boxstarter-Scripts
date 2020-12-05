@@ -198,35 +198,12 @@ try {
 	#--- Import Self-Made Module for Easy Link Creation
 
 	#--- Configure Git ---
-	Install-BoxstarterPackage -PackageName 'https://gist.githubusercontent.com/NerdyGriffin/3fe7cc0de51fddb4bb499919d597ca50/raw/nerdygriffin.ps1'
-	#--- The following was moved to the helper script above to avoid redundant lines of code
-	# git config --global user.name 'Christian Kunis'
-	# git config --global user.email 'ckunis98@gmail.com'
-	# git config --global core.symlinks true
-	# git config --global core.autocrlf input
-	# git config --global core.eol lf
-	# git config --global color.status auto
-	# git config --global color.diff auto
-	# git config --global color.branch auto
-	# git config --global color.interactive auto
-	# git config --global color.ui true
-	# git config --global color.pager true
-	# git config --global color.showbranch auto
-	# git config --global alias.co checkout
-	# git config --global alias.br branch
-	# git config --global alias.ci commit
-	# git config --global alias.st status
-	# git config --global alias.ft fetch
-	# git config --global alias.ph push
-	# git config --global alias.pl pull
-	# if (Test-Path 'C:\Program Files (x86)\GnuPG\bin\gpg.exe') {
-	# 	git config --global gpg.program 'C:\Program Files (x86)\GnuPG\bin\gpg.exe'
-	# }
-	# git config --global --list
+	Install-BoxstarterPackage -PackageName 'https://raw.githubusercontent.com/NerdyGriffin/Multipurpose-Boxstarter-Scripts/main/configure-git.ps1'
 
-	# checkout recent projects
-	if (-Not(Test-Path 'C:\GitHub')) { New-Item -Path 'C:\GitHub' -Type Directory }
-	if (-Not(Test-Path (Join-Path $env:USERPROFILE 'GitHub'))) { New-Item -Path (Join-Path $env:USERPROFILE 'GitHub') -Type SymbolicLink -Target 'C:\GitHub' }
+	# Make a folder for my GitHub repos and make SymbolicLinks to it
+	if (-Not(Test-Path 'C:\GitHub')) { New-Item -Path 'C:\GitHub' -ItemType Directory }
+	if (-Not(Test-Path (Join-Path $env:USERPROFILE 'GitHub'))) { New-Item -Path (Join-Path $env:USERPROFILE 'GitHub') -ItemType SymbolicLink -Value 'C:\GitHub' }
+	if ((Test-Path 'D:\') -And -Not(Test-Path 'D:\GitHub')) { New-Item -Path 'D:\GitHub' -ItemType SymbolicLink -Value 'C:\GitHub' }
 
 	Enable-UAC
 	Enable-MicrosoftUpdate
