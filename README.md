@@ -28,19 +28,23 @@ Based on code from <https://gist.github.com/petevb/67f78762537e742015da018a33558
 
    - View script: <https://raw.githubusercontent.com/NerdyGriffin/Multipurpose-Boxstarter-Scripts/main/windows-dev-tools.ps1>
 
-5. Install [WSL](https://boxstarter.org/package/nr/url?https://raw.githubusercontent.com/NerdyGriffin/Multipurpose-Boxstarter-Scripts/main/wsl.ps1)
+5. Install [Configure Git for NerdyGriffin](https://boxstarter.org/package/nr/url?https://raw.githubusercontent.com/NerdyGriffin/Multipurpose-Boxstarter-Scripts/main/configure-git.ps1)
+
+   - View script: <https://raw.githubusercontent.com/NerdyGriffin/Multipurpose-Boxstarter-Scripts/main/configure-git.ps1>
+
+6. Install [WSL](https://boxstarter.org/package/nr/url?https://raw.githubusercontent.com/NerdyGriffin/Multipurpose-Boxstarter-Scripts/main/wsl.ps1)
 
    - View script: <https://raw.githubusercontent.com/NerdyGriffin/Multipurpose-Boxstarter-Scripts/main/wsl.ps1>
 
-6. [Configure Windows UI](https://boxstarter.org/package/nr/url?https://raw.githubusercontent.com/NerdyGriffin/Multipurpose-Boxstarter-Scripts/main/configure-ui.ps1)
+7. [Configure Windows UI](https://boxstarter.org/package/nr/url?https://raw.githubusercontent.com/NerdyGriffin/Multipurpose-Boxstarter-Scripts/main/configure-ui.ps1)
 
    - View script: <https://raw.githubusercontent.com/NerdyGriffin/Multipurpose-Boxstarter-Scripts/main/configure-ui.ps1>
 
-7. [Configure Windows privacy options](https://boxstarter.org/package/nr/url?https://raw.githubusercontent.com/NerdyGriffin/Multipurpose-Boxstarter-Scripts/main/privacy.ps1)
+8. [Configure Windows privacy options](https://boxstarter.org/package/nr/url?https://raw.githubusercontent.com/NerdyGriffin/Multipurpose-Boxstarter-Scripts/main/privacy.ps1)
 
    - View script: <https://raw.githubusercontent.com/NerdyGriffin/Multipurpose-Boxstarter-Scripts/main/privacy.ps1>
 
-8. [Remove default Windows Store apps](https://boxstarter.org/package/nr/url?https://raw.githubusercontent.com/NerdyGriffin/Multipurpose-Boxstarter-Scripts/main/removeWindowsApps.ps1)
+9. [Remove default Windows Store apps](https://boxstarter.org/package/nr/url?https://raw.githubusercontent.com/NerdyGriffin/Multipurpose-Boxstarter-Scripts/main/removeWindowsApps.ps1)
 
    - View script: <https://raw.githubusercontent.com/NerdyGriffin/Multipurpose-Boxstarter-Scripts/main/removeWindowsApps.ps1>
 
