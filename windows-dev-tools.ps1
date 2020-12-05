@@ -18,16 +18,21 @@ try {
 	choco install -y git --package-parameters="'/WindowsTerminal'"
 	refreshenv
 
+	# Make a folder for my GitHub repos and make SymbolicLinks to it
+	if (-Not(Test-Path 'C:\GitHub')) { New-Item -Path 'C:\GitHub' -ItemType Directory }
+	if (-Not(Test-Path (Join-Path $env:USERPROFILE 'GitHub'))) { New-Item -Path (Join-Path $env:USERPROFILE 'GitHub') -ItemType SymbolicLink -Value 'C:\GitHub' }
+	if ((Test-Path 'D:\') -And -Not(Test-Path 'D:\GitHub')) { New-Item -Path 'D:\GitHub' -ItemType SymbolicLink -Value 'C:\GitHub' }
+
 	choco upgrade -y powershell
 	choco install -y au
 
 	choco upgrade -y powershell-core
-	choco install -y azure-cli
+	# choco install -y azure-cli
 	choco install -y microsoft-windows-terminal
 	choco install -y poshgit
 	choco install -y oh-my-posh
 	choco install -y posh-github
-	Install-Module -Force Az
+	# Install-Module -Force Az
 
 	#--- Install/Update PowerShellGet and PackageManagement
 	Set-PSRepository -Name 'PSGallery' -InstallationPolicy Trusted
@@ -39,7 +44,7 @@ try {
 	# Update-Module -AcceptLicense -Verbose
 	Get-Module
 
-	Enable-UAC
+	# Enable-UAC
 	Enable-MicrosoftUpdate
 	Install-WindowsUpdate -acceptEula
 
@@ -71,7 +76,6 @@ try {
 		Write-Warning 'Powerline failed to install'
 		# Move on if Powerline install fails due to error
 	}
-	Get-Module
 
 	#--- Install & Configure the PSReadline Module
 	try {
@@ -100,7 +104,6 @@ try {
 		Write-Warning 'PSReadline failed to install'
 		# Move on if PSReadline install fails due to errors
 	}
-	Get-Module
 
 	#--- Install the Pipeworks Module
 	try {
@@ -114,22 +117,19 @@ try {
 		Write-Warning 'Pipeworks failed to install'
 		# Move on if Pipeworks install fails due to errors
 	}
+
 	Get-Module
 
 	#--- Gitkraken ---
-	# if (Test-Path 'D:\') {
-	# 	if (-Not(Test-Path 'D:\.gitkraken')) {
-	# 		New-Item -Path 'D:\.gitkraken' -Type Directory -Verbose
-	# 	}
-	# 	New-Item -Path (Join-Path $env:APPDATA '.gitkraken') -ItemType SymbolicLink -Value 'D:\.gitkraken' -Force -Verbose -ErrorAction Stop
-	# }
 	choco install -y gitkraken
 
 	#--- Other Git Tools ---
 	choco install -y Gpg4win
-	# choco install -y diffmerge
-	# choco install -y gitextensions
 	choco install -y lepton
+	refreshenv
+
+	#--- Configure Git ---
+	Install-BoxstarterPackage -PackageName 'https://raw.githubusercontent.com/NerdyGriffin/Multipurpose-Boxstarter-Scripts/main/configure-git.ps1'
 
 	#--- Assorted Dev Tools and Dependencies
 	choco install -y androidstudio
@@ -195,17 +195,7 @@ try {
 	choco install -y sed
 	choco install -y wget
 
-	#--- Import Self-Made Module for Easy Link Creation
-
-	#--- Configure Git ---
-	Install-BoxstarterPackage -PackageName 'https://raw.githubusercontent.com/NerdyGriffin/Multipurpose-Boxstarter-Scripts/main/configure-git.ps1'
-
-	# Make a folder for my GitHub repos and make SymbolicLinks to it
-	if (-Not(Test-Path 'C:\GitHub')) { New-Item -Path 'C:\GitHub' -ItemType Directory }
-	if (-Not(Test-Path (Join-Path $env:USERPROFILE 'GitHub'))) { New-Item -Path (Join-Path $env:USERPROFILE 'GitHub') -ItemType SymbolicLink -Value 'C:\GitHub' }
-	if ((Test-Path 'D:\') -And -Not(Test-Path 'D:\GitHub')) { New-Item -Path 'D:\GitHub' -ItemType SymbolicLink -Value 'C:\GitHub' }
-
-	Enable-UAC
+	# Enable-UAC
 	Enable-MicrosoftUpdate
 	Install-WindowsUpdate -acceptEula
 

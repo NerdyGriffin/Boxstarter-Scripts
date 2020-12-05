@@ -51,7 +51,7 @@ try {
 	choco install -y docker-for-windows
 	choco install -y vscode-docker
 
-	Enable-UAC
+	# Enable-UAC
 	Enable-MicrosoftUpdate
 	Install-WindowsUpdate -acceptEula
 

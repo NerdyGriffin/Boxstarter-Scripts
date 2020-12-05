@@ -79,7 +79,7 @@ try {
 		choco install -y unity-hub
 	}
 
-	Enable-UAC
+	# Enable-UAC
 	Enable-MicrosoftUpdate
 	Install-WindowsUpdate -acceptEula
 

@@ -32,7 +32,7 @@ try {
 	}
 	git config --global --list
 
-	Enable-UAC
+	# Enable-UAC
 
 	Write-Debug 'The script completed successfully'
 	Write-ChocolateySuccess 'nerdygriffin.Configure-Git'
