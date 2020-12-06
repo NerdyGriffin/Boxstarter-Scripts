@@ -156,10 +156,12 @@ try {
 			'Import-Module oh-my-posh',
 			'Set-Theme Paradox'
 		)
-		Write-Host >> $PROFILE # This will create the file if it does not already exist, otherwise it will leave the existing file unchanged
-		foreach ($ProfileString in $PowerlineProfile) {
-			if (-Not(Select-String -Pattern $ProfileString -Path $PROFILE)) {
-				Add-Content -Path $PROFILE -Value $ProfileString
+		foreach ($ProfilePath in @((Join-Path $env:USERPROFILE 'Documents\WindowsPowerShell'), (Join-Path $env:USERPROFILE 'Documents\PowerShell'))) {
+			Write-Host >> (Join-Path $ProfilePath 'Microsoft.PowerShell_profile.ps1') # This will create the file if it does not already exist, otherwise it will leave the existing file unchanged
+			foreach ($ProfileString in $PowerlineProfile) {
+				if (-Not(Select-String -Pattern $ProfileString -Path (Join-Path $ProfilePath 'Microsoft.PowerShell_profile.ps1'))) {
+					Add-Content -Path (Join-Path $ProfilePath 'Microsoft.PowerShell_profile.ps1') -Value $ProfileString
+				}
 			}
 		}
 		if (Get-Command refreshenv -ErrorAction SilentlyContinue) { refreshenv }
@@ -184,10 +186,12 @@ try {
 			'# Creates an alias for ls like I use in Bash',
 			'Set-Alias -Name v -Value Get-ChildItem'
 		)
-		Write-Host >> $PROFILE # This will create the file if it does not already exist, otherwise it will leave the existing file unchanged
-		foreach ($ProfileString in $PSReadlineProfile) {
-			if (-Not(Select-String -Pattern $ProfileString -Path $PROFILE)) {
-				Add-Content -Path $PROFILE -Value $ProfileString
+		foreach ($ProfilePath in @((Join-Path $env:USERPROFILE 'Documents\WindowsPowerShell'), (Join-Path $env:USERPROFILE 'Documents\PowerShell'))) {
+			Write-Host >> (Join-Path $ProfilePath 'Microsoft.PowerShell_profile.ps1') # This will create the file if it does not already exist, otherwise it will leave the existing file unchanged
+			foreach ($ProfileString in $PSReadlineProfile) {
+				if (-Not(Select-String -Pattern $ProfileString -Path (Join-Path $ProfilePath 'Microsoft.PowerShell_profile.ps1'))) {
+					Add-Content -Path (Join-Path $ProfilePath 'Microsoft.PowerShell_profile.ps1') -Value $ProfileString
+				}
 			}
 		}
 		if (Get-Command refreshenv -ErrorAction SilentlyContinue) { refreshenv }
