@@ -155,11 +155,19 @@ try {
 			'Import-Module oh-my-posh',
 			'Set-Theme Paradox'
 		)
-		foreach ($ProfilePath in @((Join-Path $env:USERPROFILE 'Documents\WindowsPowerShell'), (Join-Path $env:USERPROFILE 'Documents\PowerShell'))) {
-			Write-Host >> (Join-Path $ProfilePath 'Microsoft.PowerShell_profile.ps1') # This will create the file if it does not already exist, otherwise it will leave the existing file unchanged
+		powershell.exe -Command {
+			Write-Host >> $PROFILE # This will create the file if it does not already exist, otherwise it will leave the existing file unchanged
 			foreach ($ProfileString in $PowerlineProfile) {
-				if (-Not(Select-String -Pattern $ProfileString -Path (Join-Path $ProfilePath 'Microsoft.PowerShell_profile.ps1'))) {
-					Add-Content -Path (Join-Path $ProfilePath 'Microsoft.PowerShell_profile.ps1') -Value $ProfileString
+				if (-Not(Select-String -Pattern $ProfileString -Path $PROFILE )) {
+					Add-Content -Path $PROFILE -Value $ProfileString
+				}
+			}
+		}
+		pwsh.exe -Command {
+			Write-Host >> $PROFILE # This will create the file if it does not already exist, otherwise it will leave the existing file unchanged
+			foreach ($ProfileString in $PowerlineProfile) {
+				if (-Not(Select-String -Pattern $ProfileString -Path $PROFILE )) {
+					Add-Content -Path $PROFILE -Value $ProfileString
 				}
 			}
 		}
@@ -185,11 +193,21 @@ try {
 			'# Creates an alias for ls like I use in Bash',
 			'Set-Alias -Name v -Value Get-ChildItem'
 		)
-		foreach ($ProfilePath in @((Join-Path $env:USERPROFILE 'Documents\WindowsPowerShell'), (Join-Path $env:USERPROFILE 'Documents\PowerShell'))) {
-			Write-Host >> (Join-Path $ProfilePath 'Microsoft.PowerShell_profile.ps1') # This will create the file if it does not already exist, otherwise it will leave the existing file unchanged
+		# Add the lines to the $PROFILE for PowerShell
+		powershell.exe -Command {
+			Write-Host >> $PROFILE # This will create the file if it does not already exist, otherwise it will leave the existing file unchanged
 			foreach ($ProfileString in $PSReadlineProfile) {
-				if (-Not(Select-String -Pattern $ProfileString -Path (Join-Path $ProfilePath 'Microsoft.PowerShell_profile.ps1'))) {
-					Add-Content -Path (Join-Path $ProfilePath 'Microsoft.PowerShell_profile.ps1') -Value $ProfileString
+				if (-Not(Select-String -Pattern $ProfileString -Path $PROFILE)) {
+					Add-Content -Path $PROFILE -Value $ProfileString
+				}
+			}
+		}
+		# Do the same for PowerShell Core
+		pwsh.exe -Command {
+			Write-Host >> $PROFILE # This will create the file if it does not already exist, otherwise it will leave the existing file unchanged
+			foreach ($ProfileString in $PSReadlineProfile) {
+				if (-Not(Select-String -Pattern $ProfileString -Path $PROFILE)) {
+					Add-Content -Path $PROFILE -Value $ProfileString
 				}
 			}
 		}
