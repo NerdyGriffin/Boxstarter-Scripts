@@ -125,6 +125,15 @@ try {
 	choco install -y boxstarter.chocolatey
 	choco install -y Boxstarter.TestRunner
 
+	Set-BoxstarterDeployOptions -DeploymentTargetPassword 'testvmlogin' -DeploymentTargetUserName 'Boxstarter' -DeploymentTargetNames 'testVM1' -DeploymentVMProvider HyperV -RestoreCheckpoint clean
+	# $cred = Get-Credential Admin
+	# Set-BoxstarterDeployOptions -DeploymentTargetCredentials $cred `
+	# 	-DeploymentTargetNames 'testVM1', 'testVM2' `
+	# 	-DeploymentVMProvider Hyper -DeploymentCloudServiceName ServiceName `
+	# 	-RestoreCheckpoint clean `
+	# 	-DefaultNugetFeed https://www.myget.org/F/mywackyfeed/api/v2 `
+	# 	-DefaultFeedAPIKey 5cbc38d9-1a94-430d-8361-685a9080a6b8
+
 	Enable-MicrosoftUpdate
 	Install-WindowsUpdate -acceptEula
 
