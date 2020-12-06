@@ -35,7 +35,7 @@ try {
 		Create-SymLink -Path (Join-Path $env:UserProfile 'Downloads') -Value (Join-Path 'D:\Users' $env:Username 'Downloads') -ErrorAction SilentlyContinue
 	}
 
-	# Enable-UAC
+	Enable-UAC
 	Enable-MicrosoftUpdate
 	Install-WindowsUpdate -acceptEula
 

@@ -18,6 +18,8 @@ try {
 	choco install -y chocolatey-fastanswers.extension
 	choco install -y chocolatey-font-helpers.extension
 	choco install -y chocolatey-misc-helpers.extension
+	choco install -y chocolatey-visualstudio.extension
+	choco install -y chocolatey-vscode.extension
 
 	#--- Fonts ---
 	choco install -y cascadiafonts
@@ -112,7 +114,7 @@ try {
 	Disable-BingSearch
 	Disable-GameBarTips
 
-	# Enable-UAC
+	Enable-UAC
 	Enable-MicrosoftUpdate
 	Install-WindowsUpdate -acceptEula
 

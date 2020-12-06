@@ -75,11 +75,11 @@ try {
 		choco install -y uplay
 
 		#--- Game Engines ---
-		choco install -y unity
-		choco install -y unity-hub
+		# choco install -y unity
+		# choco install -y unity-hub
 	}
 
-	# Enable-UAC
+	Enable-UAC
 	Enable-MicrosoftUpdate
 	Install-WindowsUpdate -acceptEula
 
