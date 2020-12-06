@@ -1,22 +1,36 @@
 try {
 	Disable-UAC
 
+	#--- Powershell Module Repository
+	Set-PSRepository -Name 'PSGallery' -InstallationPolicy Trusted
+
 	#--- Windows Subsystems/Features ---
 	choco install Microsoft-Hyper-V-All -source windowsFeatures
 	choco install Microsoft-Windows-Subsystem-Linux -source windowsfeatures
 
-	choco install -y dotnetcoresdk
+	#--- Windows Dev Essentials
 	choco install -y dotnet
 	choco install -y dotnet-sdk
 	choco install -y dotnetcore
 	choco install -y dotnetcore-sdk
+	choco install -y dotnetcoresdk
 	choco install -y dotpeek
 	choco install -y linqpad
-	choco install -y chocolatey-vscode.extension
 	choco install -y vscode
 	choco install -y chocolatey-vscode
 	choco install -y git --package-parameters="'/WindowsTerminal'"
 	refreshenv
+
+	#--- Gitkraken ---
+	choco install -y gitkraken
+
+	#--- Other Git Tools ---
+	choco install -y Gpg4win
+	choco install -y lepton
+	refreshenv
+
+	#--- Configure Git ---
+	Install-BoxstarterPackage -PackageName 'https://raw.githubusercontent.com/NerdyGriffin/Multipurpose-Boxstarter-Scripts/main/configure-git.ps1'
 
 	# Make a folder for my GitHub repos and make SymbolicLinks to it
 	if (-Not(Test-Path 'C:\GitHub')) { New-Item -Path 'C:\GitHub' -ItemType Directory }
@@ -30,25 +44,93 @@ try {
 	# choco install -y azure-cli
 	choco install -y microsoft-windows-terminal
 	choco install -y poshgit
-	choco install -y oh-my-posh
-	choco install -y posh-github
 	# Install-Module -Force Az
 
 	#--- Install/Update PowerShellGet and PackageManagement
-	Set-PSRepository -Name 'PSGallery' -InstallationPolicy Trusted
 	# Install-PackageProvider Nuget -Force -Verbose
 	# Install-Module -Name PowerShellGet -Scope AllUsers -AllowClobber -SkipPublisherCheck -Force -AcceptLicense -Verbose
 	# Install-Module -Name PackageManagement -Scope AllUsers -AllowClobber -SkipPublisherCheck -Force -AcceptLicense -Verbose
-	[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-	Install-Module -Name PackageManagement -Force -MinimumVersion 1.4.6 -Scope CurrentUser -AllowClobber
+	# [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+	# Install-Module -Name PackageManagement -Force -MinimumVersion 1.4.6 -Scope CurrentUser -AllowClobber
 	# Update-Module -AcceptLicense -Verbose
-	Get-Module
+	# Get-Module
 
-	# Enable-UAC
+
+	# choco install -y azure-cosmosdb-emulator
+	# choco install -y azurestorageemulator
+	# choco install -y azure-functions-core-tools-3
+
+	# choco install -y visualstudio2019enterprise
+	# choco install -y visualstudio2019-workload-azure
+	choco install -y visualstudio2017community
+	choco install -y gitdiffmargin
+	# choco install -y terraform
+	choco install -y docker-for-windows
+
+	#--- Assorted Dev Tools and Dependencies
+	choco install -y androidstudio
+	choco install -y arduino
+	choco install -y beyondcompare
+	choco install -y console-devel
+	choco install -y electron
+	choco install -y fiddler
+	choco install -y hxd
+	choco install -y meld
+	choco install -y ngrok
+	choco install -y notepadplusplus
+	choco install -y nvm
+	choco install -y openjdk8
+	choco install -y openjdk11
+	choco install -y pip
+	choco install -y python3
+	choco install -y StrawberryPerl
+	choco install -y sublimetext3
+	choco install -y windbg
+	# choco install -y winmerge
+
+	#--- Advanced Network Tools ---
+	choco install -y wireshark
+
+	#--- PowerShell Tools ---
+	choco install -y checksum
+	choco install -y ConEmu
+	choco install -y curl
+	choco install -y llvm
+	choco install -y psutils
+	choco install -y rsync
+	choco install -y unzip
+	choco install -y winscreenfetch
+	choco install -y zip
+
+	#--- GNU ---
+	choco install -y awk
+	choco install -y diffutils
+	choco install -y findutils
+	choco install -y gimp
+	choco install -y gnuplot
+	choco install -y gnuwin
+	choco install -y gperf
+	choco install -y grep
+	choco install -y make
+	choco install -y nano
+	choco install -y octave
+	choco install -y patch
+	choco install -y sed
+	choco install -y wget
+
+	#--- Chocolatey and Boxstarter Package Dev Tools
+	choco install -y Chocolatey-AutoUpdater
+	choco install -y ChocolateyPackageUpdater
+	try { choco install -y ChocolateyDeploymentUtils } catch {}
+	choco install -y boxstarter.chocolatey
+	choco install -y Boxstarter.TestRunner
+
 	Enable-MicrosoftUpdate
 	Install-WindowsUpdate -acceptEula
 
 	#--- Install & Configure the Powerline Modules
+	choco install -y oh-my-posh
+	choco install -y posh-github
 	try {
 		Write-Host 'Installing Posh-Git and Oh-My-Posh - [Dependencies for Powerline]'
 		if (-Not(Get-Module -ListAvailable -Name posh-git)) {
@@ -118,91 +200,12 @@ try {
 		# Move on if Pipeworks install fails due to errors
 	}
 
-	Get-Module
+	#--- Copy over mmy customized Windows Terminal settings file
+	if (Test-Path '\\GRIFFINUNRAID\backup\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json') {
+		Copy-Item -Path '\\GRIFFINUNRAID\backup\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json' -Destination (Join-Path $env:USERPROFILE 'Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json')
+	}
 
-	#--- Gitkraken ---
-	choco install -y gitkraken
-
-	#--- Other Git Tools ---
-	choco install -y Gpg4win
-	choco install -y lepton
-	refreshenv
-
-	#--- Configure Git ---
-	Install-BoxstarterPackage -PackageName 'https://raw.githubusercontent.com/NerdyGriffin/Multipurpose-Boxstarter-Scripts/main/configure-git.ps1'
-
-	#--- Chocolatey and Boxstarter Package Dev Tools
-	choco install -y Chocolatey-AutoUpdater
-	choco install -y ChocolateyPackageUpdater
-	try { choco install -y ChocolateyDeploymentUtils } catch {}
-	choco install -y boxstarter.chocolatey
-	choco install -y Boxstarter.TestRunner
-
-	#--- Assorted Dev Tools and Dependencies
-	choco install -y androidstudio
-	choco install -y arduino
-	choco install -y beyondcompare
-	choco install -y console-devel
-	choco install -y electron
-	choco install -y fiddler
-	choco install -y hxd
-	choco install -y meld
-	choco install -y ngrok
-	choco install -y notepadplusplus
-	choco install -y nvm
-	choco install -y openjdk8
-	choco install -y openjdk11
-	choco install -y pip
-	choco install -y python3
-	choco install -y StrawberryPerl
-	choco install -y sublimetext3
-	choco install -y windbg
-	# choco install -y winmerge
-
-	#--- Advanced Network Tools ---
-	choco install -y wireshark
-
-
-	# choco install -y azure-cosmosdb-emulator
-	# choco install -y azurestorageemulator
-	# choco install -y azure-functions-core-tools-3
-
-	choco install -y chocolatey-visualstudio.extension
-	# choco install -y visualstudio2019enterprise
-	# choco install -y visualstudio2019-workload-azure
-	choco install -y visualstudio2017community
-	choco install -y gitdiffmargin
-	# choco install -y terraform
-	choco install -y docker-for-windows
-
-	#--- PowerShell Tools ---
-	choco install -y checksum
-	choco install -y ConEmu
-	choco install -y curl
-	choco install -y llvm
-	choco install -y psutils
-	choco install -y rsync
-	choco install -y unzip
-	choco install -y winscreenfetch
-	choco install -y zip
-
-	#--- GNU ---
-	choco install -y awk
-	choco install -y diffutils
-	choco install -y findutils
-	choco install -y gimp
-	choco install -y gnuplot
-	choco install -y gnuwin
-	choco install -y gperf
-	choco install -y grep
-	choco install -y make
-	choco install -y nano
-	choco install -y octave
-	choco install -y patch
-	choco install -y sed
-	choco install -y wget
-
-	# Enable-UAC
+	Enable-UAC
 	Enable-MicrosoftUpdate
 	Install-WindowsUpdate -acceptEula
 
