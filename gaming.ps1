@@ -3,6 +3,7 @@ try {
 
 	if (-Not(Get-Command Create-SymLink)) {
 		Write-Error "The 'Create-SymLink' helper function was not found."
+		throw
 	}
 
 	if (Test-Path 'D:\') {
