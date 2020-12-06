@@ -4,6 +4,15 @@ try {
 	#--- Powershell Module Repository
 	Set-PSRepository -Name 'PSGallery' -InstallationPolicy Trusted
 
+	#--- Install/Update PowerShellGet and PackageManagement
+	# Install-PackageProvider Nuget -Force -Verbose
+	# Install-Module -Name PowerShellGet -Scope AllUsers -AllowClobber -SkipPublisherCheck -Force -AcceptLicense -Verbose
+	# Install-Module -Name PackageManagement -Scope AllUsers -AllowClobber -SkipPublisherCheck -Force -AcceptLicense -Verbose
+	# [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+	# Install-Module -Name PackageManagement -Force -MinimumVersion 1.4.6 -Scope CurrentUser -AllowClobber
+	# Update-Module -AcceptLicense -Verbose
+	# Get-Module
+
 	#--- Windows Subsystems/Features ---
 	choco install Microsoft-Hyper-V-All -source windowsFeatures
 	choco install Microsoft-Windows-Subsystem-Linux -source windowsfeatures
@@ -38,23 +47,13 @@ try {
 	if ((Test-Path 'D:\') -And -Not(Test-Path 'D:\GitHub')) { New-Item -Path 'D:\GitHub' -ItemType SymbolicLink -Value 'C:\GitHub' }
 
 	choco upgrade -y powershell
-	choco install -y au
+	choco upgrade -y au
 
 	choco upgrade -y powershell-core
 	# choco install -y azure-cli
-	choco install -y microsoft-windows-terminal
+	choco upgrade -y microsoft-windows-terminal; choco upgrade -y microsoft-windows-terminal
 	choco install -y poshgit
 	# Install-Module -Force Az
-
-	#--- Install/Update PowerShellGet and PackageManagement
-	# Install-PackageProvider Nuget -Force -Verbose
-	# Install-Module -Name PowerShellGet -Scope AllUsers -AllowClobber -SkipPublisherCheck -Force -AcceptLicense -Verbose
-	# Install-Module -Name PackageManagement -Scope AllUsers -AllowClobber -SkipPublisherCheck -Force -AcceptLicense -Verbose
-	# [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-	# Install-Module -Name PackageManagement -Force -MinimumVersion 1.4.6 -Scope CurrentUser -AllowClobber
-	# Update-Module -AcceptLicense -Verbose
-	# Get-Module
-
 
 	# choco install -y azure-cosmosdb-emulator
 	# choco install -y azurestorageemulator
