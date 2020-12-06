@@ -23,7 +23,7 @@ try {
 	choco install -y dotnetcore
 	choco install -y dotnetcore-sdk
 	choco install -y dotnetcoresdk
-	choco install -y dotpeek
+	# choco install -y dotpeek # Installer appears to be broken on my machine
 	choco install -y linqpad
 	choco install -y vscode
 	choco install -y chocolatey-vscode
@@ -136,99 +136,8 @@ try {
 	Enable-MicrosoftUpdate
 	Install-WindowsUpdate -acceptEula
 
-	#--- Install & Configure the Powerline Modules
-	choco install -y oh-my-posh
-	choco install -y posh-github
-	try {
-		Write-Host 'Installing Posh-Git and Oh-My-Posh - [Dependencies for Powerline]'
-		if (-Not(Get-Module -ListAvailable -Name posh-git)) {
-			Install-Module posh-git -Scope AllUsers -AllowClobber -SkipPublisherCheck -Force -AcceptLicense -Verbose
-		} else { Write-Host "Module 'posh-git' already installed" }
-		if (-Not(Get-Module -ListAvailable -Name oh-my-posh)) {
-			Install-Module oh-my-posh -Scope AllUsers -AllowClobber -SkipPublisherCheck -Force -AcceptLicense -Verbose
-		} else { Write-Host "Module 'oh-my-posh' already installed" }
-
-		Write-Host 'Appending Configuration for Powerline to PowerShell Profile...'
-		$PowerlineProfile = @(
-			'# Dependencies for powerline',
-			'Import-Module posh-git',
-			'Import-Module oh-my-posh',
-			'Set-Theme Paradox'
-		)
-		powershell.exe -Command {
-			Write-Host >> $PROFILE # This will create the file if it does not already exist, otherwise it will leave the existing file unchanged
-			foreach ($ProfileString in $PowerlineProfile) {
-				if (-Not(Select-String -Pattern $ProfileString -Path $PROFILE )) {
-					Add-Content -Path $PROFILE -Value $ProfileString
-				}
-			}
-		}
-		pwsh.exe -Command {
-			Write-Host >> $PROFILE # This will create the file if it does not already exist, otherwise it will leave the existing file unchanged
-			foreach ($ProfileString in $PowerlineProfile) {
-				if (-Not(Select-String -Pattern $ProfileString -Path $PROFILE )) {
-					Add-Content -Path $PROFILE -Value $ProfileString
-				}
-			}
-		}
-		if (Get-Command refreshenv -ErrorAction SilentlyContinue) { refreshenv }
-	} catch {
-		Write-Warning 'Powerline failed to install'
-		# Move on if Powerline install fails due to error
-	}
-
-	#--- Install & Configure the PSReadline Module
-	try {
-		Write-Host 'Installing PSReadLine -- [Bash-like CLI features and Optional Dependency for Powerline]'
-		if (-Not(Get-Module -ListAvailable -Name PSReadLine)) {
-			Install-Module -Name PSReadLine -Scope AllUsers -AllowClobber -SkipPublisherCheck -Force -AcceptLicense -Verbose
-		} else { Write-Host "Module 'PSReadLine' already installed" }
-
-		Write-Host 'Appending Configuration for PSReadLine to PowerShell Profile...'
-		$PSReadlineProfile = @(
-			'# Customize PSReadline to make PowerShell behave more like Bash',
-			'Import-Module PSReadLine',
-			'Set-PSReadLineOption -EditMode Emacs -HistoryNoDuplicates -HistorySearchCursorMovesToEnd',
-			'Set-PSReadLineOption -BellStyle Audible -DingTone 512',
-			'# Creates an alias for ls like I use in Bash',
-			'Set-Alias -Name v -Value Get-ChildItem'
-		)
-		# Add the lines to the $PROFILE for PowerShell
-		powershell.exe -Command {
-			Write-Host >> $PROFILE # This will create the file if it does not already exist, otherwise it will leave the existing file unchanged
-			foreach ($ProfileString in $PSReadlineProfile) {
-				if (-Not(Select-String -Pattern $ProfileString -Path $PROFILE)) {
-					Add-Content -Path $PROFILE -Value $ProfileString
-				}
-			}
-		}
-		# Do the same for PowerShell Core
-		pwsh.exe -Command {
-			Write-Host >> $PROFILE # This will create the file if it does not already exist, otherwise it will leave the existing file unchanged
-			foreach ($ProfileString in $PSReadlineProfile) {
-				if (-Not(Select-String -Pattern $ProfileString -Path $PROFILE)) {
-					Add-Content -Path $PROFILE -Value $ProfileString
-				}
-			}
-		}
-		if (Get-Command refreshenv -ErrorAction SilentlyContinue) { refreshenv }
-	} catch {
-		Write-Warning 'PSReadline failed to install'
-		# Move on if PSReadline install fails due to errors
-	}
-
-	#--- Install the Pipeworks Module
-	try {
-		Write-Host 'Installing Pipeworks -- [CLI Tools for PowerShell]'
-		Write-Host 'Description: PowerShell Pipeworks is a framework for writing Sites and Software Services in Windows PowerShell modules.'
-		if (-Not(Get-Module -ListAvailable -Name Pipeworks)) {
-			Install-Module -Name Pipeworks -Scope AllUsers -AllowClobber -SkipPublisherCheck -Force -AcceptLicense -Verbose
-		} else { Write-Host "Module 'Pipeworks' already installed" }
-		if (Get-Command refreshenv -ErrorAction SilentlyContinue) { refreshenv }
-	} catch {
-		Write-Warning 'Pipeworks failed to install'
-		# Move on if Pipeworks install fails due to errors
-	}
+	#--- Configure Powershell Profile for Powerline and PSReadline ---
+	Install-BoxstarterPackage -PackageName 'https://raw.githubusercontent.com/NerdyGriffin/Multipurpose-Boxstarter-Scripts/main/configure-powershell.ps1'
 
 	#--- Copy over mmy customized Windows Terminal settings file
 	if (Test-Path '\\GRIFFINUNRAID\backup\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json') {
@@ -239,9 +148,10 @@ try {
 	Enable-MicrosoftUpdate
 	Install-WindowsUpdate -acceptEula
 
-	Write-Debug 'The script completed successfully'
-	Write-ChocolateySuccess 'nerdygriffin.DevTools'
+	Write-Debug 'nerdygriffin.DevTools completed successfully'
+	Write-Debug ' See the log for details (' $Boxstarter.Log ').'
 } catch {
-	Write-ChocolateyFailure 'nerdygriffin.DevTools' $($_.Exception.Message)
-	throw
+	Write-Debug 'Error occurred in nerdygriffin.DevTools' $($_.Exception.Message)
+	Write-Debug ' See the log for details (' $Boxstarter.Log ').'
+	throw $_.Exception
 }

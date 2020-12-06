@@ -37,9 +37,10 @@ try {
 	Enable-MicrosoftUpdate
 	Install-WindowsUpdate -acceptEula
 
-	Write-Debug 'The script completed successfully'
-	Write-ChocolateySuccess 'nerdygriffin.Move-Libraries'
+	Write-Debug 'nerdygriffin.Move-Libraries completed successfully'
+	Write-Debug ' See the log for details (' $Boxstarter.Log ').'
 } catch {
-	Write-ChocolateyFailure 'nerdygriffin.Move-Libraries' $($_.Exception.Message)
-	throw
+	Write-Debug 'Error occurred in nerdygriffin.Move-Libraries' $($_.Exception.Message)
+	Write-Debug ' See the log for details (' $Boxstarter.Log ').'
+	throw $_.Exception
 }

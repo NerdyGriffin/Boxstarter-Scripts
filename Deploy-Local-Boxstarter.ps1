@@ -84,11 +84,10 @@ try {
 		}
 	}
 
-	Write-Debug 'The script completed successfully'
-	Write-Debug 'You may view the log file at' $Boxstarter.Log
-
-	try { Write-ChocolateySuccess 'nerdygriffin.Deploy-Local-Boxstarter' } catch {}
+	Write-Debug 'nerdygriffin.Deploy-Local-Boxstarter completed successfully'
+	Write-Debug ' See the log for details (' $Boxstarter.Log ').'
 } catch {
-	Write-ChocolateyFailure 'nerdygriffin.Deploy-Local-Boxstarter' $($_.Exception.Message)
-	throw
+	Write-Debug 'Error occurred in nerdygriffin.Deploy-Local-Boxstarter' $($_.Exception.Message)
+	Write-Debug ' See the log for details (' $Boxstarter.Log ').'
+	throw $_.Exception
 }

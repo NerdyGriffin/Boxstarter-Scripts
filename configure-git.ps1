@@ -34,9 +34,10 @@ try {
 
 	Enable-UAC
 
-	Write-Debug 'The script completed successfully'
-	Write-ChocolateySuccess 'nerdygriffin.Configure-Git'
+	Write-Debug 'nerdygriffin.Configure-Git completed successfully'
+	Write-Debug ' See the log for details (' $Boxstarter.Log ').'
 } catch {
-	Write-ChocolateyFailure 'nerdygriffin.Configure-Git' $($_.Exception.Message)
-	throw
+	Write-Debug 'Error occurred in nerdygriffin.Configure-Git' $($_.Exception.Message)
+	Write-Debug ' See the log for details (' $Boxstarter.Log ').'
+	throw $_.Exception
 }

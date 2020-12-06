@@ -84,9 +84,10 @@ try {
 	Enable-MicrosoftUpdate
 	Install-WindowsUpdate -acceptEula
 
-	Write-Debug 'The script completed successfully'
-	Write-ChocolateySuccess 'nerdygriffin.Gaming'
+	Write-Debug 'nerdygriffin.Gaming completed successfully'
+	Write-Debug ' See the log for details (' $Boxstarter.Log ').'
 } catch {
-	Write-ChocolateyFailure 'nerdygriffin.Gaming' $($_.Exception.Message)
-	throw
+	Write-Debug 'Error occurred in nerdygriffin.Gaming' $($_.Exception.Message)
+	Write-Debug ' See the log for details (' $Boxstarter.Log ').'
+	throw $_.Exception
 }
