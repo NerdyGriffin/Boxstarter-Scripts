@@ -1,15 +1,15 @@
 try {
 	Disable-UAC
 
-	if (-Not(Get-Command Create-SymLink)) {
-		Write-Error "The 'Create-SymLink' helper function was not found."
+	if (-Not(Get-Command New-SymLink)) {
+		Write-Error "The 'New-SymLink' helper function was not found."
 		throw
 	}
 
 	if (Test-Path 'D:\') {
 		# SymbolicLinks in AppData
 		foreach ($FolderName in @('.minecraft', 'Citra')) {
-			Create-SymLink -Path (Join-Path $env:APPDATA $FolderName) -Value (Join-Path 'D:\' $FolderName)
+			New-SymLink -Path (Join-Path $env:APPDATA $FolderName) -Value (Join-Path 'D:\' $FolderName)
 		}
 
 		# SymbolicLinks in ProgramFiles
@@ -31,7 +31,7 @@ try {
 		}
 		foreach ($ProgramFiles in @( $env:ProgramFiles, ${env:ProgramFiles(x86)} )) {
 			foreach ($FolderName in $SymbolicLinkNames) {
-				Create-SymLink -Path (Join-Path $ProgramFiles $FolderName) -Value (Join-Path 'D:\' $FolderName)
+				New-SymLink -Path (Join-Path $ProgramFiles $FolderName) -Value (Join-Path 'D:\' $FolderName)
 			}
 		}
 	}
