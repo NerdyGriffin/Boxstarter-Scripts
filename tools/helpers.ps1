@@ -29,34 +29,76 @@ Function MergeMove-Directory {
 	Return $false
 }
 
-Function Create-SymLink {
+Function New-SymLink {
 	param(
-		[Parameter(Mandatory)]
+		# Specifies the path of the location of the new link. You must include the name of the new link in Path .
+		[Parameter(Mandatory = $true,
+			Position = 0,
+			ParameterSetName = 'ParameterSetName',
+			ValueFromPipeline = $true,
+			ValueFromPipelineByPropertyName = $true,
+			HelpMessage = 'Specifies the path of the location of the new link. You must include the name of the new link in Path .')]
+		[Alias('PSPath')]
 		[ValidateNotNullOrEmpty()]
-		[string]$Path,
+		[string]
+		$Path,
 
-		[Parameter(Mandatory)]
+		# Specifies the path of the location that you would like the link to point to.
+		[Parameter(Mandatory = $true,
+			Position = 1,
+			HelpMessage = 'Specifies the path of the location that you would like the link to point to.')]
+		[Alias('Target')]
 		[ValidateNotNullOrEmpty()]
-		[string]$Value
+		[string]
+		$Value
 	)
 
-	if (MergeMove-Directory -Path $Path -Destination $Value) {
-		Return (New-Item -Path $Path -ItemType SymbolicLink -Value $Value -Force -Verbose -ErrorAction Stop)
+	if ((Test-Path $Path) -And (Get-Item $Path | Where-Object Attributes -Match ReparsePoint)) {
+		Write-Warning $Path 'is already a reparse point.'
+		Return $false
+	} elseif (Test-Path "$Path\*") {
+		$MoveResult = (Move-Item -Path $Path\* -Destination $Destination -Force -PassThru -Verbose -ErrorAction Stop)
+		if (-Not($MoveResult)) {
+			Write-Warning 'Something went wrong while trying to move the contents of' $Path 'to' $Value
+			Return $MoveResult
+		}
 	}
+	Return (New-Item -Path $Path -ItemType SymbolicLink -Value $Value -Force -Verbose -ErrorAction Stop)
 }
 
-Function Create-Junction {
+Function New-Junction {
 	param(
-		[Parameter(Mandatory)]
+		# Specifies the path of the location of the new link. You must include the name of the new link in Path .
+		[Parameter(Mandatory = $true,
+			Position = 0,
+			ParameterSetName = 'ParameterSetName',
+			ValueFromPipeline = $true,
+			ValueFromPipelineByPropertyName = $true,
+			HelpMessage = 'Specifies the path of the location of the new link. You must include the name of the new link in Path .')]
+		[Alias('PSPath')]
 		[ValidateNotNullOrEmpty()]
-		[string]$Path,
+		[string]
+		$Path,
 
-		[Parameter(Mandatory)]
+		# Specifies the path of the location that you would like the link to point to.
+		[Parameter(Mandatory = $true,
+			Position = 1,
+			HelpMessage = 'Specifies the path of the location that you would like the link to point to.')]
+		[Alias('Target')]
 		[ValidateNotNullOrEmpty()]
-		[string]$Value
+		[string]
+		$Value
 	)
 
-	if (MergeMove-Directory -Path $Path -Destination $Value) {
-		Return (New-Item -Path $Path -ItemType Junction -Value $Value -Force -Verbose -ErrorAction Stop)
+	if ((Test-Path $Path) -And (Get-Item $Path | Where-Object Attributes -Match ReparsePoint)) {
+		Write-Warning $Path 'is already a reparse point.'
+		Return $false
+	} elseif (Test-Path "$Path\*") {
+		$MoveResult = (Move-Item -Path $Path\* -Destination $Destination -Force -PassThru -Verbose -ErrorAction Stop)
+		if (-Not($MoveResult)) {
+			Write-Warning 'Something went wrong while trying to move the contents of' $Path 'to' $Value
+			Return $MoveResult
+		}
 	}
+	Return (New-Item -Path $Path -ItemType Junction -Value $Value -Force -Verbose -ErrorAction Stop)
 }
