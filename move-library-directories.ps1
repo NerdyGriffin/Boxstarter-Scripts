@@ -8,7 +8,7 @@ try {
 	if ($env:Username -contains 'Public') {
 		Write-Warning 'Somehow the current username is "Public"...', '  That should not be possible, so the libraries will not be moved.'
 	} else {
-		if ((Get-ComputerName | Select-String 'DESKTOP') -And (Test-Path $ServerMediaShare)) {
+		if (($env:USERDOMAIN | Select-String 'DESKTOP') -And (Test-Path $ServerMediaShare)) {
 			Move-LibraryDirectory 'My Music' (Join-Path $ServerMediaShare 'Music') -ErrorAction SilentlyContinue
 			New-SymLink -Path (Join-Path $env:UserProfile 'Music') -Value (Join-Path $ServerMediaShare 'Music') -ErrorAction SilentlyContinue
 
@@ -28,7 +28,7 @@ try {
 			New-SymLink -Path (Join-Path $env:UserProfile 'Videos') -Value (Join-Path (Join-Path 'D:\Users' $env:Username) 'Videos') -ErrorAction SilentlyContinue
 		}
 
-		if ((Get-ComputerName | Select-String 'DESKTOP') -And (Test-Path $ServerDownloadsShare)) {
+		if (($env:USERDOMAIN | Select-String 'DESKTOP') -And (Test-Path $ServerDownloadsShare)) {
 			Move-LibraryDirectory 'Downloads' $ServerDownloadsShare
 			New-SymLink -Path (Join-Path $env:UserProfile 'Downloads') -Value $ServerDownloadsShare -ErrorAction SilentlyContinue
 		} elseif (Test-Path 'D:\') {

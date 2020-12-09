@@ -18,7 +18,7 @@ try {
 			'Dolphin',
 			'Steam'
 		)
-		if (Get-ComputerName | Select-String 'DESKTOP') {
+		if ($env:USERDOMAIN | Select-String 'DESKTOP') {
 			$SymbolicLinkNames += @(
 				'Epic Games',
 				'GOG Galaxy',
@@ -64,7 +64,7 @@ try {
 	choco install -y steamlibrarymanager.portable
 	choco install -y vortex
 
-	if (Get-ComputerName | Select-String 'DESKTOP') {
+	if ($env:USERDOMAIN | Select-String 'DESKTOP') {
 		#--- Corsair ---
 		choco install -y icue
 
