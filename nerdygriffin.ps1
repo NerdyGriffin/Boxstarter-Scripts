@@ -92,7 +92,7 @@ try {
 	choco install -y filezilla
 	choco install -y fuse-nfs
 	choco install -y google-backup-and-sync
-	choco install -y megasync
+	# choco install -y megasync
 	choco install -y nextcloud-client
 	choco install -y qbittorrent
 	choco install -y winscp
