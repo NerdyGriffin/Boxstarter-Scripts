@@ -34,6 +34,9 @@ Function New-SymLink {
 		}
 		Remove-Item -Path $Path\* -Recurse -Force -ErrorAction Inquire
 	}
+	if (-Not(Test-Path $Value)) {
+		New-Item -Path $Value -ItemType Directory
+	}
 	Return (New-Item -Path $Path -ItemType SymbolicLink -Value $Value -Force -Verbose -ErrorAction Stop)
 }
 
@@ -72,6 +75,9 @@ Function New-Junction {
 			Return $MoveResult
 		}
 		Remove-Item -Path $Path\* -Recurse -Force -ErrorAction Inquire
+	}
+	if (-Not(Test-Path $Value)) {
+		New-Item -Path $Value -ItemType Directory
 	}
 	Return (New-Item -Path $Path -ItemType Junction -Value $Value -Force -Verbose -ErrorAction Stop)
 }
