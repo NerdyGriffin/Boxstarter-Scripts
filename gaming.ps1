@@ -123,10 +123,10 @@ try {
 	Enable-MicrosoftUpdate
 	Install-WindowsUpdate -acceptEula
 
-	Write-Debug 'nerdygriffin.Gaming completed successfully'
-	Write-Debug ' See the log for details (' $Boxstarter.Log ').'
+	Write-Host 'nerdygriffin.Gaming completed successfully' | Write-Debug
+	Write-Host ' See the log for details (' $Boxstarter.Log ').' | Write-Debug
 } catch {
-	Write-Debug 'Error occurred in nerdygriffin.Gaming' $($_.Exception.Message)
-	Write-Debug ' See the log for details (' $Boxstarter.Log ').'
+	Write-Host 'Error occurred in nerdygriffin.Gaming' $($_.Exception.Message) | Write-Debug
+	Write-Host ' See the log for details (' $Boxstarter.Log ').' | Write-Debug
 	throw $_.Exception
 }

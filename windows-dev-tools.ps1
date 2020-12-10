@@ -117,14 +117,14 @@ try {
 	choco install -y sed
 	choco install -y wget
 
-	#--- Chocolatey and Boxstarter Package Dev Tools
-	choco install -y Chocolatey-AutoUpdater
-	choco install -y ChocolateyPackageUpdater
-	try { choco install -y ChocolateyDeploymentUtils } catch {}
-	choco install -y boxstarter.chocolatey
-	choco install -y Boxstarter.TestRunner
+	# #--- Chocolatey and Boxstarter Package Dev Tools
+	# choco install -y Chocolatey-AutoUpdater
+	# choco install -y ChocolateyPackageUpdater
+	# try { choco install -y ChocolateyDeploymentUtils } catch {}
+	# choco install -y boxstarter.chocolatey
+	# choco install -y Boxstarter.TestRunner
 
-	Set-BoxstarterDeployOptions -DeploymentTargetPassword 'testvmlogin' -DeploymentTargetUserName 'Boxstarter' -DeploymentTargetNames 'testVM1' -DeploymentVMProvider HyperV -RestoreCheckpoint clean
+	# Set-BoxstarterDeployOptions -DeploymentTargetPassword 'testvmlogin' -DeploymentTargetUserName 'Boxstarter' -DeploymentTargetNames 'testVM1' -DeploymentVMProvider HyperV -RestoreCheckpoint clean
 	# $cred = Get-Credential Admin
 	# Set-BoxstarterDeployOptions -DeploymentTargetCredentials $cred `
 	# 	-DeploymentTargetNames 'testVM1', 'testVM2' `
@@ -148,10 +148,10 @@ try {
 	Enable-MicrosoftUpdate
 	Install-WindowsUpdate -acceptEula
 
-	Write-Debug 'nerdygriffin.DevTools completed successfully'
-	Write-Debug ' See the log for details (' $Boxstarter.Log ').'
+	Write-Host 'nerdygriffin.DevTools completed successfully' | Write-Debug
+	Write-Host ' See the log for details (' $Boxstarter.Log ').' | Write-Debug
 } catch {
-	Write-Debug 'Error occurred in nerdygriffin.DevTools' $($_.Exception.Message)
-	Write-Debug ' See the log for details (' $Boxstarter.Log ').'
+	Write-Host 'Error occurred in nerdygriffin.DevTools' $($_.Exception.Message) | Write-Debug
+	Write-Host ' See the log for details (' $Boxstarter.Log ').' | Write-Debug
 	throw $_.Exception
 }

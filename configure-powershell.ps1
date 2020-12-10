@@ -33,7 +33,7 @@ try {
 				Write-Host >> $PROFILE # This will create the file if it does not already exist, otherwise it will leave the existing file unchanged
 				if (-Not(Select-String -Pattern $PowerlineProfile[0] -Path $PROFILE )) {
 					foreach ($ProfileString in $PowerlineProfile) {
-						Write-Debug 'Attemping to add the following line to $PROFILE :' $ProfileString
+						Write-Host 'Attemping to add the following line to $PROFILE :' $ProfileString | Write-Debug
 						Add-Content -Path $PROFILE -Value $ProfileString
 					}
 				}
@@ -44,12 +44,12 @@ try {
 			pwsh.exe -Command $ScriptBlock
 		} catch {
 			Write-Warning 'Something went wrong while trying to configure $PROFILE for PSReadline.'
-			Write-Debug ' See the log for details (' $Boxstarter.Log ').'
+			Write-Host ' See the log for details (' $Boxstarter.Log ').' | Write-Debug
 		}
 		refreshenv
 	} catch {
 		Write-Warning 'Powerline failed to install'
-		Write-Debug ' See the log for details (' $Boxstarter.Log ').'
+		Write-Host ' See the log for details (' $Boxstarter.Log ').' | Write-Debug
 		# Move on if Powerline install fails due to error
 	}
 
@@ -74,7 +74,7 @@ try {
 				Write-Host >> $PROFILE # This will create the file if it does not already exist, otherwise it will leave the existing file unchanged
 				if (-Not(Select-String -Pattern $PSReadlineProfile[0] -Path $PROFILE)) {
 					foreach ($ProfileString in $PSReadlineProfile) {
-						Write-Debug 'Attemping to add the following line to $PROFILE :' $ProfileString
+						Write-Host 'Attemping to add the following line to $PROFILE :' $ProfileString | Write-Debug
 						Add-Content -Path $PROFILE -Value $ProfileString
 					}
 				}
@@ -85,12 +85,12 @@ try {
 			pwsh.exe -Command $ScriptBlock
 		} catch {
 			Write-Warning 'Something went wrong while trying to configure $PROFILE for PSReadline.'
-			Write-Debug ' See the log for details (' $Boxstarter.Log ').'
+			Write-Host ' See the log for details (' $Boxstarter.Log ').' | Write-Debug
 		}
 		refreshenv
 	} catch {
 		Write-Warning 'PSReadline failed to install'
-		Write-Debug ' See the log for details (' $Boxstarter.Log ').'
+		Write-Host ' See the log for details (' $Boxstarter.Log ').' | Write-Debug
 		# Move on if PSReadline install fails due to errors
 	}
 
@@ -104,7 +104,7 @@ try {
 		refreshenv
 	} catch {
 		Write-Warning 'Pipeworks failed to install'
-		Write-Debug ' See the log for details (' $Boxstarter.Log ').'
+		Write-Host ' See the log for details (' $Boxstarter.Log ').' | Write-Debug
 		# Move on if Pipeworks install fails due to errors
 	}
 
@@ -122,7 +122,7 @@ try {
 			Write-Host >> $PROFILE # This will create the file if it does not already exist, otherwise it will leave the existing file unchanged
 			if (-Not(Select-String -Pattern $BoxstarterProfile[0] -Path $PROFILE)) {
 				foreach ($ProfileString in $BoxstarterProfile) {
-					Write-Debug 'Attemping to add the following line to $PROFILE :' $ProfileString
+					Write-Host 'Attemping to add the following line to $PROFILE :' $ProfileString | Write-Debug
 					Add-Content -Path $PROFILE -Value $ProfileString
 				}
 			}
@@ -133,7 +133,7 @@ try {
 		pwsh.exe -Command $ScriptBlock
 	} catch {
 		Write-Warning 'Something went wrong while trying to configure $PROFILE for PSReadline.'
-		Write-Debug ' See the log for details (' $Boxstarter.Log ').'
+		Write-Host ' See the log for details (' $Boxstarter.Log ').' | Write-Debug
 	}
 
 
@@ -158,7 +158,7 @@ try {
 			Write-Host >> $PROFILE # This will create the file if it does not already exist, otherwise it will leave the existing file unchanged
 			if (-Not(Select-String -Pattern $BoxstarterProfile[0] -Path $PROFILE)) {
 				foreach ($ProfileString in $BoxstarterProfile) {
-					Write-Debug 'Attemping to add the following line to $PROFILE :' $ProfileString
+					Write-Host 'Attemping to add the following line to $PROFILE :' $ProfileString | Write-Debug
 					Add-Content -Path $PROFILE -Value $ProfileString
 				}
 			}
@@ -169,7 +169,7 @@ try {
 		pwsh.exe -Command $ScriptBlock
 	} catch {
 		Write-Warning 'Something went wrong while trying to configure $PROFILE for PSReadline.'
-		Write-Debug ' See the log for details (' $Boxstarter.Log ').'
+		Write-Host ' See the log for details (' $Boxstarter.Log ').' | Write-Debug
 	}
 
 
@@ -177,10 +177,10 @@ try {
 	Enable-MicrosoftUpdate
 	Install-WindowsUpdate -acceptEula
 
-	Write-Debug 'nerdygriffin.Configure-PowerShell completed successfully'
-	Write-Debug ' See the log for details (' $Boxstarter.Log ').'
+	Write-Host 'nerdygriffin.Configure-PowerShell completed successfully' | Write-Debug
+	Write-Host ' See the log for details (' $Boxstarter.Log ').' | Write-Debug
 } catch {
-	Write-Debug 'Error occurred in nerdygriffin.Configure-PowerShell' $($_.Exception.Message)
-	Write-Debug ' See the log for details (' $Boxstarter.Log ').'
+	Write-Host 'Error occurred in nerdygriffin.Configure-PowerShell' $($_.Exception.Message) | Write-Debug
+	Write-Host ' See the log for details (' $Boxstarter.Log ').' | Write-Debug
 	throw $_.Exception
 }

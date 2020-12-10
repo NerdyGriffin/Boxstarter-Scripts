@@ -48,10 +48,10 @@ try {
 	Set-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection -Name AllowTelemetry -Type DWord -Value 0
 	Get-Service DiagTrack, Dmwappushservice | Stop-Service | Set-Service -StartupType Disabled
 
-	Write-Debug 'nerdygriffin.Privacy completed successfully'
-	Write-Debug ' See the log for details (' $Boxstarter.Log ').'
+	Write-Host 'nerdygriffin.Privacy completed successfully' | Write-Debug
+	Write-Host ' See the log for details (' $Boxstarter.Log ').' | Write-Debug
 } catch {
-	Write-Debug 'Error occurred in nerdygriffin.Privacy' $($_.Exception.Message)
-	Write-Debug ' See the log for details (' $Boxstarter.Log ').'
+	Write-Host 'Error occurred in nerdygriffin.Privacy' $($_.Exception.Message) | Write-Debug
+	Write-Host ' See the log for details (' $Boxstarter.Log ').' | Write-Debug
 	throw $_.Exception
 }

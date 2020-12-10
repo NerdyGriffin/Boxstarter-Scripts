@@ -31,7 +31,7 @@ try {
 	#--- Web Browsers ---
 	choco install -y brave
 	choco install -y chromium
-	choco install -y firefox
+	# choco install -y firefox # Installer is currently broken
 	choco install -y googlechrome
 
 	#--- Password Manager ---
@@ -39,7 +39,7 @@ try {
 	choco install -y keepass
 
 	#--- VPN ---
-	choco install -y nordvpn
+	# choco install -y nordvpn # Installer is currently broken
 
 	#--- Communication ---
 	choco install -y discord
@@ -118,10 +118,10 @@ try {
 	Enable-MicrosoftUpdate
 	Install-WindowsUpdate -acceptEula
 
-	Write-Debug 'nerdygriffin.DefaultInstall completed successfully'
-	Write-Debug ' See the log for details (' $Boxstarter.Log ').'
+	Write-Host 'nerdygriffin.DefaultInstall completed successfully' | Write-Debug
+	Write-Host ' See the log for details (' $Boxstarter.Log ').' | Write-Debug
 } catch {
-	Write-Debug 'Error occurred in nerdygriffin.DefaultInstall' $($_.Exception.Message)
-	Write-Debug ' See the log for details (' $Boxstarter.Log ').'
+	Write-Host 'Error occurred in nerdygriffin.DefaultInstall' $($_.Exception.Message) | Write-Debug
+	Write-Host ' See the log for details (' $Boxstarter.Log ').' | Write-Debug
 	throw $_.Exception
 }

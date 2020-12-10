@@ -68,7 +68,7 @@ try {
 		Start-Sleep -Seconds 2
 	}
 
-	$ConfirmInstall = Read-Host 'Would you like to rebuild the packages in the local repo? [y/n]'
+	$ConfirmInstall = Read-Host 'Would you like to install the packages from the local repo? [y/n]'
 	if ($ConfirmInstall -eq 'y') {
 		#--- Install each of the packages using the builds in the local repo ---
 		# $creds = Get-Credential (Join-Path $env:USERDOMAIN $env:USERNAME)
@@ -84,10 +84,10 @@ try {
 		}
 	}
 
-	Write-Debug 'nerdygriffin.Deploy-Local-Boxstarter completed successfully'
-	Write-Debug ' See the log for details (' $Boxstarter.Log ').'
+	Write-Host 'nerdygriffin.Deploy-Local-Boxstarter completed successfully' | Write-Debug
+	Write-Host ' See the log for details (' $Boxstarter.Log ').' | Write-Debug
 } catch {
-	Write-Debug 'Error occurred in nerdygriffin.Deploy-Local-Boxstarter' $($_.Exception.Message)
-	Write-Debug ' See the log for details (' $Boxstarter.Log ').'
+	Write-Host 'Error occurred in nerdygriffin.Deploy-Local-Boxstarter' $($_.Exception.Message) | Write-Debug
+	Write-Host ' See the log for details (' $Boxstarter.Log ').' | Write-Debug
 	throw $_.Exception
 }
