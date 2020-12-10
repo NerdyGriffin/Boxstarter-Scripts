@@ -23,13 +23,13 @@ Function New-SymLink {
 	)
 
 	if ((Test-Path $Path) -And (Get-Item $Path | Where-Object Attributes -Match ReparsePoint)) {
-		Write-Warning $Path 'is already a reparse point.'
+		Write-Host  $Path 'is already a reparse point.' | Write-Warning
 		Return $false
 	} elseif (Test-Path "$Path\*") {
 		# $MoveResult = (Move-Item -Path $Path\* -Destination $Destination -Force -PassThru -Verbose -ErrorAction Stop)
 		$MoveResult = (robocopy $Path $Destination /ZB /FFT)
 		if (-Not($MoveResult)) {
-			Write-Warning 'Something went wrong while trying to move the contents of' $Path 'to' $Value
+			Write-Host  'Something went wrong while trying to move the contents of' $Path 'to' $Value | Write-Warning
 			Return $MoveResult
 		}
 		Remove-Item -Path $Path\* -Recurse -Force -ErrorAction Inquire
@@ -40,7 +40,7 @@ Function New-SymLink {
 	Return (New-Item -Path $Path -ItemType SymbolicLink -Value $Value -Force -Verbose -ErrorAction Stop)
 }
 
-try {
+# try {
 	Disable-UAC
 
 	$ServerRootPath = '\\GRIFFINUNRAID\' # TODO: Make an interactive script that can ask for user to provide whatever server path they want
@@ -48,7 +48,7 @@ try {
 	$ServerDownloadsShare = (Join-Path $ServerRootPath 'personal\Downloads')
 
 	if ($env:Username -contains 'Public') {
-		Write-Warning 'Somehow the current username is "Public"...', '  That should not be possible, so the libraries will not be moved.'
+		Write-Host  'Somehow the current username is "Public"...', '  That should not be possible, so the libraries will not be moved.' | Write-Warning
 	} else {
 		if (($env:USERDOMAIN | Select-String 'DESKTOP') -And (Test-Path $ServerMediaShare)) {
 			Move-LibraryDirectory 'My Music' (Join-Path $ServerMediaShare 'Music') -ErrorAction SilentlyContinue
@@ -86,10 +86,10 @@ try {
 	Enable-MicrosoftUpdate
 	Install-WindowsUpdate -acceptEula
 
-	Write-Host 'nerdygriffin.Move-Libraries completed successfully' | Write-Debug
-	Write-Host ' See the log for details (' $Boxstarter.Log ').' | Write-Debug
-} catch {
-	Write-Host 'Error occurred in nerdygriffin.Move-Libraries' $($_.Exception.Message) | Write-Debug
-	Write-Host ' See the log for details (' $Boxstarter.Log ').' | Write-Debug
-	throw $_.Exception
-}
+# 	Write-Host 'nerdygriffin.Move-Libraries completed successfully' | Write-Debug
+# 	Write-Host ' See the log for details (' $Boxstarter.Log ').' | Write-Debug
+# } catch {
+# 	Write-Host 'Error occurred in nerdygriffin.Move-Libraries' $($_.Exception.Message) | Write-Debug
+# 	Write-Host ' See the log for details (' $Boxstarter.Log ').' | Write-Debug
+# 	throw $_.Exception
+# }

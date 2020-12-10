@@ -82,10 +82,7 @@ try {
 	choco install -y openjdk11
 	choco install -y pip
 	choco install -y python3
-	choco install -y StrawberryPerl
 	choco install -y sublimetext3
-	choco install -y windbg
-	# choco install -y winmerge
 
 	#--- Advanced Network Tools ---
 	choco install -y wireshark

@@ -23,13 +23,13 @@ Function New-SymLink {
 	)
 
 	if ((Test-Path $Path) -And (Get-Item $Path | Where-Object Attributes -Match ReparsePoint)) {
-		Write-Warning $Path 'is already a reparse point.'
+		Write-Host  $Path 'is already a reparse point.' | Write-Warning
 		Return $false
 	} elseif (Test-Path "$Path\*") {
 		# $MoveResult = (Move-Item -Path $Path\* -Destination $Destination -Force -PassThru -Verbose -ErrorAction Stop)
 		$MoveResult = (robocopy $Path $Destination /ZB /FFT)
 		if (-Not($MoveResult)) {
-			Write-Warning 'Something went wrong while trying to move the contents of' $Path 'to' $Value
+			Write-Host  'Something went wrong while trying to move the contents of' $Path 'to' $Value | Write-Warning
 			Return $MoveResult
 		}
 		Remove-Item -Path $Path\* -Recurse -Force -ErrorAction Inquire
@@ -65,13 +65,13 @@ Function New-Junction {
 	)
 
 	if ((Test-Path $Path) -And (Get-Item $Path | Where-Object Attributes -Match ReparsePoint)) {
-		Write-Warning $Path 'is already a reparse point.'
+		Write-Host  $Path 'is already a reparse point.' | Write-Warning
 		Return $false
 	} elseif (Test-Path "$Path\*") {
 		# $MoveResult = (Move-Item -Path $Path\* -Destination $Destination -Force -PassThru -Verbose -ErrorAction Stop)
 		$MoveResult = (robocopy $Path $Destination /ZB /FFT)
 		if (-Not($MoveResult)) {
-			Write-Warning 'Something went wrong while trying to move the contents of' $Path 'to' $Value
+			Write-Host  'Something went wrong while trying to move the contents of' $Path 'to' $Value | Write-Warning
 			Return $MoveResult
 		}
 		Remove-Item -Path $Path\* -Recurse -Force -ErrorAction Inquire

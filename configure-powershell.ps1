@@ -14,10 +14,10 @@ try {
 	try {
 		Write-Host 'Installing Posh-Git and Oh-My-Posh - [Dependencies for Powerline]'
 		if (-Not(Get-Module -ListAvailable -Name posh-git)) {
-			Install-Module posh-git -Scope AllUsers -AllowClobber -SkipPublisherCheck -Force -AcceptLicense -Verbose
+			Install-Module posh-git -Scope AllUsers -AllowClobber -SkipPublisherCheck -Force -Verbose
 		} else { Write-Host "Module 'posh-git' already installed" }
 		if (-Not(Get-Module -ListAvailable -Name oh-my-posh)) {
-			Install-Module oh-my-posh -Scope AllUsers -AllowClobber -SkipPublisherCheck -Force -AcceptLicense -Verbose
+			Install-Module oh-my-posh -Scope AllUsers -AllowClobber -SkipPublisherCheck -Force -Verbose
 		} else { Write-Host "Module 'oh-my-posh' already installed" }
 		refreshenv
 
@@ -43,12 +43,12 @@ try {
 			# Do the same for PowerShell Core
 			pwsh.exe -Command $ScriptBlock
 		} catch {
-			Write-Warning 'Something went wrong while trying to configure $PROFILE for PSReadline.'
+			Write-Host  'Something went wrong while trying to configure $PROFILE for PSReadline.' | Write-Warning
 			Write-Host ' See the log for details (' $Boxstarter.Log ').' | Write-Debug
 		}
 		refreshenv
 	} catch {
-		Write-Warning 'Powerline failed to install'
+		Write-Host  'Powerline failed to install' | Write-Warning
 		Write-Host ' See the log for details (' $Boxstarter.Log ').' | Write-Debug
 		# Move on if Powerline install fails due to error
 	}
@@ -57,7 +57,7 @@ try {
 	try {
 		Write-Host 'Installing PSReadLine -- [Bash-like CLI features and Optional Dependency for Powerline]'
 		if (-Not(Get-Module -ListAvailable -Name PSReadLine)) {
-			Install-Module -Name PSReadLine -Scope AllUsers -AllowClobber -SkipPublisherCheck -Force -AcceptLicense -Verbose
+			Install-Module -Name PSReadLine -Scope AllUsers -AllowClobber -SkipPublisherCheck -Force -Verbose
 		} else { Write-Host "Module 'PSReadLine' already installed" }
 		refreshenv
 		try {
@@ -84,12 +84,12 @@ try {
 			# Do the same for PowerShell Core
 			pwsh.exe -Command $ScriptBlock
 		} catch {
-			Write-Warning 'Something went wrong while trying to configure $PROFILE for PSReadline.'
+			Write-Host  'Something went wrong while trying to configure $PROFILE for PSReadline.' | Write-Warning
 			Write-Host ' See the log for details (' $Boxstarter.Log ').' | Write-Debug
 		}
 		refreshenv
 	} catch {
-		Write-Warning 'PSReadline failed to install'
+		Write-Host  'PSReadline failed to install' | Write-Warning
 		Write-Host ' See the log for details (' $Boxstarter.Log ').' | Write-Debug
 		# Move on if PSReadline install fails due to errors
 	}
@@ -99,11 +99,11 @@ try {
 		Write-Host 'Installing Pipeworks -- [CLI Tools for PowerShell]'
 		Write-Host 'Description: PowerShell Pipeworks is a framework for writing Sites and Software Services in Windows PowerShell modules.'
 		if (-Not(Get-Module -ListAvailable -Name Pipeworks)) {
-			Install-Module -Name Pipeworks -Scope AllUsers -AllowClobber -SkipPublisherCheck -Force -AcceptLicense -Verbose
+			Install-Module -Name Pipeworks -Scope AllUsers -AllowClobber -SkipPublisherCheck -Force -Verbose
 		} else { Write-Host "Module 'Pipeworks' already installed" }
 		refreshenv
 	} catch {
-		Write-Warning 'Pipeworks failed to install'
+		Write-Host  'Pipeworks failed to install' | Write-Warning
 		Write-Host ' See the log for details (' $Boxstarter.Log ').' | Write-Debug
 		# Move on if Pipeworks install fails due to errors
 	}
@@ -132,7 +132,7 @@ try {
 		# Do the same for PowerShell Core
 		pwsh.exe -Command $ScriptBlock
 	} catch {
-		Write-Warning 'Something went wrong while trying to configure $PROFILE for PSReadline.'
+		Write-Host  'Something went wrong while trying to configure $PROFILE for PSReadline.' | Write-Warning
 		Write-Host ' See the log for details (' $Boxstarter.Log ').' | Write-Debug
 	}
 
@@ -168,7 +168,7 @@ try {
 		# Do the same for PowerShell Core
 		pwsh.exe -Command $ScriptBlock
 	} catch {
-		Write-Warning 'Something went wrong while trying to configure $PROFILE for PSReadline.'
+		Write-Host  'Something went wrong while trying to configure $PROFILE for PSReadline.' | Write-Warning
 		Write-Host ' See the log for details (' $Boxstarter.Log ').' | Write-Debug
 	}
 
