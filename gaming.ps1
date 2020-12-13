@@ -56,7 +56,7 @@ try {
 
 		# SymbolicLinks in ProgramFiles
 		$SymbolicLinkNames = @(
-			'Cemu Emulator',
+			# 'Cemu Emulator',
 			'Dolphin'
 			# 'Steam'
 		)
