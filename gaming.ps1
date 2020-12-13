@@ -57,20 +57,20 @@ try {
 		# SymbolicLinks in ProgramFiles
 		$SymbolicLinkNames = @(
 			'Cemu Emulator',
-			'Dolphin',
-			'Steam'
+			'Dolphin'
+			# 'Steam'
 		)
-		if ($env:USERDOMAIN | Select-String 'DESKTOP') {
-			$SymbolicLinkNames += @(
-				'Epic Games',
-				'GOG Galaxy',
-				'Origin',
-				'Rockstar Games',
-				'Ubisoft',
-				'Unity Hub',
-				'Unity'
-			)
-		}
+		# if ($env:USERDOMAIN | Select-String 'DESKTOP') {
+		# 	$SymbolicLinkNames += @(
+		# 		'Epic Games',
+		# 		'GOG Galaxy',
+		# 		'Origin',
+		# 		'Rockstar Games',
+		# 		'Ubisoft',
+		# 		'Unity Hub',
+		# 		'Unity'
+		# 	)
+		# }
 		foreach ($ProgramFiles in @( $env:ProgramFiles, ${env:ProgramFiles(x86)} )) {
 			foreach ($FolderName in $SymbolicLinkNames) {
 				New-SymLink -Path (Join-Path $ProgramFiles $FolderName) -Value (Join-Path 'D:\' $FolderName)
