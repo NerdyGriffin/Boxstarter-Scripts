@@ -39,7 +39,8 @@ try {
 	refreshenv
 
 	#--- Configure Git ---
-	Install-BoxstarterPackage -PackageName 'https://raw.githubusercontent.com/NerdyGriffin/Multipurpose-Boxstarter-Scripts/main/configure-git.ps1'
+	# Install-BoxstarterPackage -PackageName 'https://raw.githubusercontent.com/NerdyGriffin/Multipurpose-Boxstarter-Scripts/main/configure-git.ps1'
+	try { Boxstarter.bat nerdygriffin.Configure-Git } catch {}
 
 	# Make a folder for my GitHub repos and make SymbolicLinks to it
 	if (-Not(Test-Path 'C:\GitHub')) { New-Item -Path 'C:\GitHub' -ItemType Directory }
@@ -134,12 +135,8 @@ try {
 	Install-WindowsUpdate -acceptEula
 
 	#--- Configure Powershell Profile for Powerline and PSReadline ---
-	Install-BoxstarterPackage -PackageName 'https://raw.githubusercontent.com/NerdyGriffin/Multipurpose-Boxstarter-Scripts/main/configure-powershell.ps1'
-
-	#--- Copy over mmy customized Windows Terminal settings file
-	if (Test-Path '\\GRIFFINUNRAID\backup\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json') {
-		Copy-Item -Path '\\GRIFFINUNRAID\backup\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json' -Destination (Join-Path $env:USERPROFILE 'Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json')
-	}
+	# Install-BoxstarterPackage -PackageName 'https://raw.githubusercontent.com/NerdyGriffin/Multipurpose-Boxstarter-Scripts/main/configure-powershell.ps1'
+	try { Boxstarter.bat nerdygriffin.Configure-PowerShell } catch {}
 
 	Enable-UAC
 	Enable-MicrosoftUpdate
