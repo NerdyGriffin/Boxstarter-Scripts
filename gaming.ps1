@@ -26,7 +26,7 @@ Function New-SymLink {
 		Write-Host  $Path 'is already a reparse point.' | Write-Warning
 		Return $false
 	} elseif (Test-Path "$Path\*") {
-		# $MoveResult = (Move-Item -Path $Path\* -Destination $Destination -Force -PassThru -Verbose -ErrorAction Stop)
+		# $MoveResult = (Move-Item -Path $Path\* -Destination $Destination -Force -PassThru -Verbose)
 		$MoveResult = (robocopy $Path $Destination /ZB /FFT)
 		if (-Not($MoveResult)) {
 			Write-Host  'Something went wrong while trying to move the contents of' $Path 'to' $Value | Write-Warning
@@ -37,7 +37,7 @@ Function New-SymLink {
 	if (-Not(Test-Path $Value)) {
 		New-Item -Path $Value -ItemType Directory
 	}
-	$Result = New-Item -Path $Path -ItemType SymbolicLink -Value $Value -Force -Verbose -ErrorAction Stop
+	$Result = New-Item -Path $Path -ItemType SymbolicLink -Value $Value -Force -Verbose
 	if ($Result) {
 		Return $true
 	} else {
