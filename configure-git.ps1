@@ -30,6 +30,7 @@ try {
 	git config --global alias.ci commit
 	git config --global alias.st status
 	git config --global alias.ft fetch
+	git config --global alias.ps push
 	git config --global alias.ph push
 	git config --global alias.pl pull
 	if (Test-Path 'C:\Program Files (x86)\GnuPG\bin\gpg.exe') {
