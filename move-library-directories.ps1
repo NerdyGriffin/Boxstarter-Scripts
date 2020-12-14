@@ -34,6 +34,9 @@ Function New-SymLink {
 		}
 		Remove-Item -Path $Path\* -Recurse -Force -ErrorAction Inquire
 	}
+	if (Test-Path $Path) {
+		Remove-Item $Path -Recurse -Force
+	}
 	if (-Not(Test-Path $Value)) {
 		New-Item -Path $Value -ItemType Directory
 	}
