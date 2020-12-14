@@ -37,7 +37,13 @@ Function New-SymLink {
 	if (-Not(Test-Path $Value)) {
 		New-Item -Path $Value -ItemType Directory
 	}
-	Return (New-Item -Path $Path -ItemType SymbolicLink -Value $Value -Force -Verbose -ErrorAction Stop)
+	$Result = New-Item -Path $Path -ItemType SymbolicLink -Value $Value -Force -Verbose -ErrorAction Stop
+	if ($Result) {
+		Return $true
+	} else {
+		Write-Host 'The following error occured while trying to make symlink: ' $Result | Write-Warning
+		Return $false
+	}
 }
 
 try {
