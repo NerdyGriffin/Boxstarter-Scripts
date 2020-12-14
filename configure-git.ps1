@@ -10,6 +10,11 @@ try {
 	#--- Configure Git ---
 	git config --global user.name 'Christian Kunis'
 	git config --global user.email 'ckunis98@gmail.com'
+	if (Get-Command nano -ErrorAction SilentlyContinue) {
+		git config --global core.editor nano
+	} else {
+		git config --global core.editor code
+	}
 	git config --global core.symlinks true
 	git config --global core.autocrlf input
 	git config --global core.eol lf
