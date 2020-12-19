@@ -65,7 +65,7 @@ try {
 	choco install -y visualstudio2017community
 	choco install -y gitdiffmargin
 	# choco install -y terraform
-	choco install -y docker-for-windows
+	# choco install -y docker-for-windows
 
 	#--- Assorted Dev Tools and Dependencies
 	choco install -y androidstudio
