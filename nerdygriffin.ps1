@@ -31,7 +31,7 @@ try {
 	#--- Web Browsers ---
 	choco install -y brave
 	choco install -y chromium
-	# choco install -y firefox # Installer is currently broken
+	# choco install -y firefox # Installer is possibly broken
 	choco install -y googlechrome
 
 	#--- Password Manager ---
@@ -39,7 +39,7 @@ try {
 	choco install -y keepass
 
 	#--- VPN ---
-	# choco install -y nordvpn # Installer is currently broken
+	# choco install -y nordvpn # Installer is possibly broken
 
 	#--- Communication ---
 	choco install -y discord
@@ -94,7 +94,6 @@ try {
 	choco install -y google-backup-and-sync
 	# choco install -y megasync
 	choco install -y nextcloud-client
-	choco install -y qbittorrent
 	choco install -y winscp
 
 	#--- File & Storage Utilities ---
