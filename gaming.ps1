@@ -115,7 +115,11 @@ try {
 	choco install -y steam
 	choco install -y steam-cleaner
 	choco install -y steamlibrarymanager.portable
+
+	#--- Mods & Cheats
+	choco install -y cheatengine
 	choco install -y vortex
+	choco install -y wemod
 
 	if ($env:USERDOMAIN | Select-String 'DESKTOP') {
 		#--- Corsair ---
