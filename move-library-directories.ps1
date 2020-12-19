@@ -54,7 +54,8 @@ Disable-UAC
 
 $ServerRootPath = '\\GRIFFINUNRAID\' # TODO: Make an interactive script that can ask for user to provide whatever server path they want
 $ServerMediaShare = (Join-Path $ServerRootPath 'media')
-$ServerDownloadsShare = (Join-Path $ServerRootPath 'personal\Downloads')
+# $ServerDownloadsShare = (Join-Path $ServerRootPath 'personal\Downloads')
+$ServerDownloadsShare = (Join-Path (Join-Path 'D:\Users' $env:Username) 'Downloads') # TODO: Choose the desktop download path longterm
 
 if ($env:Username -contains 'Public') {
 	Write-Host  'Somehow the current username is "Public"...', '  That should not be possible, so the libraries will not be moved.' | Write-Warning
@@ -87,10 +88,10 @@ if ($env:Username -contains 'Public') {
 		Move-LibraryDirectory 'Downloads' $ServerDownloadsShare
 		# New-SymLink -Path (Join-Path $env:UserProfile 'Downloads') -Value $ServerDownloadsShare -ErrorAction SilentlyContinue
 	} elseif (Test-Path 'D:\') {
-		Move-LibraryDirectory 'Personal' (Join-Path 'D:\Users' $env:Username 'Documents')
+		Move-LibraryDirectory 'Personal' (Join-Path (Join-Path 'D:\Users' $env:Username) 'Documents')
 		# New-SymLink -Path (Join-Path $env:UserProfile 'Documents') -Value (Join-Path (Join-Path 'D:\Users' $env:Username) 'Documents') -ErrorAction SilentlyContinue
 
-		Move-LibraryDirectory 'Downloads' (Join-Path 'D:\Users' $env:Username 'Downloads')
+		Move-LibraryDirectory 'Downloads' (Join-Path (Join-Path 'D:\Users' $env:Username) 'Downloads')
 		# New-SymLink -Path (Join-Path $env:UserProfile 'Downloads') -Value (Join-Path (Join-Path 'D:\Users' $env:Username) 'Downloads') -ErrorAction SilentlyContinue
 	}
 }
