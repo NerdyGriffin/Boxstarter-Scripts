@@ -50,13 +50,16 @@ try {
 
 	#--- Multimedia ---
 	choco install -y audacity
+	choco install -y audacity-lame
 	choco install -y blender
 	choco install -y foobar2000
 	choco install -y freeencoderpack
 	choco install -y fsviewer
 	choco install -y gimp
 	choco install -y k-lite-codecpackfull
+	choco install -y lame
 	choco install -y obs-studio
+	choco install -y phantombot
 	choco install -y streamlabs-obs
 	choco install -y vlc
 
@@ -77,11 +80,17 @@ try {
 	choco install -y octave
 
 	#--- Windows 10 Tools ---
+	# choco install -y everything
 	choco install -y mousewithoutborders
 	choco install -y powertoys
-	choco install -y plasso
+	try {
+		choco install -y plasso
+	} catch {
+		choco install -y plasso --ignore-checksums
+	}
 	choco install -y procexp
 	choco install -y procmon
+	choco install -y reshack
 	choco install -y shutup10
 	choco install -y sharex
 	choco install -y winaero-tweaker
@@ -102,6 +111,7 @@ try {
 	choco install -y filebot
 	choco install -y Folder_Size
 	choco install -y freefilesync
+	choco install -y partitionwizard
 	choco install -y rufus
 	choco install -y tuxboot
 
