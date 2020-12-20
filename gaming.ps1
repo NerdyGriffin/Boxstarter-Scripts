@@ -103,6 +103,7 @@ try {
 	choco install -y msiafterburner
 
 	#--- Benchmarks ---
+	choco install -y cinebench
 	choco install -y furmark
 	choco install -y heaven-benchmark
 	choco install -y valley-benchmark
