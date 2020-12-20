@@ -74,6 +74,7 @@ try {
 	choco install -y console-devel
 	choco install -y electron
 	choco install -y fiddler
+	choco install -y HexEdit
 	choco install -y hxd
 	choco install -y meld
 	choco install -y ngrok
@@ -86,6 +87,8 @@ try {
 	choco install -y sublimetext3
 
 	#--- Advanced Network Tools ---
+	# choco install -y advanced-ip-scanner # Possibly broken for FOSS users
+	# choco install -y ipscan # Possibly broken for FOSS users
 	choco install -y wireshark
 
 	#--- PowerShell Tools ---
