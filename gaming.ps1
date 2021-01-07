@@ -111,6 +111,7 @@ try {
 
 	#--- Game Launchers ---
 	choco install -y cemu
+	pip install bcml
 	choco install -y dolphin
 	choco install -y minecraft-launcher
 	choco install -y steam
