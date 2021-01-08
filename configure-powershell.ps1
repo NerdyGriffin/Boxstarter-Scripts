@@ -151,40 +151,40 @@ try {
 	}
 
 
-	#--- Import Boxstarter Modules
-	try {
-		$ScriptBlock = {
-			Write-Host 'Appending Configuration for Boxstarter to PowerShell Profile...'
-			$BoxstarterProfile = @(
-				'# Boxstarter modules',
-				'# Import the Chocolatey module first so that $Boxstarter properties',
-				'# are initialized correctly and then import everything else.',
-				'if (Test-Path("\\GRIFFINUNRAID\Boxstarter")) {',
-				'	$BoxstarterInstall = "\\GRIFFINUNRAID\Boxstarter"',
-				'} elseif (Test-Path("D:\Boxstarter")) {',
-				'	$BoxstarterInstall = "D:\Boxstarter"',
-				'}',
-				'Import-Module $BoxstarterInstall\Boxstarter.Chocolatey\Boxstarter.Chocolatey.psd1 -DisableNameChecking -ErrorAction SilentlyContinue',
-				'Resolve-Path $BoxstarterInstall\Boxstarter.*\*.psd1 |',
-				'	% { Import-Module $_.ProviderPath -DisableNameChecking -ErrorAction SilentlyContinue }',
-				'Import-Module $BoxstarterInstall\Boxstarter.Common\Boxstarter.Common.psd1 -Function Test-Admin'
-			)
-			Write-Host >> $PROFILE # This will create the file if it does not already exist, otherwise it will leave the existing file unchanged
-			if (-Not(Select-String -Pattern $BoxstarterProfile[0] -Path $PROFILE)) {
-				foreach ($ProfileString in $BoxstarterProfile) {
-					Write-Host 'Attemping to add the following line to $PROFILE :' $ProfileString | Write-Debug
-					Add-Content -Path $PROFILE -Value $ProfileString
-				}
-			}
-		}
-		# Add the lines to the $PROFILE for PowerShell
-		powershell.exe -Command $ScriptBlock
-		# Do the same for PowerShell Core
-		pwsh.exe -Command $ScriptBlock
-	} catch {
-		Write-Host  'Something went wrong while trying to configure $PROFILE for PSReadline.' | Write-Warning
-		Write-Host ' See the log for details (' $Boxstarter.Log ').' | Write-Debug
-	}
+	# #--- Import Boxstarter Modules
+	# try {
+	# 	$ScriptBlock = {
+	# 		Write-Host 'Appending Configuration for Boxstarter to PowerShell Profile...'
+	# 		$BoxstarterProfile = @(
+	# 			'# Boxstarter modules',
+	# 			'# Import the Chocolatey module first so that $Boxstarter properties',
+	# 			'# are initialized correctly and then import everything else.',
+	# 			'if (Test-Path("\\GRIFFINUNRAID\Boxstarter")) {',
+	# 			'	$BoxstarterInstall = "\\GRIFFINUNRAID\Boxstarter"',
+	# 			'} elseif (Test-Path("D:\Boxstarter")) {',
+	# 			'	$BoxstarterInstall = "D:\Boxstarter"',
+	# 			'}',
+	# 			'Import-Module $BoxstarterInstall\Boxstarter.Chocolatey\Boxstarter.Chocolatey.psd1 -DisableNameChecking -ErrorAction SilentlyContinue',
+	# 			'Resolve-Path $BoxstarterInstall\Boxstarter.*\*.psd1 |',
+	# 			'	% { Import-Module $_.ProviderPath -DisableNameChecking -ErrorAction SilentlyContinue }',
+	# 			'Import-Module $BoxstarterInstall\Boxstarter.Common\Boxstarter.Common.psd1 -Function Test-Admin'
+	# 		)
+	# 		Write-Host >> $PROFILE # This will create the file if it does not already exist, otherwise it will leave the existing file unchanged
+	# 		if (-Not(Select-String -Pattern $BoxstarterProfile[0] -Path $PROFILE)) {
+	# 			foreach ($ProfileString in $BoxstarterProfile) {
+	# 				Write-Host 'Attemping to add the following line to $PROFILE :' $ProfileString | Write-Debug
+	# 				Add-Content -Path $PROFILE -Value $ProfileString
+	# 			}
+	# 		}
+	# 	}
+	# 	# Add the lines to the $PROFILE for PowerShell
+	# 	powershell.exe -Command $ScriptBlock
+	# 	# Do the same for PowerShell Core
+	# 	pwsh.exe -Command $ScriptBlock
+	# } catch {
+	# 	Write-Host  'Something went wrong while trying to configure $PROFILE for PSReadline.' | Write-Warning
+	# 	Write-Host ' See the log for details (' $Boxstarter.Log ').' | Write-Debug
+	# }
 
 
 	Enable-UAC
