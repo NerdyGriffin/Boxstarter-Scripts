@@ -1,4 +1,4 @@
-Function New-SymLink {
+Function New-SymbolicLink {
 	param(
 		# Specifies the path of the location of the new link. You must include the name of the new link in Path .
 		[Parameter(Mandatory = $true,
@@ -25,7 +25,8 @@ Function New-SymLink {
 	if ((Test-Path $Path) -And (Get-Item $Path | Where-Object Attributes -Match ReparsePoint)) {
 		Write-Host  $Path 'is already a reparse point.' | Write-Warning
 		Return $false
-	} elseif (Test-Path "$Path\*") {
+	}
+	if (Test-Path "$Path\*") {
 		# $MoveResult = (Move-Item -Path $Path\* -Destination $Value -Force -PassThru -Verbose)
 		$MoveResult = (robocopy $Path $Value /ZB /FFT)
 		if (-Not($MoveResult)) {
@@ -52,8 +53,8 @@ Function New-SymLink {
 try {
 	Disable-UAC
 
-	if (-Not(Get-Command New-SymLink)) {
-		Write-Error "The 'New-SymLink' helper function was not found."
+	if (-Not(Get-Command New-SymbolicLink)) {
+		Write-Error "The 'New-SymbolicLink' helper function was not found."
 		throw
 	}
 
@@ -62,30 +63,7 @@ try {
 		$SymbolicLinkNames = @('Citra')
 		if ($env:USERDOMAIN | Select-String 'LAPTOP') { $SymbolicLinkNames += @('.minecraft') }
 		foreach ($FolderName in $SymbolicLinkNames) {
-			New-SymLink -Path (Join-Path $env:APPDATA $FolderName) -Value (Join-Path 'D:\' $FolderName)
-		}
-
-		# SymbolicLinks in ProgramFiles
-		$SymbolicLinkNames = @(
-			# 'Cemu Emulator',
-			'Dolphin'
-			# 'Steam'
-		)
-		# if ($env:USERDOMAIN | Select-String 'DESKTOP') {
-		# 	$SymbolicLinkNames += @(
-		# 		'Epic Games',
-		# 		'GOG Galaxy',
-		# 		'Origin',
-		# 		'Rockstar Games',
-		# 		'Ubisoft',
-		# 		'Unity Hub',
-		# 		'Unity'
-		# 	)
-		# }
-		foreach ($ProgramFiles in @( $env:ProgramFiles, ${env:ProgramFiles(x86)} )) {
-			foreach ($FolderName in $SymbolicLinkNames) {
-				New-SymLink -Path (Join-Path $ProgramFiles $FolderName) -Value (Join-Path 'D:\' $FolderName)
-			}
+			New-SymbolicLink -Path (Join-Path $env:APPDATA $FolderName) -Value (Join-Path 'D:\' $FolderName)
 		}
 	}
 
