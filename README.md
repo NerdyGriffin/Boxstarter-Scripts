@@ -20,13 +20,13 @@ Based on code from <https://gist.github.com/petevb/67f78762537e742015da018a33558
 
    - View script: <https://raw.githubusercontent.com/NerdyGriffin/Multipurpose-Boxstarter-Scripts/main/nerdygriffin.ps1>
 
-3. Install [Windows Gaming Software](https://boxstarter.org/package/nr/url?https://raw.githubusercontent.com/NerdyGriffin/Multipurpose-Boxstarter-Scripts/main/gaming.ps1)
-
-   - View script: <https://raw.githubusercontent.com/NerdyGriffin/Multipurpose-Boxstarter-Scripts/main/gaming.ps1>
-
-4. Install [Windows Dev Tools](https://boxstarter.org/package/nr/url?https://raw.githubusercontent.com/NerdyGriffin/Multipurpose-Boxstarter-Scripts/main/windows-dev-tools.ps1)
+3. Install [Windows Dev Tools](https://boxstarter.org/package/nr/url?https://raw.githubusercontent.com/NerdyGriffin/Multipurpose-Boxstarter-Scripts/main/windows-dev-tools.ps1)
 
    - View script: <https://raw.githubusercontent.com/NerdyGriffin/Multipurpose-Boxstarter-Scripts/main/windows-dev-tools.ps1>
+
+4. Install [Windows Gaming Software](https://boxstarter.org/package/nr/url?https://raw.githubusercontent.com/NerdyGriffin/Multipurpose-Boxstarter-Scripts/main/gaming.ps1)
+
+   - View script: <https://raw.githubusercontent.com/NerdyGriffin/Multipurpose-Boxstarter-Scripts/main/gaming.ps1>
 
 5. Install [Configure Git for NerdyGriffin](https://boxstarter.org/package/nr/url?https://raw.githubusercontent.com/NerdyGriffin/Multipurpose-Boxstarter-Scripts/main/configure-git.ps1)
 
