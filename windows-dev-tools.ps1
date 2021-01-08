@@ -134,6 +134,9 @@ try {
 	# 	-DefaultNugetFeed https://www.myget.org/F/mywackyfeed/api/v2 `
 	# 	-DefaultFeedAPIKey 5cbc38d9-1a94-430d-8361-685a9080a6b8
 
+	#--- Fonts ---
+	choco install -y cascadiafonts
+
 	Enable-MicrosoftUpdate
 	Install-WindowsUpdate -acceptEula
 

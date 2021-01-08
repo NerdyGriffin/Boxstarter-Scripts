@@ -21,9 +21,6 @@ try {
 	choco install -y chocolatey-visualstudio.extension
 	choco install -y chocolatey-vscode.extension
 
-	#--- Fonts ---
-	choco install -y cascadiafonts
-
 	#--- Nvidia Graphics ---
 	choco install -y geforce-experience
 
