@@ -107,6 +107,10 @@ if ($env:Username -contains 'Public') {
 	}
 }
 
+if (Test-Path $MapNetworkDriveScript) {
+	Write-Host 'You must manually run the' $MapNetworkDriveScript 'script again as your non-admin user in order for the mapped drives to be visible in the File Explorer'
+}
+
 Enable-UAC
 Enable-MicrosoftUpdate
 Install-WindowsUpdate -acceptEula
