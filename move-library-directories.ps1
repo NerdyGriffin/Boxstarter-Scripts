@@ -56,10 +56,15 @@ Disable-UAC
 $ServerRootPath = '\\GRIFFINUNRAID\'
 $ServerMediaShare = (Join-Path $ServerRootPath 'media')
 $ServerDownloadsShare = (Join-Path $ServerRootPath 'personal\Downloads')
+$MapNetworkDriveScript = '\\GRIFFINUNRAID\scripts\MapNetworkDrives.ps1'
 
 if ($env:Username -contains 'Public') {
 	Write-Host  'Somehow the current username is "Public"...', '  That should not be possible, so the libraries will not be moved.' | Write-Warning
 } else {
+	if (Test-Path $MapNetworkDriveScript) {
+		Invoke-Expression $MapNetworkDriveScript
+	}
+
 	$IsDesktop = ($env:USERDOMAIN | Select-String 'DESKTOP')
 
 	if (($IsDesktop) -And (Test-Path $ServerMediaShare)) {
@@ -86,7 +91,11 @@ if ($env:Username -contains 'Public') {
 		New-SymbolicLink -Path (Join-Path $env:UserProfile 'Videos') -Value (Join-Path (Join-Path 'D:\Users' $env:Username) 'Videos') -ErrorAction SilentlyContinue
 	}
 
-	if (($IsDesktop) -And (Test-Path $ServerDownloadsShare)) {
+	$MappedDownloadsPath = 'X:\Downloads'
+	if (($IsDesktop) -And (Test-Path $MappedDownloadsPath)) {
+		Move-LibraryDirectory 'Downloads' $MappedDownloadsPath -ErrorAction SilentlyContinue
+		New-SymbolicLink -Path (Join-Path $env:UserProfile 'Downloads') -Value $MappedDownloadsPath -ErrorAction SilentlyContinue
+	} elseif (($IsDesktop) -And (Test-Path $ServerDownloadsShare)) {
 		Move-LibraryDirectory 'Downloads' $ServerDownloadsShare -ErrorAction SilentlyContinue
 		New-SymbolicLink -Path (Join-Path $env:UserProfile 'Downloads') -Value $ServerDownloadsShare -ErrorAction SilentlyContinue
 	} elseif (Test-Path 'D:\') {
