@@ -4,15 +4,6 @@ try {
 	#--- Powershell Module Repository
 	Set-PSRepository -Name 'PSGallery' -InstallationPolicy Trusted
 
-	#--- Install/Update PowerShellGet and PackageManagement
-	# Install-PackageProvider Nuget -Force -Verbose
-	# Install-Module -Name PowerShellGet -Scope AllUsers -AllowClobber -SkipPublisherCheck -Force -AcceptLicense -Verbose
-	# Install-Module -Name PackageManagement -Scope AllUsers -AllowClobber -SkipPublisherCheck -Force -AcceptLicense -Verbose
-	# [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-	# Install-Module -Name PackageManagement -Force -MinimumVersion 1.4.6 -Scope CurrentUser -AllowClobber
-	# Update-Module -AcceptLicense -Verbose
-	# Get-Module
-
 	#--- Windows Subsystems/Features ---
 	choco install Microsoft-Hyper-V-All -source windowsFeatures
 	choco install Microsoft-Windows-Subsystem-Linux -source windowsfeatures
@@ -124,15 +115,6 @@ try {
 	# try { choco install -y ChocolateyDeploymentUtils } catch {}
 	# choco install -y boxstarter.chocolatey
 	# choco install -y Boxstarter.TestRunner
-
-	# Set-BoxstarterDeployOptions -DeploymentTargetPassword 'testvmlogin' -DeploymentTargetUserName 'Boxstarter' -DeploymentTargetNames 'testVM1' -DeploymentVMProvider HyperV -RestoreCheckpoint clean
-	# $cred = Get-Credential Admin
-	# Set-BoxstarterDeployOptions -DeploymentTargetCredentials $cred `
-	# 	-DeploymentTargetNames 'testVM1', 'testVM2' `
-	# 	-DeploymentVMProvider Hyper -DeploymentCloudServiceName ServiceName `
-	# 	-RestoreCheckpoint clean `
-	# 	-DefaultNugetFeed https://www.myget.org/F/mywackyfeed/api/v2 `
-	# 	-DefaultFeedAPIKey 5cbc38d9-1a94-430d-8361-685a9080a6b8
 
 	#--- Fonts ---
 	choco install -y cascadiafonts
