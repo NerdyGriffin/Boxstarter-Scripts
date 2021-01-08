@@ -70,9 +70,6 @@ try {
 	#--- Logitech Gaming Software ---
 	choco install -y logitechgaming
 
-	#--- Nvidia Graphics ---
-	choco install -y geforce-experience
-
 	#--- Hardware Monitoring ---
 	choco install -y cpu-z
 	choco install -y gpu-z

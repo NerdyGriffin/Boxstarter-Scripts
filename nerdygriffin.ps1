@@ -24,6 +24,9 @@ try {
 	#--- Fonts ---
 	choco install -y cascadiafonts
 
+	#--- Nvidia Graphics ---
+	choco install -y geforce-experience
+
 	#--- Chocolatey GUI ---
 	choco install -y ChocolateyExplorer
 	choco install -y ChocolateyGUI
