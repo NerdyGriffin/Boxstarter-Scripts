@@ -1,4 +1,4 @@
-Function New-SymLink {
+Function New-SymbolicLink {
 	param(
 		# Specifies the path of the location of the new link. You must include the name of the new link in Path .
 		[Parameter(Mandatory = $true,
@@ -25,7 +25,8 @@ Function New-SymLink {
 	if ((Test-Path $Path) -And (Get-Item $Path | Where-Object Attributes -Match ReparsePoint)) {
 		Write-Host  $Path 'is already a reparse point.' | Write-Warning
 		Return $false
-	} elseif (Test-Path "$Path\*") {
+	}
+	if (Test-Path "$Path\*") {
 		# $MoveResult = (Move-Item -Path $Path\* -Destination $Value -Force -PassThru -Verbose)
 		$MoveResult = (robocopy $Path $Value /ZB /FFT)
 		if (-Not($MoveResult)) {
@@ -76,7 +77,8 @@ Function New-Junction {
 	if ((Test-Path $Path) -And (Get-Item $Path | Where-Object Attributes -Match ReparsePoint)) {
 		Write-Host  $Path 'is already a reparse point.' | Write-Warning
 		Return $false
-	} elseif (Test-Path "$Path\*") {
+	}
+	if (Test-Path "$Path\*") {
 		# $MoveResult = (Move-Item -Path $Path\* -Destination $Value -Force -PassThru -Verbose)
 		$MoveResult = (robocopy $Path $Value /ZB /FFT)
 		if (-Not($MoveResult)) {
@@ -84,6 +86,9 @@ Function New-Junction {
 			Return $MoveResult
 		}
 		Remove-Item -Path $Path\* -Recurse -Force -ErrorAction Inquire
+	}
+	if (Test-Path $Path) {
+		Remove-Item $Path -Recurse -Force
 	}
 	if (-Not(Test-Path $Value)) {
 		New-Item -Path $Value -ItemType Directory

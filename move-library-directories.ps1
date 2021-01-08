@@ -1,4 +1,4 @@
-Function New-SymLink {
+Function New-SymbolicLink {
 	param(
 		# Specifies the path of the location of the new link. You must include the name of the new link in Path .
 		[Parameter(Mandatory = $true,
@@ -25,7 +25,8 @@ Function New-SymLink {
 	if ((Test-Path $Path) -And (Get-Item $Path | Where-Object Attributes -Match ReparsePoint)) {
 		Write-Host  $Path 'is already a reparse point.' | Write-Warning
 		Return $false
-	} elseif (Test-Path "$Path\*") {
+	}
+	if (Test-Path "$Path\*") {
 		# $MoveResult = (Move-Item -Path $Path\* -Destination $Value -Force -PassThru -Verbose)
 		$MoveResult = (robocopy $Path $Value /ZB /FFT)
 		if (-Not($MoveResult)) {
@@ -52,47 +53,48 @@ Function New-SymLink {
 # try {
 Disable-UAC
 
-$ServerRootPath = '\\GRIFFINUNRAID\' # TODO: Make an interactive script that can ask for user to provide whatever server path they want
+$ServerRootPath = '\\GRIFFINUNRAID\'
 $ServerMediaShare = (Join-Path $ServerRootPath 'media')
-# $ServerDownloadsShare = (Join-Path $ServerRootPath 'personal\Downloads')
-$ServerDownloadsShare = (Join-Path (Join-Path 'D:\Users' $env:Username) 'Downloads') # TODO: Choose the desktop download path longterm
+$ServerDownloadsShare = (Join-Path $ServerRootPath 'personal\Downloads')
 
 if ($env:Username -contains 'Public') {
 	Write-Host  'Somehow the current username is "Public"...', '  That should not be possible, so the libraries will not be moved.' | Write-Warning
 } else {
-	if (($env:USERDOMAIN | Select-String 'DESKTOP') -And (Test-Path $ServerMediaShare)) {
+	$IsDesktop = ($env:USERDOMAIN | Select-String 'DESKTOP')
+
+	if (($IsDesktop) -And (Test-Path $ServerMediaShare)) {
 		Write-Host 'Moving Library Directories to server shares...'
 
 		Move-LibraryDirectory 'My Music' (Join-Path $ServerMediaShare 'Music') -ErrorAction SilentlyContinue
-		# New-SymLink -Path (Join-Path $env:UserProfile 'Music') -Value (Join-Path $ServerMediaShare 'Music') -ErrorAction SilentlyContinue
+		New-SymbolicLink -Path (Join-Path $env:UserProfile 'Music') -Value (Join-Path $ServerMediaShare 'Music') -ErrorAction SilentlyContinue
 
 		Move-LibraryDirectory 'My Pictures' (Join-Path $ServerMediaShare 'Pictures') -ErrorAction SilentlyContinue
-		# New-SymLink -Path (Join-Path $env:UserProfile 'Pictures') -Value (Join-Path $ServerMediaShare 'Pictures') -ErrorAction SilentlyContinue
+		New-SymbolicLink -Path (Join-Path $env:UserProfile 'Pictures') -Value (Join-Path $ServerMediaShare 'Pictures') -ErrorAction SilentlyContinue
 
 		Move-LibraryDirectory 'My Video' (Join-Path $ServerMediaShare 'Videos') -ErrorAction SilentlyContinue
-		# New-SymLink -Path (Join-Path $env:UserProfile 'Videos') -Value (Join-Path $ServerMediaShare 'Videos') -ErrorAction SilentlyContinue
+		New-SymbolicLink -Path (Join-Path $env:UserProfile 'Videos') -Value (Join-Path $ServerMediaShare 'Videos') -ErrorAction SilentlyContinue
 	} elseif (Test-Path 'D:\') {
 		Write-Host 'Moving Library Directories to D:\ ...'
 
 		Move-LibraryDirectory 'My Music' (Join-Path (Join-Path 'D:\Users' $env:Username) 'Music')
-		# New-SymLink -Path (Join-Path $env:UserProfile 'Music') -Value (Join-Path (Join-Path 'D:\Users' $env:Username) 'Music') -ErrorAction SilentlyContinue
+		New-SymbolicLink -Path (Join-Path $env:UserProfile 'Music') -Value (Join-Path (Join-Path 'D:\Users' $env:Username) 'Music') -ErrorAction SilentlyContinue
 
 		Move-LibraryDirectory 'My Pictures' (Join-Path (Join-Path 'D:\Users' $env:Username) 'Pictures')
-		# New-SymLink -Path (Join-Path $env:UserProfile 'Pictures') -Value (Join-Path (Join-Path 'D:\Users' $env:Username) 'Pictures') -ErrorAction SilentlyContinue
+		New-SymbolicLink -Path (Join-Path $env:UserProfile 'Pictures') -Value (Join-Path (Join-Path 'D:\Users' $env:Username) 'Pictures') -ErrorAction SilentlyContinue
 
 		Move-LibraryDirectory 'My Video' (Join-Path (Join-Path 'D:\Users' $env:Username) 'Videos')
-		# New-SymLink -Path (Join-Path $env:UserProfile 'Videos') -Value (Join-Path (Join-Path 'D:\Users' $env:Username) 'Videos') -ErrorAction SilentlyContinue
+		New-SymbolicLink -Path (Join-Path $env:UserProfile 'Videos') -Value (Join-Path (Join-Path 'D:\Users' $env:Username) 'Videos') -ErrorAction SilentlyContinue
 	}
 
-	if (($env:USERDOMAIN | Select-String 'DESKTOP') -And (Test-Path $ServerDownloadsShare)) {
-		Move-LibraryDirectory 'Downloads' $ServerDownloadsShare
-		# New-SymLink -Path (Join-Path $env:UserProfile 'Downloads') -Value $ServerDownloadsShare -ErrorAction SilentlyContinue
+	if (($IsDesktop) -And (Test-Path $ServerDownloadsShare)) {
+		Move-LibraryDirectory 'Downloads' $ServerDownloadsShare -ErrorAction SilentlyContinue
+		New-SymbolicLink -Path (Join-Path $env:UserProfile 'Downloads') -Value $ServerDownloadsShare -ErrorAction SilentlyContinue
 	} elseif (Test-Path 'D:\') {
 		Move-LibraryDirectory 'Personal' (Join-Path (Join-Path 'D:\Users' $env:Username) 'Documents')
-		# New-SymLink -Path (Join-Path $env:UserProfile 'Documents') -Value (Join-Path (Join-Path 'D:\Users' $env:Username) 'Documents') -ErrorAction SilentlyContinue
+		New-SymbolicLink -Path (Join-Path $env:UserProfile 'Documents') -Value (Join-Path (Join-Path 'D:\Users' $env:Username) 'Documents') -ErrorAction SilentlyContinue
 
 		Move-LibraryDirectory 'Downloads' (Join-Path (Join-Path 'D:\Users' $env:Username) 'Downloads')
-		# New-SymLink -Path (Join-Path $env:UserProfile 'Downloads') -Value (Join-Path (Join-Path 'D:\Users' $env:Username) 'Downloads') -ErrorAction SilentlyContinue
+		New-SymbolicLink -Path (Join-Path $env:UserProfile 'Downloads') -Value (Join-Path (Join-Path 'D:\Users' $env:Username) 'Downloads') -ErrorAction SilentlyContinue
 	}
 }
 
