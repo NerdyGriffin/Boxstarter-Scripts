@@ -63,6 +63,7 @@ try {
 	choco install -y arduino
 	choco install -y beyondcompare
 	choco install -y console-devel
+	choco install -y dbforge-mysql-studio
 	choco install -y electron
 	choco install -y fiddler
 	choco install -y HexEdit
