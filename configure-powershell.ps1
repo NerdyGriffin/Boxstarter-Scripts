@@ -5,6 +5,29 @@ try {
 	choco upgrade -y powershell-core
 	refreshenv
 
+	#--- Prepend a Custom Printed Message to the PowerShell Profile
+	try {
+		$ScriptBlock = {
+			Write-Host 'Prepending Custom Message to PowerShell Profile...'
+			$ProfileString = 'Write-Output "Loading Custom PowerShell Profile..."'
+			Write-Host >> $PROFILE # This will create the file if it does not already exist, otherwise it will leave the existing file unchanged
+			if (-Not(Select-String -Pattern $ProfileString -Path $PROFILE )) {
+				Write-Output 'Attempting to add the following line to $PROFILE :' | Write-Debug
+				Write-Output $ProfileString | Write-Debug
+				Set-Content -Path $PROFILE -Value ($ProfileString, (Get-Content $PROFILE))
+			}
+		}
+		# Add the lines to the $PROFILE for PowerShell
+		powershell.exe -Command $ScriptBlock
+		# Do the same for PowerShell Core
+		pwsh.exe -Command $ScriptBlock
+	} catch {
+		Write-Host  'Something went wrong while trying to prepend the custom message to $PROFILE' | Write-Warning
+		Write-Host ' See the log for details (' $Boxstarter.Log ').' | Write-Debug
+	}
+	refreshenv
+
+
 	#--- Install the CredentialManager Module
 	try {
 		Write-Host 'Installing CredentialManager'
@@ -19,12 +42,12 @@ try {
 		# Move on if CredentialManager install fails due to errors
 	}
 
+
 	#--- Install & Configure the Powerline Modules
 	choco install -y poshgit
 	choco install -y oh-my-posh
 	choco install -y posh-github
 	refreshenv
-
 	try {
 		Write-Host 'Installing Posh-Git and Oh-My-Posh - [Dependencies for Powerline]'
 		if (-Not(Get-Module -ListAvailable -Name posh-git)) {
@@ -34,7 +57,6 @@ try {
 			Install-Module oh-my-posh -Scope AllUsers -AllowClobber -SkipPublisherCheck -Force -Verbose
 		} else { Write-Host "Module 'oh-my-posh' already installed" }
 		refreshenv
-
 		try {
 			$ScriptBlock = {
 				Write-Host 'Appending Configuration for Powerline to PowerShell Profile...'
@@ -46,10 +68,9 @@ try {
 				)
 				Write-Host >> $PROFILE # This will create the file if it does not already exist, otherwise it will leave the existing file unchanged
 				if (-Not(Select-String -Pattern $PowerlineProfile[0] -Path $PROFILE )) {
-					foreach ($ProfileString in $PowerlineProfile) {
-						Write-Host 'Attemping to add the following line to $PROFILE :' $ProfileString | Write-Debug
-						Add-Content -Path $PROFILE -Value $ProfileString
-					}
+					Write-Output 'Attempting to add the following lines to $PROFILE :' | Write-Debug
+					Write-Output $PowerlineProfile | Write-Debug
+					Add-Content -Path $PROFILE -Value $PowerlineProfile
 				}
 			}
 			# Add the lines to the $PROFILE for PowerShell
@@ -57,7 +78,7 @@ try {
 			# Do the same for PowerShell Core
 			pwsh.exe -Command $ScriptBlock
 		} catch {
-			Write-Host  'Something went wrong while trying to configure $PROFILE for PSReadline.' | Write-Warning
+			Write-Host  'Something went wrong while trying to configure $PROFILE for Powerline.' | Write-Warning
 			Write-Host ' See the log for details (' $Boxstarter.Log ').' | Write-Debug
 		}
 		refreshenv
@@ -66,6 +87,7 @@ try {
 		Write-Host ' See the log for details (' $Boxstarter.Log ').' | Write-Debug
 		# Move on if Powerline install fails due to error
 	}
+
 
 	#--- Install & Configure the PSReadline Module
 	try {
@@ -87,10 +109,9 @@ try {
 				)
 				Write-Host >> $PROFILE # This will create the file if it does not already exist, otherwise it will leave the existing file unchanged
 				if (-Not(Select-String -Pattern $PSReadlineProfile[0] -Path $PROFILE)) {
-					foreach ($ProfileString in $PSReadlineProfile) {
-						Write-Host 'Attemping to add the following line to $PROFILE :' $ProfileString | Write-Debug
-						Add-Content -Path $PROFILE -Value $ProfileString
-					}
+					Write-Output 'Attempting to add the following lines to $PROFILE :' | Write-Debug
+					Write-Output $PSReadlineProfile | Write-Debug
+					Add-Content -Path $PROFILE -Value $PSReadlineProfile
 				}
 			}
 			# Add the lines to the $PROFILE for PowerShell
@@ -108,6 +129,7 @@ try {
 		# Move on if PSReadline install fails due to errors
 	}
 
+
 	#--- Install the Pipeworks Module
 	try {
 		Write-Host 'Installing Pipeworks -- [CLI Tools for PowerShell]'
@@ -122,11 +144,12 @@ try {
 		# Move on if Pipeworks install fails due to errors
 	}
 
+
 	#--- Import Chocolatey Modules
 	try {
 		$ScriptBlock = {
 			Write-Host 'Appending Configuration for Chocolatey to PowerShell Profile...'
-			$BoxstarterProfile = @(
+			$ChocolateyProfile = @(
 				'# Chocolatey profile',
 				'$ChocolateyProfile = "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"',
 				'if (Test-Path($ChocolateyProfile)) {'
@@ -134,11 +157,10 @@ try {
 				'}'
 			)
 			Write-Host >> $PROFILE # This will create the file if it does not already exist, otherwise it will leave the existing file unchanged
-			if (-Not(Select-String -Pattern $BoxstarterProfile[0] -Path $PROFILE)) {
-				foreach ($ProfileString in $BoxstarterProfile) {
-					Write-Host 'Attemping to add the following line to $PROFILE :' $ProfileString | Write-Debug
-					Add-Content -Path $PROFILE -Value $ProfileString
-				}
+			if (-Not(Select-String -Pattern $ChocolateyProfile[0] -Path $PROFILE)) {
+				Write-Output 'Attempting to add the following lines to $PROFILE :' | Write-Debug
+				Write-Output $ChocolateyProfile | Write-Debug
+				Add-Content -Path $PROFILE -Value $ChocolateyProfile
 			}
 		}
 		# Add the lines to the $PROFILE for PowerShell
@@ -146,7 +168,7 @@ try {
 		# Do the same for PowerShell Core
 		pwsh.exe -Command $ScriptBlock
 	} catch {
-		Write-Host  'Something went wrong while trying to configure $PROFILE for PSReadline.' | Write-Warning
+		Write-Host  'Something went wrong while trying to configure $PROFILE for Chocolatey.' | Write-Warning
 		Write-Host ' See the log for details (' $Boxstarter.Log ').' | Write-Debug
 	}
 
@@ -171,10 +193,9 @@ try {
 	# 		)
 	# 		Write-Host >> $PROFILE # This will create the file if it does not already exist, otherwise it will leave the existing file unchanged
 	# 		if (-Not(Select-String -Pattern $BoxstarterProfile[0] -Path $PROFILE)) {
-	# 			foreach ($ProfileString in $BoxstarterProfile) {
-	# 				Write-Host 'Attemping to add the following line to $PROFILE :' $ProfileString | Write-Debug
-	# 				Add-Content -Path $PROFILE -Value $ProfileString
-	# 			}
+	# 			Write-Output 'Attempting to add the following lines to $PROFILE :' | Write-Debug
+	# 			Write-Output $BoxstarterProfile | Write-Debug
+	# 			Add-Content -Path $PROFILE -Value $BoxstarterProfile
 	# 		}
 	# 	}
 	# 	# Add the lines to the $PROFILE for PowerShell
@@ -182,7 +203,7 @@ try {
 	# 	# Do the same for PowerShell Core
 	# 	pwsh.exe -Command $ScriptBlock
 	# } catch {
-	# 	Write-Host  'Something went wrong while trying to configure $PROFILE for PSReadline.' | Write-Warning
+	# 	Write-Host  'Something went wrong while trying to configure $PROFILE for Boxstarter.' | Write-Warning
 	# 	Write-Host ' See the log for details (' $Boxstarter.Log ').' | Write-Debug
 	# }
 
