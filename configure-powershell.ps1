@@ -28,21 +28,6 @@ try {
 	refreshenv
 
 
-	#--- Install the CredentialManager Module
-	try {
-		Write-Host 'Installing CredentialManager'
-		Write-Host 'Description: Provides access to credentials in the Windows Credential Manager.'
-		if (-Not(Get-Module -ListAvailable -Name CredentialManager)) {
-			Install-Module -Name CredentialManager
-		} else { Write-Host "Module 'CredentialManager' already installed" }
-		refreshenv
-	} catch {
-		Write-Host  'CredentialManager failed to install' | Write-Warning
-		Write-Host ' See the log for details (' $Boxstarter.Log ').' | Write-Debug
-		# Move on if CredentialManager install fails due to errors
-	}
-
-
 	#--- Install & Configure the Powerline Modules
 	choco install -y poshgit
 	choco install -y oh-my-posh
@@ -142,6 +127,21 @@ try {
 		Write-Host  'Pipeworks failed to install' | Write-Warning
 		Write-Host ' See the log for details (' $Boxstarter.Log ').' | Write-Debug
 		# Move on if Pipeworks install fails due to errors
+	}
+
+
+	#--- Install the CredentialManager Module
+	try {
+		Write-Host 'Installing CredentialManager'
+		Write-Host 'Description: Provides access to credentials in the Windows Credential Manager.'
+		if (-Not(Get-Module -ListAvailable -Name CredentialManager)) {
+			Install-Module -Name CredentialManager
+		} else { Write-Host "Module 'CredentialManager' already installed" }
+		refreshenv
+	} catch {
+		Write-Host  'CredentialManager failed to install' | Write-Warning
+		Write-Host ' See the log for details (' $Boxstarter.Log ').' | Write-Debug
+		# Move on if CredentialManager install fails due to errors
 	}
 
 
