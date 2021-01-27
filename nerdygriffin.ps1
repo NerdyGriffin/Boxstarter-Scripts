@@ -31,7 +31,7 @@ try {
 	#--- Web Browsers ---
 	choco install -y brave
 	choco install -y chromium
-	# choco install -y firefox # Installer is possibly broken
+	choco install -y firefox
 	choco install -y googlechrome
 
 	#--- Password Manager ---
