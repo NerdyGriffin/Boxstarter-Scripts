@@ -63,6 +63,7 @@ try {
 	choco install -y phantombot
 	choco install -y streamlabs-obs
 	choco install -y vlc
+	choco install -y winamp
 
 	#--- Office Suite ---
 	choco install -y adobereader
