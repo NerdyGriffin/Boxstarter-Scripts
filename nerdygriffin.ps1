@@ -82,7 +82,7 @@ try {
 
 	#--- Windows 10 Tools ---
 	# choco install -y everything
-	choco install -y mousewithoutborders
+	# choco install -y mousewithoutborders
 	choco install -y powertoys
 	try {
 		choco install -y plasso

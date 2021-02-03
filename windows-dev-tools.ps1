@@ -62,7 +62,7 @@ try {
 	choco install -y androidstudio
 	choco install -y arduino
 	choco install -y beyondcompare
-	choco install -y console-devel
+	# choco install -y console-devel
 	choco install -y dbforge-mysql-studio
 	choco install -y electron
 	choco install -y fiddler
@@ -85,7 +85,7 @@ try {
 
 	#--- PowerShell Tools ---
 	choco install -y checksum
-	choco install -y ConEmu
+	# choco install -y ConEmu
 	choco install -y curl
 	choco install -y llvm
 	choco install -y psutils
