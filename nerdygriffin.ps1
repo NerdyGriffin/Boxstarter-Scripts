@@ -96,6 +96,7 @@ try {
 	choco install -y shutup10
 	choco install -y sharex
 	choco install -y winaero-tweaker
+	choco install -y xyplorer
 
 	#--- Network File System & Cloud Storage ---
 	choco install -y ext2fsd
