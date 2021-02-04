@@ -53,7 +53,14 @@ try {
 
 	# choco install -y visualstudio2019enterprise
 	# choco install -y visualstudio2019-workload-azure
+	#--- Workload needed for Column UI Dev
+	choco install -y visualstudio2019community
+	choco install -y visualstudio2019-workload-vctools
+	#--- Workload needed for gordon-360-api
 	choco install -y visualstudio2017community
+	choco install -y nuget.commandline
+	choco install -y visualstudio2017-workload-manageddesktop
+	choco install -y visualstudio2017-workload-netweb
 	choco install -y gitdiffmargin
 	# choco install -y terraform
 	# choco install -y docker-for-windows
