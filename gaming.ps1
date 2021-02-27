@@ -114,6 +114,17 @@ try {
 		# choco install -y unity-hub
 	}
 
+	#--- Service & Registry Tweaks for Origin with Mapped Network Drives
+
+	# Disable the "Origin Client Service" to force Origin to execute downloads as Administrator of your User rather than execute under the SYSTEM user account
+	Get-Service -Name 'Origin Client*' | Set-Service -StartupType Disabled
+
+	# Allow the Programs, which run as administrator, to see the Mapped Network Shares
+	If (!(Test-Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System')) {
+		New-Item -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System' -Force | Out-Null
+	}
+	Set-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System' -Name 'EnableLinkedConnections' -Type DWord -Value 1
+
 	Enable-UAC
 	Enable-MicrosoftUpdate
 	Install-WindowsUpdate -acceptEula
