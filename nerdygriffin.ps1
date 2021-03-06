@@ -57,7 +57,7 @@ try {
 	choco install -y freeencoderpack
 	choco install -y fsviewer
 	choco install -y gimp
-	choco install -y k-lite-codecpackfull
+	choco install -y k-litecodecpackfull
 	choco install -y lame
 	choco install -y obs-studio
 	choco install -y phantombot
