@@ -1,3 +1,4 @@
 {
-    "powershell.codeFormatting.useConstantStrings": true
+    "powershell.codeFormatting.useConstantStrings": true,
+    "gitdoc.enabled": false
 }

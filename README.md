@@ -1,4 +1,4 @@
-# Multipurpose-Boxstarter-Scripts
+# Boxstarter-Scripts
 
 This is a collection of customized Boxstarter scripts and packages that I use to quickly deploy all of my programs and settings on a new or existing Windows 10 installation.
 
@@ -12,45 +12,45 @@ Based on code from <https://gist.github.com/petevb/67f78762537e742015da018a33558
 
 > **WARNING**: Clicking these links will install apps on your machine; _Please_ review the scripts before you do that!
 
-1. [Move Library Directories](https://boxstarter.org/package/nr/url?https://raw.githubusercontent.com/NerdyGriffin/Multipurpose-Boxstarter-Scripts/main/move-library-directories.ps1)
+1. [Move Library Directories](https://boxstarter.org/package/nr/url?https://raw.githubusercontent.com/NerdyGriffin/Boxstarter-Scripts/main/move-library-directories.ps1)
 
-   - View script: <https://raw.githubusercontent.com/NerdyGriffin/Multipurpose-Boxstarter-Scripts/main/move-library-directories.ps1>
+   - View script: <https://raw.githubusercontent.com/NerdyGriffin/Boxstarter-Scripts/main/move-library-directories.ps1>
 
-2. **Install** [NerdyGriffin's default programs](https://boxstarter.org/package/nr/url?https://raw.githubusercontent.com/NerdyGriffin/Multipurpose-Boxstarter-Scripts/main/nerdygriffin.ps1).
+2. **Install** [NerdyGriffin's default programs](https://boxstarter.org/package/nr/url?https://raw.githubusercontent.com/NerdyGriffin/Boxstarter-Scripts/main/nerdygriffin.ps1).
 
-   - View script: <https://raw.githubusercontent.com/NerdyGriffin/Multipurpose-Boxstarter-Scripts/main/nerdygriffin.ps1>
+   - View script: <https://raw.githubusercontent.com/NerdyGriffin/Boxstarter-Scripts/main/nerdygriffin.ps1>
 
-3. Install [Windows Dev Tools](https://boxstarter.org/package/nr/url?https://raw.githubusercontent.com/NerdyGriffin/Multipurpose-Boxstarter-Scripts/main/windows-dev-tools.ps1)
+3. Install [Windows Dev Tools](https://boxstarter.org/package/nr/url?https://raw.githubusercontent.com/NerdyGriffin/Boxstarter-Scripts/main/windows-dev-tools.ps1)
 
-   - View script: <https://raw.githubusercontent.com/NerdyGriffin/Multipurpose-Boxstarter-Scripts/main/windows-dev-tools.ps1>
+   - View script: <https://raw.githubusercontent.com/NerdyGriffin/Boxstarter-Scripts/main/windows-dev-tools.ps1>
 
-4. Install [Windows Gaming Software](https://boxstarter.org/package/nr/url?https://raw.githubusercontent.com/NerdyGriffin/Multipurpose-Boxstarter-Scripts/main/gaming.ps1)
+4. Install [Windows Gaming Software](https://boxstarter.org/package/nr/url?https://raw.githubusercontent.com/NerdyGriffin/Boxstarter-Scripts/main/gaming.ps1)
 
-   - View script: <https://raw.githubusercontent.com/NerdyGriffin/Multipurpose-Boxstarter-Scripts/main/gaming.ps1>
+   - View script: <https://raw.githubusercontent.com/NerdyGriffin/Boxstarter-Scripts/main/gaming.ps1>
 
-5. Install [Configure Git for NerdyGriffin](https://boxstarter.org/package/nr/url?https://raw.githubusercontent.com/NerdyGriffin/Multipurpose-Boxstarter-Scripts/main/configure-git.ps1)
+5. Install [Configure Git for NerdyGriffin](https://boxstarter.org/package/nr/url?https://raw.githubusercontent.com/NerdyGriffin/Boxstarter-Scripts/main/configure-git.ps1)
 
-   - View script: <https://raw.githubusercontent.com/NerdyGriffin/Multipurpose-Boxstarter-Scripts/main/configure-git.ps1>
+   - View script: <https://raw.githubusercontent.com/NerdyGriffin/Boxstarter-Scripts/main/configure-git.ps1>
 
-6. Install [Configure PowerShell for NerdyGriffin](https://boxstarter.org/package/nr/url?https://raw.githubusercontent.com/NerdyGriffin/Multipurpose-Boxstarter-Scripts/main/configure-powershell.ps1)
+6. Install [Configure PowerShell for NerdyGriffin](https://boxstarter.org/package/nr/url?https://raw.githubusercontent.com/NerdyGriffin/Boxstarter-Scripts/main/configure-powershell.ps1)
 
-   - View script: <https://raw.githubusercontent.com/NerdyGriffin/Multipurpose-Boxstarter-Scripts/main/configure-powershell.ps1>
+   - View script: <https://raw.githubusercontent.com/NerdyGriffin/Boxstarter-Scripts/main/configure-powershell.ps1>
 
-7. Install [WSL](https://boxstarter.org/package/nr/url?https://raw.githubusercontent.com/NerdyGriffin/Multipurpose-Boxstarter-Scripts/main/wsl.ps1)
+7. Install [WSL](https://boxstarter.org/package/nr/url?https://raw.githubusercontent.com/NerdyGriffin/Boxstarter-Scripts/main/wsl.ps1)
 
-   - View script: <https://raw.githubusercontent.com/NerdyGriffin/Multipurpose-Boxstarter-Scripts/main/wsl.ps1>
+   - View script: <https://raw.githubusercontent.com/NerdyGriffin/Boxstarter-Scripts/main/wsl.ps1>
 
-8. [Configure Windows UI](https://boxstarter.org/package/nr/url?https://raw.githubusercontent.com/NerdyGriffin/Multipurpose-Boxstarter-Scripts/main/configure-ui.ps1)
+8. [Configure Windows UI](https://boxstarter.org/package/nr/url?https://raw.githubusercontent.com/NerdyGriffin/Boxstarter-Scripts/main/configure-ui.ps1)
 
-   - View script: <https://raw.githubusercontent.com/NerdyGriffin/Multipurpose-Boxstarter-Scripts/main/configure-ui.ps1>
+   - View script: <https://raw.githubusercontent.com/NerdyGriffin/Boxstarter-Scripts/main/configure-ui.ps1>
 
-9. [Configure Windows privacy options](https://boxstarter.org/package/nr/url?https://raw.githubusercontent.com/NerdyGriffin/Multipurpose-Boxstarter-Scripts/main/privacy.ps1)
+9. [Configure Windows privacy options](https://boxstarter.org/package/nr/url?https://raw.githubusercontent.com/NerdyGriffin/Boxstarter-Scripts/main/privacy.ps1)
 
-   - View script: <https://raw.githubusercontent.com/NerdyGriffin/Multipurpose-Boxstarter-Scripts/main/privacy.ps1>
+   - View script: <https://raw.githubusercontent.com/NerdyGriffin/Boxstarter-Scripts/main/privacy.ps1>
 
-10. [Remove default Windows Store apps](https://boxstarter.org/package/nr/url?https://raw.githubusercontent.com/NerdyGriffin/Multipurpose-Boxstarter-Scripts/main/removeWindowsApps.ps1)
+10. [Remove default Windows Store apps](https://boxstarter.org/package/nr/url?https://raw.githubusercontent.com/NerdyGriffin/Boxstarter-Scripts/main/removeWindowsApps.ps1)
 
-    - View script: <https://raw.githubusercontent.com/NerdyGriffin/Multipurpose-Boxstarter-Scripts/main/removeWindowsApps.ps1>
+    - View script: <https://raw.githubusercontent.com/NerdyGriffin/Boxstarter-Scripts/main/removeWindowsApps.ps1>
 
 ## notes/sources
 

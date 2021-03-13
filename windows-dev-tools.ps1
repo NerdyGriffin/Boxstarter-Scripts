@@ -30,7 +30,7 @@ try {
 	refreshenv
 
 	#--- Configure Git ---
-	# Install-BoxstarterPackage -PackageName 'https://raw.githubusercontent.com/NerdyGriffin/Multipurpose-Boxstarter-Scripts/main/configure-git.ps1'
+	# Install-BoxstarterPackage -PackageName 'https://raw.githubusercontent.com/NerdyGriffin/Boxstarter-Scripts/main/configure-git.ps1'
 	try { Boxstarter.bat nerdygriffin.Configure-Git } catch {}
 
 	# Make a folder for my GitHub repos and make SymbolicLinks to it
@@ -164,7 +164,7 @@ try {
 	Install-WindowsUpdate -acceptEula
 
 	#--- Configure Powershell Profile for Powerline and PSReadline ---
-	# Install-BoxstarterPackage -PackageName 'https://raw.githubusercontent.com/NerdyGriffin/Multipurpose-Boxstarter-Scripts/main/configure-powershell.ps1'
+	# Install-BoxstarterPackage -PackageName 'https://raw.githubusercontent.com/NerdyGriffin/Boxstarter-Scripts/main/configure-powershell.ps1'
 	try { Boxstarter.bat nerdygriffin.Configure-PowerShell } catch {}
 
 	Enable-UAC
