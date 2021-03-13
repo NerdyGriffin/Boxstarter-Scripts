@@ -30,8 +30,11 @@ try {
 	refreshenv
 
 	#--- Configure Git ---
-	# Install-BoxstarterPackage -PackageName 'https://raw.githubusercontent.com/NerdyGriffin/Boxstarter-Scripts/main/configure-git.ps1'
-	try { Boxstarter.bat nerdygriffin.Configure-Git } catch {}
+	try { Boxstarter.bat nerdygriffin.Configure-Git } catch {
+		try {
+			Install-BoxstarterPackage -PackageName 'https://raw.githubusercontent.com/NerdyGriffin/Boxstarter-Scripts/main/configure-git.ps1'
+		} catch {}
+	}
 
 	# Make a folder for my GitHub repos and make SymbolicLinks to it
 	if (-Not(Test-Path 'C:\GitHub')) { New-Item -Path 'C:\GitHub' -ItemType Directory }
@@ -43,7 +46,7 @@ try {
 
 	choco upgrade -y powershell-core
 	# choco install -y azure-cli
-	choco upgrade -y microsoft-windows-terminal; choco upgrade -y microsoft-windows-terminal
+	choco upgrade -y microsoft-windows-terminal; choco upgrade -y microsoft-windows-terminal # Does this twice because the first attempt often fails but leaves the install partially completed, and then it completes successfully the second time.
 	choco install -y poshgit
 	# Install-Module -Force Az
 
@@ -164,8 +167,11 @@ try {
 	Install-WindowsUpdate -acceptEula
 
 	#--- Configure Powershell Profile for Powerline and PSReadline ---
-	# Install-BoxstarterPackage -PackageName 'https://raw.githubusercontent.com/NerdyGriffin/Boxstarter-Scripts/main/configure-powershell.ps1'
-	try { Boxstarter.bat nerdygriffin.Configure-PowerShell } catch {}
+	try { Boxstarter.bat nerdygriffin.Configure-PowerShell } catch {
+		try {
+			Install-BoxstarterPackage -PackageName 'https://raw.githubusercontent.com/NerdyGriffin/Boxstarter-Scripts/main/configure-powershell.ps1'
+		} catch {}
+	}
 
 	Enable-UAC
 	Enable-MicrosoftUpdate
