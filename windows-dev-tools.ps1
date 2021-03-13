@@ -85,6 +85,7 @@ try {
 	choco install -y meld
 	choco install -y ngrok
 	choco install -y notepadplusplus
+	choco install -y mcr-r2019a
 	choco install -y nvm
 	choco install -y openjdk8
 	choco install -y openjdk11
