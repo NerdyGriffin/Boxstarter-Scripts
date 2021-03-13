@@ -79,10 +79,10 @@ try {
 	# Get-AppxPackage Microsoft.Office.OneNote | Remove-AppxPackage
 
 	# People
-	Get-AppxPackage Microsoft.People | Remove-AppxPackage
+	# Get-AppxPackage Microsoft.People | Remove-AppxPackage
 
 	# Phone
-	Get-AppxPackage Microsoft.WindowsPhone | Remove-AppxPackage
+	# Get-AppxPackage Microsoft.WindowsPhone | Remove-AppxPackage
 
 	# Photos
 	# Get-AppxPackage Microsoft.Windows.Photos | Remove-AppxPackage
