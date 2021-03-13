@@ -68,6 +68,7 @@ try {
 	#--- Office Suite ---
 	choco install -y adobereader
 	choco install -y libreoffice-fresh
+	choco install -y xournalplusplus
 
 	#--- E-Books ---
 	choco install -y calibre
