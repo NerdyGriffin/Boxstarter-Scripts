@@ -6,6 +6,8 @@ Starter code came from <https://gist.github.com/NerdyGriffin/3fe7cc0de51fddb4bb4
 
 Based on code from <https://gist.github.com/petevb/67f78762537e742015da018a33558119>
 
+And later improvements copied from <https://github.com/microsoft/windows-dev-box-setup-scripts>
+
 ## If you're using a Chromium browser, enable click-once via (e.g. for Edge) [`edge://flags/#edge-click-once`](edge://flags/#edge-click-once)
 
 ## Install the stuff below (i.e. my `boxstarter.txt`)
