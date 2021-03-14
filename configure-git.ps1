@@ -38,6 +38,8 @@ try {
 	}
 	git config --global --list
 
+	Get-Content -Path $Boxstarter.Log | Select-String -Pattern 'Failures' -Context 0, 2 >> (Join-Path $env:USERPROFILE 'Desktop\boxstarter-failures.log')
+
 	Enable-UAC
 
 	Write-Host 'nerdygriffin.Configure-Git completed successfully' | Write-Debug

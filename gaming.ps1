@@ -128,6 +128,8 @@ try {
 	}
 	Set-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System' -Name 'EnableLinkedConnections' -Type DWord -Value 1
 
+	Get-Content -Path $Boxstarter.Log | Select-String -Pattern 'Failures' -Context 0, 2 >> (Join-Path $env:USERPROFILE 'Desktop\boxstarter-failures.log')
+
 	Enable-UAC
 	Enable-MicrosoftUpdate
 	Install-WindowsUpdate -acceptEula

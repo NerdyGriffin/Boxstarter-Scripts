@@ -129,6 +129,8 @@ try {
 	Disable-BingSearch
 	Disable-GameBarTips
 
+	Get-Content -Path $Boxstarter.Log | Select-String -Pattern 'Failures' -Context 0, 2 >> (Join-Path $env:USERPROFILE 'Desktop\boxstarter-failures.log')
+
 	Enable-UAC
 	Enable-MicrosoftUpdate
 	Install-WindowsUpdate -acceptEula
