@@ -48,6 +48,8 @@ choco install -y slack
 choco install -y telegram
 choco install -y zoom
 
+Start-Sleep -Milliseconds 500; refreshenv; Start-Sleep -Milliseconds 500
+
 #--- Multimedia ---
 choco install -y audacity
 choco install -y audacity-lame
@@ -63,6 +65,8 @@ choco install -y phantombot
 choco install -y streamlabs-obs
 choco install -y vlc
 choco install -y winamp
+
+Start-Sleep -Milliseconds 500; refreshenv; Start-Sleep -Milliseconds 500
 
 #--- Office Suite ---
 choco install -y adobereader
@@ -81,6 +85,8 @@ choco install -y geogebra
 choco install -y gnuplot
 choco install -y octave
 
+Start-Sleep -Milliseconds 500; refreshenv; Start-Sleep -Milliseconds 500
+
 #--- Windows 10 Tools ---
 # choco install -y everything
 # choco install -y mousewithoutborders
@@ -98,6 +104,8 @@ choco install -y sharex
 choco install -y winaero-tweaker
 choco install -y xyplorer
 
+Start-Sleep -Milliseconds 500; refreshenv; Start-Sleep -Milliseconds 500
+
 #--- Network File System & Cloud Storage ---
 choco install -y ext2fsd
 choco install -y ext2ifs
@@ -108,6 +116,8 @@ choco install -y google-backup-and-sync
 choco install -y nextcloud-client
 choco install -y winscp
 
+Start-Sleep -Milliseconds 500; refreshenv; Start-Sleep -Milliseconds 500
+
 #--- File & Storage Utilities ---
 choco install -y 7zip
 choco install -y etcher
@@ -117,6 +127,8 @@ choco install -y freefilesync
 choco install -y partitionwizard
 choco install -y rufus
 choco install -y tuxboot
+
+Start-Sleep -Milliseconds 500; refreshenv; Start-Sleep -Milliseconds 500
 
 #--- Unofficial Chocolatey Tools ---
 choco install -y choco-package-list-backup

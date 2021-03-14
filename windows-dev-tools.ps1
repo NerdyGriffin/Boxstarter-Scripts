@@ -8,6 +8,8 @@ try {
 	choco install Microsoft-Hyper-V-All -source windowsFeatures
 	choco install Microsoft-Windows-Subsystem-Linux -source windowsfeatures
 
+	Start-Sleep -Milliseconds 500; refreshenv; Start-Sleep -Milliseconds 500
+
 	#--- Windows Dev Essentials
 	choco install -y dotnet
 	choco install -y dotnet-sdk
@@ -35,6 +37,8 @@ try {
 			Install-BoxstarterPackage -PackageName 'https://raw.githubusercontent.com/NerdyGriffin/Boxstarter-Scripts/main/configure-git.ps1'
 		} catch {}
 	}
+
+	Start-Sleep -Milliseconds 500; refreshenv; Start-Sleep -Milliseconds 500
 
 	# Make a folder for my GitHub repos and make SymbolicLinks to it
 	if (-Not(Test-Path 'C:\GitHub')) { New-Item -Path 'C:\GitHub' -ItemType Directory }
@@ -72,6 +76,8 @@ try {
 
 	choco install -y gitdiffmargin
 
+	Start-Sleep -Milliseconds 500; refreshenv; Start-Sleep -Milliseconds 500
+
 	#--- Assorted Dev Tools and Dependencies
 	choco install -y androidstudio
 	choco install -y arduino
@@ -93,6 +99,8 @@ try {
 	choco install -y python3
 	choco install -y sublimetext3
 
+	Start-Sleep -Milliseconds 500; refreshenv; Start-Sleep -Milliseconds 500
+
 	#--- Advanced Network Tools ---
 	# choco install -y advanced-ip-scanner # Possibly broken for FOSS users
 	# choco install -y ipscan # Possibly broken for FOSS users
@@ -109,6 +117,8 @@ try {
 	choco install -y winscreenfetch
 	choco install -y zip
 
+	Start-Sleep -Milliseconds 500; refreshenv; Start-Sleep -Milliseconds 500
+
 	#--- GNU ---
 	choco install -y awk
 	choco install -y diffutils
@@ -124,6 +134,8 @@ try {
 	choco install -y patch
 	choco install -y sed
 	choco install -y wget
+
+	Start-Sleep -Milliseconds 500; refreshenv; Start-Sleep -Milliseconds 500
 
 	#--- SSH ---
 	Write-Output 'Make sure that the OpenSSH features are available for install:'
@@ -153,6 +165,8 @@ try {
 		New-ItemProperty -Path 'HKLM:\SOFTWARE\OpenSSH' -Name DefaultShell -Value "$DefaultShellPath" -PropertyType String -Force
 	}
 	Add-Content -Path $env:ProgramData\ssh\sshd_config -Value 'Subsystem powershell c:/progra~1/powershell/7/pwsh.exe -sshs -NoLogo'
+
+	Start-Sleep -Milliseconds 500; refreshenv; Start-Sleep -Milliseconds 500
 
 	# #--- Chocolatey and Boxstarter Package Dev Tools
 	# choco install -y Chocolatey-AutoUpdater
