@@ -38,7 +38,7 @@ try {
 	}
 	git config --global --list
 
-	Get-Content -Path $Boxstarter.Log | Select-String -Pattern 'Failures' -NotMatch 'Select-String -Pattern' -Context 0, 2 >> (Join-Path $env:USERPROFILE 'Desktop\boxstarter-failures.log')
+	Get-Content -Path $Boxstarter.Log | Select-String -Pattern '^Failures$' -Context 0, 2 >> (Join-Path $env:USERPROFILE 'Desktop\boxstarter-failures.log')
 
 	Enable-UAC
 
