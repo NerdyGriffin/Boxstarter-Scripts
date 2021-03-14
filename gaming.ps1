@@ -43,6 +43,7 @@ Function New-SymbolicLink {
 	}
 	$Result = New-Item -Path $Path -ItemType SymbolicLink -Value $Value -Force -Verbose
 	if ($Result) {
+		Write-Host  'Successfully created SymLink at' $Path 'pointing to' $Value | Write-Verbose
 		Return $true
 	} else {
 		Write-Host 'The following error occured while trying to make symlink: ' $Result | Write-Warning
