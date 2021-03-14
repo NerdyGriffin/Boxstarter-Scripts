@@ -43,6 +43,7 @@ Function New-SymbolicLink {
 	}
 	$Result = New-Item -Path $Path -ItemType SymbolicLink -Value $Value -Force -Verbose
 	if ($Result) {
+		Write-Host  'Successfully created SymLink at' $Path 'pointing to' $Value | Write-Verbose
 		Return $true
 	} else {
 		Write-Host 'The following error occured while trying to make symlink: ' $Result | Write-Warning
@@ -52,6 +53,8 @@ Function New-SymbolicLink {
 
 # try {
 Disable-UAC
+
+$Boxstarter.RebootOk = $true
 
 $ServerRootPath = '\\GRIFFINUNRAID\'
 $ServerMediaShare = (Join-Path $ServerRootPath 'media')
@@ -114,6 +117,10 @@ if (Test-Path $MapNetworkDriveScript) {
 Enable-UAC
 Enable-MicrosoftUpdate
 Install-WindowsUpdate -acceptEula
+
+if (Test-Path $MapNetworkDriveScript) {
+	Write-Host 'You must manually run the' $MapNetworkDriveScript 'script again as your non-admin user in order for the mapped drives to be visible in the File Explorer'
+}
 
 # 	Write-Host 'nerdygriffin.Move-Libraries completed successfully' | Write-Debug
 # 	Write-Host ' See the log for details (' $Boxstarter.Log ').' | Write-Debug
