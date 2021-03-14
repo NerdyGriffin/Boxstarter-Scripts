@@ -1,6 +1,8 @@
 try {
 	Disable-UAC
 
+	$MapNetworkDriveScript = '\\GRIFFINUNRAID\scripts\MapNetworkDrives.ps1'
+
 	choco upgrade -y powershell
 	choco upgrade -y powershell-core
 	refreshenv
@@ -211,6 +213,10 @@ try {
 	Enable-UAC
 	Enable-MicrosoftUpdate
 	Install-WindowsUpdate -acceptEula
+
+	if (Test-Path $MapNetworkDriveScript) {
+		Write-Host 'You must manually run the' $MapNetworkDriveScript 'script again as your non-admin user in order for the mapped drives to be visible in the File Explorer'
+	}
 
 	Write-Host 'nerdygriffin.Configure-PowerShell completed successfully' | Write-Debug
 	Write-Host ' See the log for details (' $Boxstarter.Log ').' | Write-Debug
