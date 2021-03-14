@@ -50,9 +50,10 @@ try {
 				Write-Host 'Appending Configuration for Powerline to PowerShell Profile...'
 				$PowerlineProfile = @(
 					'# Dependencies for powerline',
+					'[console]::InputEncoding = [console]::OutputEncoding = New-Object System.Text.UTF8Encoding',
 					'Import-Module posh-git',
 					'Import-Module oh-my-posh',
-					'Set-Theme Paradox'
+					'Set-PoshPrompt -Theme paradox'
 				)
 				Write-Host >> $PROFILE # This will create the file if it does not already exist, otherwise it will leave the existing file unchanged
 				if (-Not(Select-String -Pattern $PowerlineProfile[0] -Path $PROFILE )) {
