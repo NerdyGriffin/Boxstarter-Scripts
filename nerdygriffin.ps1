@@ -12,6 +12,8 @@ try {
 		Set-BoxStarterConfig -LocalRepo '\\GRIFFINUNRAID\Boxstarter\BuildPackages'
 	}
 
+	$Boxstarter.RebootOk = $true
+
 	#--- Chocolatey extensions ---
 	choco install -y chocolatey-core.extension
 	choco install -y chocolatey-dotnetfx.extension
