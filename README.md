@@ -73,7 +73,28 @@ To run a recipe script, click a link in the table below from your target machine
 - Reboot is not always logging you back in to resume the script. This is being tracked [here](https://github.com/chocolatey/boxstarter/issues/318). The workaround is to login manually and the script will continue running.
 - There have been reports of Windows 1803 not successfully launching Boxstarter via the web launcher. See this issue for details: https://github.com/chocolatey/boxstarter/issues/301
 
-## Install the stuff below (i.e. my `boxstarter.txt`)
+## Credits and Acknowledgements
+
+- <https://boxstarter.org/WebLauncher>
+- <https://github.com/microsoft/windows-dev-box-setup-scripts>
+- <https://gist.github.com/NickCraver/7ebf9efbfd0c3eab72e9>
+- <https://gist.github.com/jessfraz/7c319b046daa101a4aaef937a20ff41f>
+- <https://gist.github.com/petevb/67f78762537e742015da018a33558119>
+- <https://github.com/ChrisTitusTech/win10script>
+- You might want to install the MS dev box package
+  <http://boxstarter.org/package/url?https://raw.githubusercontent.com/Microsoft/windows-dev-box-setup-scripts/master/dev_web.ps1>
+
+### example script
+
+- <https://gist.github.com/mwrock/7382880/raw/f6525387b4b524b8eccef6ed4d5ec219c82c0ac7/gistfile1.txt>
+
+## To Do
+
+- [ ] Refer to <https://github.com/microsoft/windows-dev-box-setup-scripts> for ways to improve this project
+
+## Deprecated
+
+### Install the stuff below (i.e. my `boxstarter.txt`)
 
 > **WARNING**: Clicking these links will install apps on your machine; _Please_ review the scripts before you do that!
 
@@ -117,24 +138,3 @@ To run a recipe script, click a link in the table below from your target machine
 10. [Remove default Windows Store apps](https://boxstarter.org/package/url?https://raw.githubusercontent.com/NerdyGriffin/Boxstarter-Scripts/main/removeWindowsApps.ps1)
 
     - View script: <https://raw.githubusercontent.com/NerdyGriffin/Boxstarter-Scripts/main/removeWindowsApps.ps1>
-
-## notes/sources
-
-- <https://boxstarter.org/WebLauncher>
-- <https://github.com/microsoft/windows-dev-box-setup-scripts>
-- <https://gist.github.com/NickCraver/7ebf9efbfd0c3eab72e9>
-- <https://gist.github.com/jessfraz/7c319b046daa101a4aaef937a20ff41f>
-- <https://gist.github.com/petevb/67f78762537e742015da018a33558119>
-- You might want to install the MS dev box package
-  <http://boxstarter.org/package/url?https://raw.githubusercontent.com/Microsoft/windows-dev-box-setup-scripts/master/dev_web.ps1>
-
-> Notes:
-> If you are using WSL there's a followup step we recommend after running the setup script. When the script finishes you will only have a root user with a blank password. You should manually create a non-root user via `$ sudo adduser [USERNAME] sudo` with a non-blank password. Use this user going forward. For more info on WSL please refer to the documentation.
-
-### example script
-
-- <https://gist.github.com/mwrock/7382880/raw/f6525387b4b524b8eccef6ed4d5ec219c82c0ac7/gistfile1.txt>
-
-## To Do
-
-- [ ] Refer to <https://github.com/microsoft/windows-dev-box-setup-scripts> for ways to improve this project

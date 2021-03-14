@@ -36,7 +36,7 @@ choco install -y dotnetcoresdk
 choco install -y linqpad
 choco install -y vscode
 choco install -y chocolatey-vscode
-choco install -y git --package-parameters="'/WindowsTerminal'"
+choco install -y git --package-parameters="'/GitAndUnixToolsOnPath /WindowsTerminal'"
 refreshenv
 
 #--- Gitkraken ---
