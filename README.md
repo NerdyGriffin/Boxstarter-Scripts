@@ -6,9 +6,7 @@ Starter code came from <https://gist.github.com/NerdyGriffin/3fe7cc0de51fddb4bb4
 
 Based on code from <https://gist.github.com/petevb/67f78762537e742015da018a33558119>
 
-## If you're using a Chromium browser, enable click-once
-
-- (e.g. for Edge) [`edge://flags/#edge-click-once`](edge://flags/#edge-click-once)
+## If you're using a Chromium browser, enable click-once via (e.g. for Edge) [`edge://flags/#edge-click-once`](edge://flags/#edge-click-once)
 
 ## Install the stuff below (i.e. my `boxstarter.txt`)
 
@@ -16,6 +14,7 @@ Based on code from <https://gist.github.com/petevb/67f78762537e742015da018a33558
 
 1. [Move Library Directories](https://boxstarter.org/package/nr/url?https://raw.githubusercontent.com/NerdyGriffin/Boxstarter-Scripts/main/move-library-directories.ps1)
 
+   - This first script is very specific to my computer configuration and my home server. I do not reccommend using this script unless you want to customize it for your own devices.
    - View script: <https://raw.githubusercontent.com/NerdyGriffin/Boxstarter-Scripts/main/move-library-directories.ps1>
 
 2. **Install** [NerdyGriffin's default programs](https://boxstarter.org/package/nr/url?https://raw.githubusercontent.com/NerdyGriffin/Boxstarter-Scripts/main/nerdygriffin.ps1).
