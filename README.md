@@ -69,3 +69,7 @@ Based on code from <https://gist.github.com/petevb/67f78762537e742015da018a33558
 ### example script
 
 - <https://gist.github.com/mwrock/7382880/raw/f6525387b4b524b8eccef6ed4d5ec219c82c0ac7/gistfile1.txt>
+
+## To Do
+
+- [ ] Refer to <https://github.com/microsoft/windows-dev-box-setup-scripts> for ways to improve this project
