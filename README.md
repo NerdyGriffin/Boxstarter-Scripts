@@ -8,7 +8,7 @@ Based on code from <https://gist.github.com/petevb/67f78762537e742015da018a33558
 
 ## If you're using a Chromium browser, enable click-once
 
-- (e.g. for Edge) [`edge://flags/#edge-click-once`](edge://flags/#edge-click-once)
+- (e.g. for Edge) <edge://flags/#edge-click-once>
 
 ## Install the stuff below (i.e. my `boxstarter.txt`)
 
