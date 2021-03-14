@@ -27,14 +27,14 @@ try {
 	choco install -y geforce-experience
 
 	#--- Chocolatey GUI ---
-	choco install -y ChocolateyExplorer
+	# choco install -y ChocolateyExplorer
 	choco install -y ChocolateyGUI
 
 	#--- Web Browsers ---
 	choco install -y brave
 	choco install -y chromium
-	choco install -y firefox
-	choco install -y googlechrome
+	choco install -y firefox # This package tends to fail when installed via Boxstarter, but works fine when you run the same common manually
+	choco install -y googlechrome --ignore-checksums # This package currently gives a checksum error
 
 	#--- Password Manager ---
 	choco install -y bitwarden
