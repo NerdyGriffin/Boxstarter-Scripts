@@ -21,7 +21,8 @@ function executeScript {
 Set-PSRepository -Name 'PSGallery' -InstallationPolicy Trusted
 
 #--- Windows Subsystems/Features ---
-choco install Microsoft-Hyper-V-All -source windowsFeatures
+executeScript 'HyperV.ps1';
+executeScript 'WSL.ps1';
 choco install Microsoft-Windows-Subsystem-Linux -source windowsfeatures
 
 Start-Sleep -Milliseconds 500; refreshenv; Start-Sleep -Milliseconds 500
@@ -50,30 +51,12 @@ refreshenv
 #--- Configure Git ---
 executeScript 'ConfigureGit.ps1';
 
-Start-Sleep -Milliseconds 500; refreshenv; Start-Sleep -Milliseconds 500
-
-# Make a folder for my GitHub repos and make SymbolicLinks to it
-if (-Not(Test-Path 'C:\GitHub')) { New-Item -Path 'C:\GitHub' -ItemType Directory }
-if (-Not(Test-Path (Join-Path $env:USERPROFILE 'GitHub'))) { New-Item -Path (Join-Path $env:USERPROFILE 'GitHub') -ItemType SymbolicLink -Value 'C:\GitHub' }
-if ((Test-Path 'D:\') -And -Not(Test-Path 'D:\GitHub')) { New-Item -Path 'D:\GitHub' -ItemType SymbolicLink -Value 'C:\GitHub' }
-
 choco upgrade -y powershell
 choco upgrade -y au
 
 choco upgrade -y powershell-core
 # choco install -y azure-cli
 choco upgrade -y microsoft-windows-terminal; choco upgrade -y microsoft-windows-terminal # Does this twice because the first attempt often fails but leaves the install partially completed, and then it completes successfully the second time.
-choco install -y poshgit
-# Install-Module -Force Az
-
-# choco install -y azure-cosmosdb-emulator
-# choco install -y azurestorageemulator
-# choco install -y azure-functions-core-tools-3
-
-# choco install -y visualstudio2019enterprise
-# choco install -y visualstudio2019-workload-azure
-# choco install -y terraform
-# choco install -y docker-for-windows
 
 #--- Workload needed for Column UI Dev
 choco install -y visualstudio2019community
@@ -82,7 +65,7 @@ choco install -y visualstudio2019-workload-vctools
 
 #--- Workload needed for gordon-360-api
 choco install -y visualstudio2017community
-choco install -y nuget.commandline
+# choco install -y nuget.commandline
 choco install -y visualstudio2017-workload-manageddesktop
 choco install -y visualstudio2017-workload-netweb
 

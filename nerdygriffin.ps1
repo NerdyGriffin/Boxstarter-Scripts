@@ -34,10 +34,12 @@ executeScript 'TaskbarSettings.ps1';
 executeScript 'RemoveDefaultApps.ps1';
 executeScript 'ChocolateyExtensions.ps1';
 executeScript 'NvidiaGraphics.ps1';
+
 executeScript 'PasswordManager.ps1';
 executeScript 'Browsers.ps1';
 executeScript 'CommunicationApps.ps1';
 executeScript 'Multimedia.ps1';
+
 executeScript 'CommonDevTools.ps1';
 executeScript 'PythonMLTools.ps1';
 executeScript 'WSL.ps1';

@@ -61,6 +61,10 @@ To run a recipe script, click a link in the table below from your target machine
 |                                                                                                                                                                                | Containers (Docker, Kubernetes, etc...)                                                         |
 |                                                                                                                                                                                | Submit a PR with a recommended configuration!                                                   |
 
+- [Move Library Directories](http://boxstarter.org/package/url?https://raw.githubusercontent.com/NerdyGriffin/Boxstarter-Scripts/main/move-library-directories.ps1)
+
+  - This first script is very specific to my computer configuration and my home server. I do not reccommend using this script unless you want to customize it for your own devices.
+
 **Notes:**
 
 1. If you are using WSL there's a followup step we recommend after running the setup script. When the script finishes you will only have a root user with a blank password. You should manually create a non-root user via `$ sudo adduser [USERNAME] sudo`
