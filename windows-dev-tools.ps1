@@ -1,8 +1,6 @@
 try {
 	Disable-UAC
 
-	$Boxstarter.RebootOk = $true
-
 	#--- Powershell Module Repository
 	Set-PSRepository -Name 'PSGallery' -InstallationPolicy Trusted
 

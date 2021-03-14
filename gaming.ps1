@@ -54,8 +54,6 @@ Function New-SymbolicLink {
 try {
 	Disable-UAC
 
-	$Boxstarter.RebootOk = $true
-
 	if (-Not(Get-Command New-SymbolicLink)) {
 		Write-Error "The 'New-SymbolicLink' helper function was not found."
 		throw

@@ -54,8 +54,6 @@ Function New-SymbolicLink {
 # try {
 Disable-UAC
 
-$Boxstarter.RebootOk = $true
-
 $ServerRootPath = '\\GRIFFINUNRAID\'
 $ServerMediaShare = (Join-Path $ServerRootPath 'media')
 $ServerDownloadsShare = (Join-Path $ServerRootPath 'personal\Downloads')

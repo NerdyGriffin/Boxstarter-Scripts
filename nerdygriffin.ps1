@@ -12,8 +12,6 @@ if (Test-Path '\\GRIFFINUNRAID\Boxstarter') {
 	Set-BoxStarterConfig -LocalRepo '\\GRIFFINUNRAID\Boxstarter\BuildPackages'
 }
 
-$Boxstarter.RebootOk = $true
-
 #--- Chocolatey extensions ---
 choco install -y chocolatey-core.extension
 choco install -y chocolatey-dotnetfx.extension
@@ -46,7 +44,7 @@ choco install -y keepass
 #--- Communication ---
 choco install -y discord
 choco install -y jitsi-meet-electron
-choco install -y signal
+choco install -y signal;
 choco install -y slack
 choco install -y telegram
 choco install -y zoom
