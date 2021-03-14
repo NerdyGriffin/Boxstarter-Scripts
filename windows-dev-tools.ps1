@@ -48,11 +48,7 @@ choco install -y lepton
 refreshenv
 
 #--- Configure Git ---
-try { Boxstarter.bat nerdygriffin.Configure-Git } catch {
-	try {
-		Install-BoxstarterPackage -PackageName 'https://raw.githubusercontent.com/NerdyGriffin/Boxstarter-Scripts/main/configure-git.ps1'
-	} catch {}
-}
+executeScript 'ConfigureGit.ps1';
 
 Start-Sleep -Milliseconds 500; refreshenv; Start-Sleep -Milliseconds 500
 

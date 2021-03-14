@@ -1,8 +1,7 @@
-if (Get-Command choco -ErrorAction SilentlyContinue) {
-	choco install -y git --package-parameters="'/GitAndUnixToolsOnPath /WindowsTerminal'"
-	choco install -y Gpg4win
-	refreshenv
-}
+choco install -y git --package-parameters="'/GitAndUnixToolsOnPath /WindowsTerminal'"
+choco install -y gitkraken
+choco install -y Gpg4win
+refreshenv
 
 #--- Configure Git ---
 git config --global user.name 'Christian Kunis'
