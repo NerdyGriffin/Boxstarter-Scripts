@@ -1,5 +1,21 @@
-# try {
 Disable-UAC
+
+# Get the base URI path from the ScriptToCall value
+$bstrappackage = '-bootstrapPackage'
+$helperUri = $Boxstarter['ScriptToCall']
+$strpos = $helperUri.IndexOf($bstrappackage)
+$helperUri = $helperUri.Substring($strpos + $bstrappackage.Length)
+$helperUri = $helperUri.TrimStart("'", ' ')
+$helperUri = $helperUri.TrimEnd("'", ' ')
+$helperUri = $helperUri.Substring(0, $helperUri.LastIndexOf('/'))
+$helperUri += '/scripts'
+Write-Host "helper script base URI is $helperUri"
+
+function executeScript {
+	Param ([string]$script)
+	Write-Host "executing $helperUri/$script ..."
+	Invoke-Expression ((New-Object net.webclient).DownloadString("$helperUri/$script"))
+}
 
 try {
 	Enable-RemoteDesktop
@@ -7,66 +23,28 @@ try {
 	# Do nothing if Enable-RemoteDesktop fails, because it will fail if RemoteDesktop is already enabled
 }
 
-if (Test-Path '\\GRIFFINUNRAID\Boxstarter') {
+if (Test-Path '\\GRIFFINUNRAID\Boxstarter\BuildPackages') {
 	Set-BoxStarterConfig -LocalRepo '\\GRIFFINUNRAID\Boxstarter\BuildPackages'
 }
 
-#--- Chocolatey extensions ---
-choco install -y chocolatey-core.extension
-choco install -y chocolatey-dotnetfx.extension
-choco install -y chocolatey-fastanswers.extension
-choco install -y chocolatey-font-helpers.extension
-choco install -y chocolatey-misc-helpers.extension
-choco install -y chocolatey-visualstudio.extension
-choco install -y chocolatey-vscode.extension
-
-#--- Nvidia Graphics ---
-choco install -y geforce-experience
+#--- Setting up Windows ---
+executeScript 'SystemConfiguration.ps1';
+executeScript 'FileExplorerSettings.ps1';
+executeScript 'TaskbarSettings.ps1';
+executeScript 'RemoveDefaultApps.ps1';
+executeScript 'ChocolateyExtensions.ps1';
+executeScript 'NvidiaGraphics.ps1';
+executeScript 'PasswordManager.ps1';
+executeScript 'Browsers.ps1';
+executeScript 'CommunicationApps.ps1';
+executeScript 'Multimedia.ps1';
+executeScript 'CommonDevTools.ps1';
+executeScript 'PythonMLTools.ps1';
+executeScript 'WSL.ps1';
 
 #--- Chocolatey GUI ---
 # choco install -y ChocolateyExplorer
 choco install -y ChocolateyGUI
-
-#--- Web Browsers ---
-choco install -y brave
-choco install -y chromium
-choco install -y firefox # This package tends to fail when installed via Boxstarter, but works fine when you run the same common manually
-choco install -y googlechrome --ignore-checksums # This package currently gives a checksum error
-
-#--- Password Manager ---
-choco install -y bitwarden
-choco install -y keepass
-
-#--- VPN ---
-# choco install -y nordvpn # Installer is possibly broken
-
-#--- Communication ---
-choco install -y discord
-choco install -y jitsi-meet-electron
-choco install -y signal;
-choco install -y slack
-choco install -y telegram
-choco install -y zoom
-
-Start-Sleep -Milliseconds 500; refreshenv; Start-Sleep -Milliseconds 500
-
-#--- Multimedia ---
-choco install -y audacity
-choco install -y audacity-lame
-choco install -y blender
-choco install -y foobar2000
-choco install -y freeencoderpack
-choco install -y fsviewer
-choco install -y gimp
-choco install -y k-litecodecpackfull
-choco install -y lame
-choco install -y obs-studio
-choco install -y phantombot
-choco install -y streamlabs-obs
-choco install -y vlc
-choco install -y winamp
-
-Start-Sleep -Milliseconds 500; refreshenv; Start-Sleep -Milliseconds 500
 
 #--- Office Suite ---
 choco install -y adobereader
@@ -85,54 +63,9 @@ choco install -y geogebra
 choco install -y gnuplot
 choco install -y octave
 
-Start-Sleep -Milliseconds 500; refreshenv; Start-Sleep -Milliseconds 500
-
-#--- Windows 10 Tools ---
-# choco install -y everything
-# choco install -y mousewithoutborders
-choco install -y powertoys
-try {
-	choco install -y plasso
-} catch {
-	choco install -y plasso --ignore-checksums
-}
-choco install -y procexp
-choco install -y procmon
-choco install -y reshack
-choco install -y shutup10
-choco install -y sharex
-choco install -y winaero-tweaker
-choco install -y xyplorer
-
-Start-Sleep -Milliseconds 500; refreshenv; Start-Sleep -Milliseconds 500
-
-#--- Network File System & Cloud Storage ---
-choco install -y ext2fsd
-choco install -y ext2ifs
-choco install -y filezilla
-choco install -y fuse-nfs
-choco install -y google-backup-and-sync
-# choco install -y megasync
-choco install -y nextcloud-client
-choco install -y winscp
-
-Start-Sleep -Milliseconds 500; refreshenv; Start-Sleep -Milliseconds 500
-
-#--- File & Storage Utilities ---
-choco install -y 7zip
-choco install -y etcher
-choco install -y filebot
-choco install -y Folder_Size
-choco install -y freefilesync
-choco install -y partitionwizard
-choco install -y rufus
-choco install -y tuxboot
-
-Start-Sleep -Milliseconds 500; refreshenv; Start-Sleep -Milliseconds 500
-
-#--- Unofficial Chocolatey Tools ---
-choco install -y choco-package-list-backup
-choco install -y choco-upgrade-all-at
+executeScript 'RemoteFileAccess.ps1';
+executeScript 'FileAndStorageUtils.ps1';
+executeScript 'UnofficialChocolateyTools.ps1';
 
 #--- Windows Settings ---
 Disable-BingSearch
@@ -143,11 +76,3 @@ Get-Content -Path $Boxstarter.Log | Select-String -Pattern '^Failures$' -Context
 Enable-UAC
 Enable-MicrosoftUpdate
 Install-WindowsUpdate -acceptEula
-
-# 	Write-Host 'nerdygriffin.DefaultInstall completed successfully' | Write-Debug
-# 	Write-Host ' See the log for details (' $Boxstarter.Log ').' | Write-Debug
-# } catch {
-# 	Write-Host 'Error occurred in nerdygriffin.DefaultInstall' $($_.Exception.Message) | Write-Debug
-# 	Write-Host ' See the log for details (' $Boxstarter.Log ').' | Write-Debug
-# 	throw $_.Exception
-# }

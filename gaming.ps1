@@ -51,91 +51,68 @@ Function New-SymbolicLink {
 	}
 }
 
-try {
-	Disable-UAC
+Disable-UAC
 
-	if (-Not(Get-Command New-SymbolicLink)) {
-		Write-Error "The 'New-SymbolicLink' helper function was not found."
-		throw
-	}
-
-	if (Test-Path 'D:\') {
-		# SymbolicLinks in AppData
-		$SymbolicLinkNames = @('Citra')
-		if ($env:USERDOMAIN | Select-String 'LAPTOP') { $SymbolicLinkNames += @('.minecraft') }
-		foreach ($FolderName in $SymbolicLinkNames) {
-			New-SymbolicLink -Path (Join-Path $env:APPDATA $FolderName) -Value (Join-Path 'D:\' $FolderName)
-		}
-	}
-
-	#--- Logitech Gaming Software ---
-	choco install -y logitechgaming
-
-	#--- Hardware Monitoring ---
-	choco install -y cpu-z
-	choco install -y gpu-z
-	choco install -y hwinfo
-	choco install -y hwmonitor
-	choco install -y msiafterburner
-
-	#--- Benchmarks ---
-	choco install -y cinebench
-	choco install -y furmark
-	choco install -y heaven-benchmark
-	choco install -y valley-benchmark
-	choco install -y superposition-benchmark
-
-	#--- Game Launchers ---
-	choco install -y cemu
-	pip install bcml
-	choco install -y dolphin
-	choco install -y minecraft-launcher
-	choco install -y steam
-	choco install -y steam-cleaner
-	choco install -y steamlibrarymanager.portable
-
-	#--- Mods & Cheats
-	choco install -y cheatengine
-	choco install -y vortex
-	choco install -y wemod
-
-	if ($env:USERDOMAIN | Select-String 'DESKTOP') {
-		#--- Corsair ---
-		choco install -y icue
-
-		#--- Game Launchers for desktop only ---
-		choco install -y epicgameslauncher
-		choco install -y goggalaxy
-		choco install -y origin
-		choco install -y twitch
-		choco install -y uplay
-
-		#--- Game Engines ---
-		# choco install -y unity
-		# choco install -y unity-hub
-	}
-
-	#--- Service & Registry Tweaks for Origin with Mapped Network Drives
-
-	# Disable the "Origin Client Service" to force Origin to execute downloads as Administrator of your User rather than execute under the SYSTEM user account
-	Get-Service -Name 'Origin Client*' | Set-Service -StartupType Disabled
-
-	# Allow the Programs, which run as administrator, to see the Mapped Network Shares
-	If (!(Test-Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System')) {
-		New-Item -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System' -Force | Out-Null
-	}
-	Set-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System' -Name 'EnableLinkedConnections' -Type DWord -Value 1
-
-	Get-Content -Path $Boxstarter.Log | Select-String -Pattern '^Failures$' -Context 0, 2 >> (Join-Path $env:USERPROFILE 'Desktop\boxstarter-failures.log')
-
-	Enable-UAC
-	Enable-MicrosoftUpdate
-	Install-WindowsUpdate -acceptEula
-
-	Write-Host 'nerdygriffin.Gaming completed successfully' | Write-Debug
-	Write-Host ' See the log for details (' $Boxstarter.Log ').' | Write-Debug
-} catch {
-	Write-Host 'Error occurred in nerdygriffin.Gaming' $($_.Exception.Message) | Write-Debug
-	Write-Host ' See the log for details (' $Boxstarter.Log ').' | Write-Debug
-	throw $_.Exception
+if (-Not(Get-Command New-SymbolicLink)) {
+	Write-Error "The 'New-SymbolicLink' helper function was not found."
+	throw
 }
+
+if (Test-Path 'D:\') {
+	# SymbolicLinks in AppData
+	$SymbolicLinkNames = @('Citra')
+	if ($env:USERDOMAIN | Select-String 'LAPTOP') { $SymbolicLinkNames += @('.minecraft') }
+	foreach ($FolderName in $SymbolicLinkNames) {
+		New-SymbolicLink -Path (Join-Path $env:APPDATA $FolderName) -Value (Join-Path 'D:\' $FolderName)
+	}
+}
+
+# Get the base URI path from the ScriptToCall value
+$bstrappackage = '-bootstrapPackage'
+$helperUri = $Boxstarter['ScriptToCall']
+$strpos = $helperUri.IndexOf($bstrappackage)
+$helperUri = $helperUri.Substring($strpos + $bstrappackage.Length)
+$helperUri = $helperUri.TrimStart("'", ' ')
+$helperUri = $helperUri.TrimEnd("'", ' ')
+$helperUri = $helperUri.Substring(0, $helperUri.LastIndexOf('/'))
+$helperUri += '/scripts'
+Write-Host "helper script base URI is $helperUri"
+
+function executeScript {
+	Param ([string]$script)
+	Write-Host "executing $helperUri/$script ..."
+	Invoke-Expression ((New-Object net.webclient).DownloadString("$helperUri/$script"))
+}
+
+#--- Setting up Windows ---
+executeScript 'FileExplorerSettings.ps1';
+executeScript 'TaskbarSettings.ps1';
+executeScript 'RemoveDefaultApps.ps1';
+executeScript 'NvidiaGraphics.ps1';
+executeScript 'LogitechGaming.ps1';
+executeScript 'HardwareMonitoring.ps1';
+executeScript 'BenchmarkUtils.ps1';
+if ($env:USERDOMAIN | Select-String 'DESKTOP') {
+	executeScript 'CorsairICue.ps1';
+	executeScript 'GameLaunchers.ps1';
+} else {
+	executeScript 'MinimalGameLaunchers.ps1';
+}
+executeScript 'GameModdingTools.ps1';
+
+#--- Service & Registry Tweaks for Origin with Mapped Network Drives
+
+# Disable the "Origin Client Service" to force Origin to execute downloads as Administrator of your User rather than execute under the SYSTEM user account
+Get-Service -Name 'Origin Client*' | Set-Service -StartupType Disabled
+
+# Allow the Programs, which run as administrator, to see the Mapped Network Shares
+If (!(Test-Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System')) {
+	New-Item -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System' -Force | Out-Null
+}
+Set-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System' -Name 'EnableLinkedConnections' -Type DWord -Value 1
+
+Get-Content -Path $Boxstarter.Log | Select-String -Pattern '^Failures$' -Context 0, 2 >> (Join-Path $env:USERPROFILE 'Desktop\boxstarter-failures.log')
+
+Enable-UAC
+Enable-MicrosoftUpdate
+Install-WindowsUpdate -acceptEula
