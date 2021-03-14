@@ -5,6 +5,9 @@ try {
 	choco upgrade -y powershell-core
 	refreshenv
 
+	#--- Enable Powershell Script Execution
+	Set-ExecutionPolicy Bypass -Scope CurrentUser -Force
+
 	#--- Prepend a Custom Printed Message to the PowerShell Profile
 	try {
 		$ScriptBlock = {
