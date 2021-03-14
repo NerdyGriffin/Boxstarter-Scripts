@@ -49,24 +49,24 @@ if ($ConfirmBuild -eq 'y') {
 	foreach ($Package in $BoxstarterPackageArray) {
 		Write-Host ''
 		#--- Create or Update the builds of the packages in the local repo ---
-		if (Test-Path (Join-Path $Boxstarter.LocalRepo "$Package.PackageName")) {
-			Remove-Item -Path (Join-Path $Boxstarter.LocalRepo "$Package.PackageName") -Recurse -Force
+		if (Test-Path (Join-Path $Boxstarter.LocalRepo ($Package.PackageName))) {
+			Remove-Item -Path (Join-Path $Boxstarter.LocalRepo ($Package.PackageName)) -Recurse -Force
 		}
-		New-BoxstarterPackage -Name "$Package.PackageName" -path (Join-Path $PSScriptRoot 'tools')
-		Get-Content $Package.SourcePath | Set-Content (Join-Path (Join-Path $Boxstarter.LocalRepo "$Package.PackageName") '\tools\ChocolateyInstall.ps1') ` -Force
-		Invoke-BoxStarterBuild "$Package.PackageName"
+		New-BoxstarterPackage -Name ($Package.PackageName) -path (Join-Path $PSScriptRoot 'tools')
+		Get-Content $Package.SourcePath | Set-Content (Join-Path (Join-Path $Boxstarter.LocalRepo ($Package.PackageName)) '\tools\ChocolateyInstall.ps1') ` -Force
+		Invoke-BoxStarterBuild ($Package.PackageName)
 		Start-Sleep -Seconds 2
 	}
 	# Do the same for the deploy script (kept out of the array because we don't want it to install itself)
 	$Package = [PackageInfo]::new('nerdygriffin.Deploy-Local-Boxstarter', (Join-Path $PSScriptRoot 'Deploy-Local-Boxstarter.ps1'))
 	Write-Host ''
 	#--- Create or Update the builds of the packages in the local repo ---
-	if (Test-Path (Join-Path $Boxstarter.LocalRepo "$Package.PackageName")) {
-		Remove-Item -Path (Join-Path $Boxstarter.LocalRepo "$Package.PackageName") -Recurse -Force
+	if (Test-Path (Join-Path $Boxstarter.LocalRepo ($Package.PackageName))) {
+		Remove-Item -Path (Join-Path $Boxstarter.LocalRepo ($Package.PackageName)) -Recurse -Force
 	}
-	New-BoxstarterPackage -Name "$Package.PackageName" -path (Join-Path $PSScriptRoot 'tools')
-	Get-Content $Package.SourcePath | Set-Content (Join-Path (Join-Path $Boxstarter.LocalRepo "$Package.PackageName") '\tools\ChocolateyInstall.ps1') ` -Force
-	Invoke-BoxStarterBuild "$Package.PackageName"
+	New-BoxstarterPackage -Name ($Package.PackageName) -path (Join-Path $PSScriptRoot 'tools')
+	Get-Content $Package.SourcePath | Set-Content (Join-Path (Join-Path $Boxstarter.LocalRepo ($Package.PackageName)) '\tools\ChocolateyInstall.ps1') ` -Force
+	Invoke-BoxStarterBuild ($Package.PackageName)
 	Start-Sleep -Seconds 2
 }
 
@@ -76,13 +76,13 @@ if ($ConfirmInstall -eq 'y') {
 	# $creds = Get-Credential (Join-Path $env:USERDOMAIN $env:USERNAME)
 	foreach ($Package in $BoxstarterPackageArray) {
 		try {
-			\\GRIFFINUNRAID\Boxstarter\BoxStarter.bat "$Package.PackageName"
+			\\GRIFFINUNRAID\Boxstarter\BoxStarter.bat ($Package.PackageName)
 		} catch {
 			try {
-				Boxstarter.bat "$Package.PackageName"
+				Boxstarter.bat ($Package.PackageName)
 			} catch {
-				Install-BoxstarterPackage "$Package.PackageName"
-				# Install-BoxstarterPackage -ComputerName $env:USERDOMAIN -PackageName "$Package.PackageName" -Credential $creds
+				Install-BoxstarterPackage ($Package.PackageName)
+				# Install-BoxstarterPackage -ComputerName $env:USERDOMAIN -PackageName ($Package.PackageName) -Credential $creds
 			}
 		}
 		Write-Host 'Pausing for 1 second before installing the next package...' -ForegroundColor Cyan
