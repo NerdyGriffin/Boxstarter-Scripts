@@ -35,6 +35,7 @@ try {
 		[PackageInfo]::new('nerdygriffin.DefaultInstall', (Join-Path $PSScriptRoot 'nerdygriffin.ps1')),
 		[PackageInfo]::new('nerdygriffin.DevTools', (Join-Path $PSScriptRoot 'windows-dev-tools.ps1')),
 		[PackageInfo]::new('nerdygriffin.Configure-Git', (Join-Path $PSScriptRoot 'configure-git.ps1')),
+		[PackageInfo]::new('nerdygriffin.Configure-PowerShell', (Join-Path $PSScriptRoot 'configure-powershell.ps1')),
 		[PackageInfo]::new('nerdygriffin.WSL', (Join-Path $PSScriptRoot 'wsl.ps1'))
 		[PackageInfo]::new('nerdygriffin.Gaming', (Join-Path $PSScriptRoot 'gaming.ps1')),
 		[PackageInfo]::new('nerdygriffin.Configure-UI', (Join-Path $PSScriptRoot 'configure-ui.ps1')),
