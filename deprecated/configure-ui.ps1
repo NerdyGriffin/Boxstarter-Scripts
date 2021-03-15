@@ -14,7 +14,7 @@ Write-Host "helper script base URI is $helperUri"
 function executeScript {
 	Param ([string]$script)
 	Write-Host "executing $helperUri/$script ..."
-	Invoke-Expression ((New-Object net.webclient).DownloadString("$helperUri/$script"))
+	Invoke-Expression ((New-Object net.webclient).DownloadString("$helperUri/$script")) -ErrorAction Continue
 	RefreshEnv;
 	Start-Sleep -Seconds 1;
 }
