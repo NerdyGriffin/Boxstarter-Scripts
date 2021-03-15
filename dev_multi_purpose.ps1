@@ -78,8 +78,6 @@ choco install -y visualstudio2017-workload-universal
 choco install -y visualstudio2017-workload-manageddesktop
 choco install -y visualstudio2017-workload-nativedesktop
 
-executeScript 'WindowsTemplateStudio.ps1';
-executeScript 'GetUwpSamplesOffGithub.ps1';
 
 #--- Column UI Workload ---
 choco install -y visualstudio2019community --package-parameters="'--add Microsoft.VisualStudio.Component.Git'"
@@ -107,6 +105,9 @@ git.exe clone https://github.com/PowerShell/PowerShell
 git.exe clone https://github.com/NerdyGriffin/Boxstarter-Scripts
 git.exe clone https://github.com/gordon-cs/gordon-360-ui
 git.exe clone https://github.com/gordon-cs/gordon-360-api
+
+executeScript 'GetUwpSamplesOffGithub.ps1';
+executeScript 'WindowsTemplateStudio.ps1';
 
 Get-Content -Path $Boxstarter.Log | Select-String -Pattern '^Failures$' -Context 0, 2 >> (Join-Path $env:USERPROFILE 'Desktop\boxstarter-failures.log')
 
