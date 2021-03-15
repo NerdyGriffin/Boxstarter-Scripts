@@ -17,12 +17,8 @@ function executeScript {
 	Invoke-Expression ((New-Object net.webclient).DownloadString("$helperUri/$script"))
 }
 
-try {
-	Enable-RemoteDesktop
-} catch {
-	# Do nothing if Enable-RemoteDesktop fails, because it will fail if RemoteDesktop is already enabled
-}
-
+# Do nothing if Enable-RemoteDesktop fails, because it will fail if RemoteDesktop is already enabled
+try { Enable-RemoteDesktop } catch {}
 
 #--- Setting up Windows ---
 executeScript 'SystemConfiguration.ps1';

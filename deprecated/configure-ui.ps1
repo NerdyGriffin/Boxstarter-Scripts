@@ -1,6 +1,3 @@
-# Do nothing if Enable-RemoteDesktop fails, because it will fail if RemoteDesktop is already enabled
-try { Enable-RemoteDesktop } catch {}
-
 Disable-UAC
 
 # Get the base URI path from the ScriptToCall value

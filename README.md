@@ -37,11 +37,11 @@ _Note: The one-click links use the following format. When working out of a diffe
 
 For more info on testing your changes take a look at the [contribution guidelines](CONTRIBUTING.md).
 
-## If you're using a Chromium browser, enable click-once via (e.g. for Edge) [`edge://flags/#edge-click-once`](edge://flags/#edge-click-once)
-
 ## How to run the scripts
 
 Before you begin, please read the [Legal](#Legal) section.
+
+### If you're using a Chromium browser, enable click-once via (e.g. for Edge) [`edge://flags/#edge-click-once`](edge://flags/#edge-click-once)
 
 To run a recipe script, click a link in the table below from your target machine. This will download the Boxstarter one-click application, and prompt you for Boxstarter to run with Administrator privileges (which it needs to do its job). Clicking yes in this dialog will cause the recipe to begin. You can then leave the job unattended and come back when it's finished.
 
@@ -68,6 +68,10 @@ To run a recipe script, click a link in the table below from your target machine
 - [Move Library Directories](http://boxstarter.org/package/url?https://raw.githubusercontent.com/NerdyGriffin/Boxstarter-Scripts/main/move-library-directories.ps1)
 
   - This first script is very specific to my computer configuration and my home server. I do not reccommend using this script unless you want to customize it for your own devices.
+
+- [Configure Windows privacy options](https://boxstarter.org/package/url?https://raw.githubusercontent.com/NerdyGriffin/Boxstarter-Scripts/main/privacy.ps1)
+
+  - View script: <https://raw.githubusercontent.com/NerdyGriffin/Boxstarter-Scripts/main/privacy.ps1>
 
 **Notes:**
 
@@ -99,46 +103,3 @@ To run a recipe script, click a link in the table below from your target machine
 ## To Do
 
 - [ ] Refer to <https://github.com/microsoft/windows-dev-box-setup-scripts> for ways to improve this project
-
-## Deprecated
-
-### Install the stuff below (i.e. my `boxstarter.txt`)
-
-> **WARNING**: Clicking these links will install apps on your machine; _Please_ review the scripts before you do that!
-
-1. [Move Library Directories](https://boxstarter.org/package/url?https://raw.githubusercontent.com/NerdyGriffin/Boxstarter-Scripts/main/move-library-directories.ps1)
-
-   - This first script is very specific to my computer configuration and my home server. I do not reccommend using this script unless you want to customize it for your own devices.
-   - View script: <https://raw.githubusercontent.com/NerdyGriffin/Boxstarter-Scripts/main/move-library-directories.ps1>
-
-2. **Install** [NerdyGriffin's default programs](https://boxstarter.org/package/url?https://raw.githubusercontent.com/NerdyGriffin/Boxstarter-Scripts/main/nerdygriffin.ps1).
-
-   - View script: <https://raw.githubusercontent.com/NerdyGriffin/Boxstarter-Scripts/main/nerdygriffin.ps1>
-
-3. Install [Windows Dev Tools](https://boxstarter.org/package/url?https://raw.githubusercontent.com/NerdyGriffin/Boxstarter-Scripts/main/windows-dev-tools.ps1)
-
-   - View script: <https://raw.githubusercontent.com/NerdyGriffin/Boxstarter-Scripts/main/windows-dev-tools.ps1>
-
-4. Install [Windows Gaming Software](https://boxstarter.org/package/url?https://raw.githubusercontent.com/NerdyGriffin/Boxstarter-Scripts/main/gaming.ps1)
-
-   - View script: <https://raw.githubusercontent.com/NerdyGriffin/Boxstarter-Scripts/main/gaming.ps1>
-
-5. Install [Configure PowerShell for NerdyGriffin](https://boxstarter.org/package/url?https://raw.githubusercontent.com/NerdyGriffin/Boxstarter-Scripts/main/configure-powershell.ps1)
-
-   - View script: <https://raw.githubusercontent.com/NerdyGriffin/Boxstarter-Scripts/main/configure-powershell.ps1>
-
-6. Install [WSL](https://boxstarter.org/package/url?https://raw.githubusercontent.com/NerdyGriffin/Boxstarter-Scripts/main/wsl.ps1)
-
-   - View script: <https://raw.githubusercontent.com/NerdyGriffin/Boxstarter-Scripts/main/wsl.ps1>
-
-7. [Configure Windows UI](https://boxstarter.org/package/url?https://raw.githubusercontent.com/NerdyGriffin/Boxstarter-Scripts/main/configure-ui.ps1)
-
-   - View script: <https://raw.githubusercontent.com/NerdyGriffin/Boxstarter-Scripts/main/configure-ui.ps1>
-
-8. [Configure Windows privacy options](https://boxstarter.org/package/url?https://raw.githubusercontent.com/NerdyGriffin/Boxstarter-Scripts/main/privacy.ps1)
-
-   - View script: <https://raw.githubusercontent.com/NerdyGriffin/Boxstarter-Scripts/main/privacy.ps1>
-
-9. [Remove default Windows Store apps](https://boxstarter.org/package/url?https://raw.githubusercontent.com/NerdyGriffin/Boxstarter-Scripts/main/removeWindowsApps.ps1)
-
-   - View script: <https://raw.githubusercontent.com/NerdyGriffin/Boxstarter-Scripts/main/removeWindowsApps.ps1>
