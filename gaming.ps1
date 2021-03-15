@@ -17,6 +17,8 @@ function executeScript {
 	Param ([string]$script)
 	Write-Host "executing $helperUri/$script ..."
 	Invoke-Expression ((New-Object net.webclient).DownloadString("$helperUri/$script"))
+	RefreshEnv;
+	Start-Sleep -Seconds 1;
 }
 
 #--- Setting up Windows ---
@@ -24,16 +26,16 @@ executeScript 'FileExplorerSettings.ps1';
 executeScript 'RemoveDefaultApps.ps1';
 executeScript 'GameSymlinks.ps1';
 executeScript 'NvidiaGraphics.ps1';
-executeScript 'LogitechGaming.ps1'; RefreshEnv; Start-Sleep 0.5;
-executeScript 'HardwareMonitoring.ps1'; RefreshEnv; Start-Sleep 0.5;
-executeScript 'BenchmarkUtils.ps1'; RefreshEnv; Start-Sleep 0.5;
+executeScript 'LogitechGaming.ps1';
+executeScript 'HardwareMonitoring.ps1';
+executeScript 'BenchmarkUtils.ps1';
 if ($env:USERDOMAIN | Select-String 'DESKTOP') {
-	executeScript 'CorsairICue.ps1'; RefreshEnv; Start-Sleep 0.5;
-	executeScript 'GameLaunchers.ps1'; RefreshEnv; Start-Sleep 0.5;
+	executeScript 'CorsairICue.ps1';
+	executeScript 'GameLaunchers.ps1';
 } else {
-	executeScript 'MinimalGameLaunchers.ps1'; RefreshEnv; Start-Sleep 0.5;
+	executeScript 'MinimalGameLaunchers.ps1';
 }
-executeScript 'GameModdingTools.ps1'; RefreshEnv; Start-Sleep 0.5;
+executeScript 'GameModdingTools.ps1';
 
 #--- Service & Registry Tweaks for Origin with Mapped Network Drives
 

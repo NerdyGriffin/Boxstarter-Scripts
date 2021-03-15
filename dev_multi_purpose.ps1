@@ -17,6 +17,8 @@ function executeScript {
 	Param ([string]$script)
 	Write-Host "executing $helperUri/$script ..."
 	Invoke-Expression ((New-Object net.webclient).DownloadString("$helperUri/$script"))
+	RefreshEnv;
+	Start-Sleep -Seconds 1;
 }
 
 #--- Powershell Module Repository
@@ -29,19 +31,19 @@ executeScript 'RemoveDefaultApps.ps1';
 executeScript 'CommonDevTools.ps1';
 
 #--- Windows Dev Essentials
-executeScript 'DotNetTools.ps1'; RefreshEnv; Start-Sleep 0.5;
+executeScript 'DotNetTools.ps1';
 # choco install -y dotpeek # Installer appears to be broken on my machine
 choco install -y linqpad
 
-executeScript 'ConfigureGit.ps1'; RefreshEnv; Start-Sleep 0.5;
+executeScript 'ConfigureGit.ps1';
 choco install -y lepton
 
 #--- Configure Powershell Profile for Powerline and PSReadline ---
-executeScript 'ConfigurePowerShell.ps1'; RefreshEnv; Start-Sleep 0.5;
+executeScript 'ConfigurePowerShell.ps1';
 
 #--- Assorted PowerShellTools ---
-executeScript 'PowerShellTools.ps1'; RefreshEnv; Start-Sleep 0.5;
-executeScript 'GNU.ps1'; RefreshEnv; Start-Sleep 0.5;
+executeScript 'PowerShellTools.ps1';
+executeScript 'GNU.ps1';
 
 #--- Tools ---
 #--- Installing VS and VS Code with Git

@@ -19,6 +19,8 @@ function executeScript {
 	Param ([string]$script)
 	Write-Host "executing $helperUri/$script ..."
 	Invoke-Expression ((New-Object net.webclient).DownloadString("$helperUri/$script"))
+	RefreshEnv;
+	Start-Sleep -Seconds 1;
 }
 
 #--- Setting up Windows ---

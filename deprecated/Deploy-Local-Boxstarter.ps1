@@ -86,7 +86,7 @@ if ($ConfirmInstall -eq 'y') {
 			}
 		}
 		Write-Host 'Pausing for 1 second before installing the next package...' -ForegroundColor Cyan
-		Start-Sleep -Seconds 1
+		Start-Sleep -Seconds 1;
 	}
 }
 
