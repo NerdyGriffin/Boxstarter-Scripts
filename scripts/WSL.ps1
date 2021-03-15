@@ -27,4 +27,3 @@ Add-AppxPackage -Path ~/openSUSE.appx
 # Launch openSUSE
 opensuse-42.exe
 #>
-

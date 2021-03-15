@@ -1,5 +1,5 @@
 Update-SessionEnvironment
-cd $env:USERPROFILE\desktop
+Set-Location $env:USERPROFILE\desktop
 mkdir UwpSamples
-cd UwpSamples
+Set-Location UwpSamples
 git clone https://github.com/Microsoft/Windows-universal-samples/

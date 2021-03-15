@@ -1,4 +1,4 @@
-$Boxstarter.StopOnPackageFailure=$false
+$Boxstarter.StopOnPackageFailure = $false
 
 Disable-UAC
 
