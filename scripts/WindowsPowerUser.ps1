@@ -7,8 +7,6 @@ try {
 } catch {
 	choco install -y plasso --ignore-checksums
 }
-choco install -y procexp
-choco install -y procmon
 choco install -y reshack
 choco install -y shutup10
 choco install -y sharex

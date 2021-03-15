@@ -35,6 +35,7 @@ executeScript 'Browsers.ps1';
 executeScript 'Multimedia.ps1';
 executeScript 'CommunicationApps.ps1';
 executeScript 'OfficeTools.ps1';
+executeScript 'CloudStorage.ps1';
 executeScript 'Scientific.ps1';
 
 #--- Windows Settings ---
