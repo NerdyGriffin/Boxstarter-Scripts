@@ -2,6 +2,10 @@ choco upgrade -y powershell
 choco upgrade -y powershell-core
 refreshenv
 
+#--- Fonts ---
+choco install -y cascadiafonts
+
+#--- Windows Terminal ---
 choco upgrade -y microsoft-windows-terminal; choco upgrade -y microsoft-windows-terminal # Does this twice because the first attempt often fails but leaves the install partially completed, and then it completes successfully the second time.
 
 #--- Enable Powershell Script Execution
