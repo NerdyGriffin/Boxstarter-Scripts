@@ -28,17 +28,17 @@ executeScript 'RemoveDefaultApps.ps1';
 executeScript 'NvidiaGraphics.ps1';
 
 #--- Setting up Chocolatey
-executeScript 'ChocolateyExtensions.ps1';
-executeScript 'ChocolateyGUI.ps1';
+executeScript 'ChocolateyExtensions.ps1'; RefreshEnv; Start-Sleep 0.5;
+executeScript 'ChocolateyGUI.ps1'; RefreshEnv; Start-Sleep 0.5;
 
 #--- Setting up programs for typical every-day use
-executeScript 'PasswordManager.ps1';
-executeScript 'Browsers.ps1';
-executeScript 'Multimedia.ps1';
-executeScript 'CommunicationApps.ps1';
-executeScript 'OfficeTools.ps1';
-executeScript 'CloudStorage.ps1';
-executeScript 'Scientific.ps1';
+executeScript 'PasswordManager.ps1'; RefreshEnv; Start-Sleep 0.5;
+executeScript 'Browsers.ps1'; RefreshEnv; Start-Sleep 0.5;
+executeScript 'Multimedia.ps1'; RefreshEnv; Start-Sleep 0.5;
+executeScript 'CommunicationApps.ps1'; RefreshEnv; Start-Sleep 0.5;
+executeScript 'OfficeTools.ps1'; RefreshEnv; Start-Sleep 0.5;
+executeScript 'CloudStorage.ps1'; RefreshEnv; Start-Sleep 0.5;
+executeScript 'Scientific.ps1'; RefreshEnv; Start-Sleep 0.5;
 
 #--- Windows Settings ---
 Disable-BingSearch

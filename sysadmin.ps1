@@ -1,4 +1,4 @@
-$Boxstarter.StopOnPackageFailure=$false
+$Boxstarter.StopOnPackageFailure = $false
 
 Disable-UAC
 
@@ -29,17 +29,17 @@ executeScript 'RemoveDefaultApps.ps1';
 executeScript 'CommonDevTools.ps1';
 
 #--- Setting up Chocolatey
-executeScript 'ChocolateyExtensions.ps1';
-executeScript 'ChocolateyGUI.ps1';
+executeScript 'ChocolateyExtensions.ps1'; RefreshEnv; Start-Sleep 0.5;
+executeScript 'ChocolateyGUI.ps1'; RefreshEnv; Start-Sleep 0.5;
 
 #--- Administrative Tools ---
-executeScript 'HardwareMonitoring.ps1';
-executeScript 'NetworkTools.ps1';
-executeScript 'RemoteFileAccess.ps1';
-executeScript 'FileAndStorageUtils.ps1';
+executeScript 'HardwareMonitoring.ps1'; RefreshEnv; Start-Sleep 0.5;
+executeScript 'NetworkTools.ps1'; RefreshEnv; Start-Sleep 0.5;
+executeScript 'RemoteFileAccess.ps1'; RefreshEnv; Start-Sleep 0.5;
+executeScript 'FileAndStorageUtils.ps1'; RefreshEnv; Start-Sleep 0.5;
 
 #--- SSH Server ---
-executeScript 'OpenSSHServer.ps1';
+executeScript 'OpenSSHServer.ps1'; RefreshEnv; Start-Sleep 0.5;
 
 executeScript 'UnofficialChocolateyTools.ps1';
 

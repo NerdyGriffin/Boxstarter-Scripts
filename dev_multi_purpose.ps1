@@ -29,19 +29,19 @@ executeScript 'RemoveDefaultApps.ps1';
 executeScript 'CommonDevTools.ps1';
 
 #--- Windows Dev Essentials
-executeScript 'DotNetTools.ps1';
+executeScript 'DotNetTools.ps1'; RefreshEnv; Start-Sleep 0.5;
 # choco install -y dotpeek # Installer appears to be broken on my machine
 choco install -y linqpad
 
-executeScript 'ConfigureGit.ps1';
+executeScript 'ConfigureGit.ps1'; RefreshEnv; Start-Sleep 0.5;
 choco install -y lepton
 
 #--- Configure Powershell Profile for Powerline and PSReadline ---
-executeScript 'ConfigurePowerShell.ps1';
+executeScript 'ConfigurePowerShell.ps1'; RefreshEnv; Start-Sleep 0.5;
 
 #--- Assorted PowerShellTools ---
-executeScript 'PowerShellTools.ps1';
-executeScript 'GNU.ps1';
+executeScript 'PowerShellTools.ps1'; RefreshEnv; Start-Sleep 0.5;
+executeScript 'GNU.ps1'; RefreshEnv; Start-Sleep 0.5;
 
 #--- Tools ---
 #--- Installing VS and VS Code with Git
