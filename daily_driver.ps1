@@ -37,7 +37,6 @@ executeScript 'CommunicationApps.ps1';
 executeScript 'OfficeTools.ps1';
 executeScript 'Scientific.ps1';
 
-
 #--- Windows Settings ---
 Disable-BingSearch
 Disable-GameBarTips
