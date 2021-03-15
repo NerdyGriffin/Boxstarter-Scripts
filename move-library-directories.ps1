@@ -1,3 +1,5 @@
+$Boxstarter.StopOnPackageFailure = $false
+
 Function New-SymbolicLink {
 	param(
 		# Specifies the path of the location of the new link. You must include the name of the new link in Path .

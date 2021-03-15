@@ -1,3 +1,5 @@
+$Boxstarter.StopOnPackageFailure=$false
+
 ##################
 # Privacy Settings
 ##################
