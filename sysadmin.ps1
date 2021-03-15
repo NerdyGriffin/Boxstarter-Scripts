@@ -23,7 +23,6 @@ try { Enable-RemoteDesktop } catch {}
 #--- Setting up Windows ---
 executeScript 'SystemConfiguration.ps1';
 executeScript 'FileExplorerSettings.ps1';
-executeScript 'TaskbarSettings.ps1';
 executeScript 'RemoveDefaultApps.ps1';
 executeScript 'CommonDevTools.ps1';
 

@@ -19,7 +19,7 @@ function executeScript {
 
 #--- Setting up Windows ---
 executeScript 'FileExplorerSettings.ps1';
-executeScript 'TaskbarSettings.ps1';
+# executeScript 'TaskbarSettings.ps1';
 executeScript 'RemoveDefaultApps.ps1';
 
 #--- Graphics Driver Support

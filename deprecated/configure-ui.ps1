@@ -24,7 +24,6 @@ executeScript 'RemoveDefaultApps.ps1';
 executeScript 'CommonDevTools.ps1';
 executeScript 'WSL.ps1';
 executeScript 'Browsers.ps1';
-executeScript 'TaskbarSettings.ps1';
 
 ############################
 # Personal Preferences on UI
