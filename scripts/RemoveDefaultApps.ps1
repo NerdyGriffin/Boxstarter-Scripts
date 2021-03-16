@@ -16,32 +16,31 @@ function removeApp {
 }
 
 $applicationList = @(
-	'Microsoft.BingFinance'
 	# "Microsoft.3DBuilder"
 	'Microsoft.BingFinance'
 	'Microsoft.BingNews'
 	'Microsoft.BingSports'
 	# "Microsoft.BingWeather"
-	'Microsoft.CommsPhone'
+	# 'Microsoft.CommsPhone'
 	# "Microsoft.Getstarted"
-	'Microsoft.WindowsMaps'
+	# 'Microsoft.WindowsMaps'
 	'*MarchofEmpires*'
 	# "Microsoft.GetHelp"
 	# "Microsoft.Messaging"
 	# "*Minecraft*"
 	# "Microsoft.MicrosoftOfficeHub"
 	# "Microsoft.OneConnect"
-	'Microsoft.WindowsPhone'
-	'Microsoft.WindowsSoundRecorder'
-	'*Solitaire*'
+	# 'Microsoft.WindowsPhone'
+	# 'Microsoft.WindowsSoundRecorder'
+	# '*Solitaire*'
 	# "Microsoft.MicrosoftStickyNotes"
-	'Microsoft.Office.Sway'
+	# 'Microsoft.Office.Sway'
 	# "Microsoft.XboxApp"
 	# "Microsoft.XboxIdentityProvider"
-	# "Microsoft.ZuneMusic"
-	# "Microsoft.ZuneVideo"
-	'Microsoft.NetworkSpeedTest'
-	'Microsoft.FreshPaint'
+	'Microsoft.ZuneMusic'
+	'Microsoft.ZuneVideo'
+	# 'Microsoft.NetworkSpeedTest'
+	# 'Microsoft.FreshPaint'
 	# "Microsoft.Print3D"
 	# "*Autodesk*"
 	'*BubbleWitch*'
@@ -50,7 +49,7 @@ $applicationList = @(
 	'*Dell*'
 	'*Facebook*'
 	'*Keeper*'
-	'*Netflix*'
+	# '*Netflix*'
 	'*Twitter*'
 	# "*Plex*"
 	# "*.Duolingo-LearnLanguagesforFree"
@@ -61,4 +60,15 @@ $applicationList = @(
 
 foreach ($app in $applicationList) {
 	removeApp $app
+}
+
+# McAfee Security
+Get-AppxPackage *McAfee* | Remove-AppxPackage
+
+# Uninstall McAfee Security App
+$mcafee = Get-ChildItem 'HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall' | ForEach-Object { Get-ItemProperty $_.PSPath } | Where-Object { $_ -match 'McAfee Security' } | Select-Object UninstallString
+if ($mcafee) {
+	$mcafee = $mcafee.UninstallString -Replace 'C:\Program Files\McAfee\MSC\mcuihost.exe', ''
+	Write-Output 'Uninstalling McAfee...'
+	Start-Process 'C:\Program Files\McAfee\MSC\mcuihost.exe' -arg "$mcafee" -Wait
 }
