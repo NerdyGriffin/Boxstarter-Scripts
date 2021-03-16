@@ -66,7 +66,7 @@ choco install -y nodejs-lts # Node.js LTS, Recommended for most users
 # choco install -y nodejs # Node.js Current, Latest features
 choco install -y visualstudio2017buildtools
 choco install -y visualstudio2017-workload-vctools
-choco install -y python2 # Node.js requires Python 2 to build native modules
+# choco install -y python2 # Node.js requires Python 2 to build native modules
 
 #--- Gordon 360 Api Workload ---
 choco install -y nuget.commandline
@@ -77,7 +77,6 @@ choco install -y visualstudio2017-workload-azure
 choco install -y visualstudio2017-workload-universal
 choco install -y visualstudio2017-workload-manageddesktop
 choco install -y visualstudio2017-workload-nativedesktop
-
 
 #--- Column UI Workload ---
 choco install -y visualstudio2019community --package-parameters="'--add Microsoft.VisualStudio.Component.Git'"
@@ -95,6 +94,14 @@ executeScript 'PythonMLTools.ps1';
 
 executeScript 'HyperV.ps1';
 executeScript 'WSL.ps1';
+
+Write-Host 'Installing tools inside the WSL distro...'
+Ubuntu1804 run apt install neofetch -y
+Ubuntu1804 run apt install nodejs -y
+Ubuntu1804 run apt install git-core
+Ubuntu1804 run apt install python2.7 python-pip -y
+Ubuntu1804 run apt install python-numpy python-scipy -y
+Ubuntu1804 run pip install pandas
 
 # checkout recent projects
 Set-Location C:\Github
