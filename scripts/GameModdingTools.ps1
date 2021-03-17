@@ -4,7 +4,7 @@ choco install -y vortex
 choco install -y wemod
 
 # Install python
-choco install -y python --version=3.5.4
+choco install -y python
 
 # Refresh path
 refreshenv
