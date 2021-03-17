@@ -1,5 +1,7 @@
 $Boxstarter.StopOnPackageFailure = $false
 
+Disable-UAC
+
 ##################
 # Privacy Settings
 ##################
@@ -50,5 +52,13 @@ If (!(Test-Path 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search')) {
 Set-ItemProperty -Path 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search' -Name 'AllowCortana' -Type DWord -Value 0
 
 # Disable Telemetry (requires a reboot to take effect)
-Set-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection -Name AllowTelemetry -Type DWord -Value 0
+If (Get-ItemPropertyValue -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection -Name AllowTelemetry) {
+	Set-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection -Name AllowTelemetry -Type DWord -Value 0
+	Invoke-Reboot
+}
 Get-Service DiagTrack, Dmwappushservice | Stop-Service | Set-Service -StartupType Disabled
+
+#--- reenabling critial items ---
+Enable-UAC
+Enable-MicrosoftUpdate
+Install-WindowsUpdate -acceptEula
