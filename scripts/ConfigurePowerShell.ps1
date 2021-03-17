@@ -4,6 +4,8 @@ refreshenv
 
 #--- Fonts ---
 choco install -y cascadiafonts
+choco install -y cascadia-code-nerd-font
+choco install -y firacodenf
 
 #--- Windows Terminal ---
 choco upgrade -y microsoft-windows-terminal; choco upgrade -y microsoft-windows-terminal # Does this twice because the first attempt often fails but leaves the install partially completed, and then it completes successfully the second time.
@@ -30,17 +32,21 @@ pwsh.exe -Command $ScriptBlock
 
 
 #--- Install & Configure the Powerline Modules
-# choco install -y poshgit
-# choco install -y oh-my-posh
-# choco install -y posh-github
+choco install -y poshgit
+choco install -y oh-my-posh
+choco install -y posh-github
 refreshenv
 try {
 	Write-Host 'Installing Posh-Git and Oh-My-Posh - [Dependencies for Powerline]'
 	if (-Not(Get-Module -ListAvailable -Name posh-git)) {
-		Install-Module posh-git -Scope AllUsers -AllowClobber -SkipPublisherCheck -Force -Verbose
+		Install-Module posh-git -Scope CurrentUser -AllowClobber -SkipPublisherCheck -Force -Verbose
 	} else { Write-Host "Module 'posh-git' already installed" }
 	if (-Not(Get-Module -ListAvailable -Name oh-my-posh)) {
-		Install-Module oh-my-posh -Scope AllUsers -AllowClobber -SkipPublisherCheck -Force -Verbose
+		try {
+			Install-Module oh-my-posh -Scope CurrentUser -AllowClobber -SkipPublisherCheck -Force -Verbose -AllowPrerelease
+		} catch {
+			Install-Module oh-my-posh -Scope CurrentUser -AllowClobber -SkipPublisherCheck -Force -Verbose
+		}
 	} else { Write-Host "Module 'oh-my-posh' already installed" }
 	refreshenv
 	[ScriptBlock]$ScriptBlock = {
@@ -55,10 +61,12 @@ try {
 		Write-Host 'Appending Configuration for Powerline to PowerShell Profile...'
 		$PowerlineProfile = @(
 			'# Dependencies for powerline',
-			'[console]::InputEncoding = [console]::OutputEncoding = New-Object System.Text.UTF8Encoding',
+			# '[console]::InputEncoding = [console]::OutputEncoding = New-Object System.Text.UTF8Encoding', # Workaround for oh-my-posh bug in 2021-03-14
 			'Import-Module posh-git',
-			'Import-Module oh-my-posh',
-			'Set-PoshPrompt -Theme paradox'
+			# 'Import-Module oh-my-posh',
+			# 'Set-PoshPrompt -Theme paradox'
+			# 'Set-PoshPrompt -Theme slimfat'
+			'Set-PoshPrompt -Theme sorin'
 		)
 		Write-Host >> $PROFILE # This will create the file if it does not already exist, otherwise it will leave the existing file unchanged
 		if (-Not(Select-String -Pattern $PowerlineProfile[0] -Path $PROFILE )) {
@@ -171,7 +179,7 @@ try {
 	Write-Host 'Installing Pipeworks -- [CLI Tools for PowerShell]'
 	Write-Host 'Description: PowerShell Pipeworks is a framework for writing Sites and Software Services in Windows PowerShell modules.'
 	if (-Not(Get-Module -ListAvailable -Name Pipeworks)) {
-		Install-Module -Name Pipeworks -Scope AllUsers -AllowClobber -SkipPublisherCheck -Force -Verbose
+		Install-Module -Name Pipeworks -Scope CurrentUser -AllowClobber -SkipPublisherCheck -Force -Verbose
 	} else { Write-Host "Module 'Pipeworks' already installed" }
 	refreshenv
 } catch {
