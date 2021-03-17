@@ -68,9 +68,15 @@ choco install -y visualstudio2017buildtools
 choco install -y visualstudio2017-workload-vctools
 # choco install -y python2 # Node.js requires Python 2 to build native modules
 
+RefreshEnv;
+Start-Sleep -Seconds 1;
+
 #--- Gordon 360 Api Workload ---
 choco install -y nuget.commandline
 choco install -y visualstudio2017-workload-netweb
+
+RefreshEnv;
+Start-Sleep -Seconds 1;
 
 #--- UWP Workload and installing Windows Template Studio ---
 choco install -y visualstudio2017-workload-azure
@@ -78,14 +84,20 @@ choco install -y visualstudio2017-workload-universal
 choco install -y visualstudio2017-workload-manageddesktop
 choco install -y visualstudio2017-workload-nativedesktop
 
+RefreshEnv;
+Start-Sleep -Seconds 1;
+
 #--- Column UI Workload ---
 choco install -y visualstudio2019community --package-parameters="'--add Microsoft.VisualStudio.Component.Git'"
 choco install -y visualstudio2019-workload-nativedesktop
 choco install -y visualstudio2019-workload-vctools
 
+RefreshEnv;
+Start-Sleep -Seconds 1;
+
 #--- Assorted Dev Tools and Dependencies ---
 executeScript 'MiscDevTools.ps1';
-executeScript 'Matlab.ps1';
+# executeScript 'Matlab.ps1';
 executeScript 'OpenJDK.ps1';
 
 #--- Machine Learning Tools ---
@@ -98,7 +110,8 @@ executeScript 'WSL.ps1';
 Write-Host 'Installing tools inside the WSL distro...'
 Ubuntu1804 run apt install neofetch -y
 Ubuntu1804 run apt install nodejs -y
-Ubuntu1804 run apt install git-core
+Ubuntu1804 run apt install git-core -y
+Ubuntu1804 run apt install git-extras -y
 Ubuntu1804 run apt install python2.7 python-pip -y
 Ubuntu1804 run apt install python-numpy python-scipy -y
 Ubuntu1804 run pip install pandas
