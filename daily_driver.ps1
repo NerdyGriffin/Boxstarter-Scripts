@@ -46,6 +46,29 @@ executeScript 'Scientific.ps1';
 Disable-BingSearch
 Disable-GameBarTips
 
+#--- Setting up custom file sync script if possible ---
+choco install -y freefilesync
+RefreshEnv;
+Start-Sleep -Seconds 1;
+$SambaProgramFiles = '\\GRIFFINUNRAID\programfiles'
+$BackupScript = 'BackupWindowsBoot.ffs_real'
+$BackupScriptRemotePath = (Join-Path $SambaProgramFiles $BackupScript)
+$BackupScriptLocalPath = (Join-Path $env:ProgramData $BackupScript)
+If (Test-Path $BackupScriptRemotePath) {
+	Copy-Item -Path $BackupScriptRemotePath -Destination $BackupScriptLocalPath
+}
+$WallpaperScript = 'MirrorCuratedSlideshowWallpaper_BatchRun.ffs_batch'
+$WallpaperScriptRemotePath = (Join-Path $SambaProgramFiles $WallpaperScript)
+$WallpaperScriptLocalPath = (Join-Path $env:ProgramData $WallpaperScript)
+If (Test-Path $WallpaperScriptRemotePath) {
+	Copy-Item -Path $WallpaperScriptRemotePath -Destination $WallpaperScriptLocalPath
+}
+If (Test-Path (Join-Path $SambaProgramFiles 'realtimesync.bat')) {
+	If (!(Test-Path (Join-Path $env:ProgramData 'Microsoft\Windows\Start Menu\Programs\Startup\realtimesync.bat'))) {
+		Copy-Item -Path (Join-Path $SambaProgramFiles 'realtimesync.bat') -Destination (Join-Path $env:ProgramData 'Microsoft\Windows\Start Menu\Programs\Startup\realtimesync.bat')
+	}
+}
+
 Get-Content -Path $Boxstarter.Log | Select-String -Pattern '^Failures$' -Context 0, 2 >> (Join-Path $env:USERPROFILE 'Desktop\boxstarter-failures.log')
 
 #--- reenabling critial items ---
