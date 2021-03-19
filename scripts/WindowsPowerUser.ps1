@@ -7,7 +7,7 @@ choco install -y plasso --ignore-checksums # The checksums are never correct on 
 choco install -y reshack
 choco install -y shutup10
 choco install -y sharex
-choco install -y winaero-tweaker
+# choco install -y winaero-tweaker
 # choco install -y xyplorer
 
 # Add a custom registry entry for running Sharex at startup
