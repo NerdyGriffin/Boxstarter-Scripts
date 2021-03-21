@@ -51,10 +51,20 @@ choco install -y freefilesync
 RefreshEnv;
 Start-Sleep -Seconds 1;
 $SambaProgramFiles = '\\GRIFFINUNRAID\programfiles'
-$BackupScript = 'BackupWindowsBoot.ffs_real'
+$IsLaptop = ($env:USERDOMAIN | Select-String 'LAPTOP')
+If ($IsLaptop) {
+	$RealTimeScript = 'BackupWindowsLaptop.ffs_real'
+	$BackupScript = 'BackupWindowsLaptop.ffs_batch'
+} else {
+	$RealTimeScript = 'BackupWindowsDesktop.ffs_real'
+	$BackupScript = 'BackupWindowsDesktop.ffs_batch'
+}
+$RealTimeScriptRemotePath = (Join-Path $SambaProgramFiles $RealTimeScript)
+$RealTimeScriptLocalPath = (Join-Path $env:ProgramData $RealTimeScript)
 $BackupScriptRemotePath = (Join-Path $SambaProgramFiles $BackupScript)
 $BackupScriptLocalPath = (Join-Path $env:ProgramData $BackupScript)
-If (Test-Path $BackupScriptRemotePath) {
+If ((Test-Path $RealTimeScriptRemotePath) -And (Test-Path $BackupScriptRemotePath)) {
+	Copy-Item -Path $RealTimeScriptRemotePath -Destination $RealTimeScriptLocalPath
 	Copy-Item -Path $BackupScriptRemotePath -Destination $BackupScriptLocalPath
 }
 $WallpaperScript = 'MirrorCuratedSlideshowWallpaper_BatchRun.ffs_batch'
@@ -63,6 +73,7 @@ $WallpaperScriptLocalPath = (Join-Path $env:ProgramData $WallpaperScript)
 If (Test-Path $WallpaperScriptRemotePath) {
 	Copy-Item -Path $WallpaperScriptRemotePath -Destination $WallpaperScriptLocalPath
 }
+
 If (Test-Path (Join-Path $SambaProgramFiles 'realtimesync.bat')) {
 	If (!(Test-Path (Join-Path $env:ProgramData 'Microsoft\Windows\Start Menu\Programs\Startup\realtimesync.bat'))) {
 		Copy-Item -Path (Join-Path $SambaProgramFiles 'realtimesync.bat') -Destination (Join-Path $env:ProgramData 'Microsoft\Windows\Start Menu\Programs\Startup\realtimesync.bat')
