@@ -71,6 +71,8 @@ To run a recipe script, click a link in the table below from your target machine
 |                                                                                                                                                                                      | Containers (Docker, Kubernetes, etc...)                                                         |
 |                                                                                                                                                                                      | Submit a PR with a recommended configuration!                                                   |
 
+- [Cleanup "tmp\*.tmp" Chocolatey Packages](http://boxstarter.org/package/url?https://raw.githubusercontent.com/NerdyGriffin/Boxstarter-Scripts/main/cleanup_chocolatey.ps1) after you are done with the boxstarter installs
+
 **Notes:**
 
 1. If you are using WSL there's a followup step we recommend after running the setup script. When the script finishes you will only have a root user with a blank password. You should manually create a non-root user via `$ sudo adduser [USERNAME] sudo`
