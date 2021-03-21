@@ -11,8 +11,8 @@ choco install -y sharex
 # choco install -y xyplorer
 
 # Add a custom registry entry for running Sharex at startup
-# $SharexCommand = """$env:ProgramFiles\Sharex\sharex.exe"""
-# Set-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run' -Name Sharex -Value $SharexCommand
+$SharexCommand = """$env:ProgramFiles\Sharex\sharex.exe"""
+Set-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run' -Name Sharex -Value $SharexCommand
 
 # Modify the OneDrive startup entry to delay, so that it starts after Sharex (to prevent OneDrive from hooking the print hotkey)
 $CurrentOneDriveCommand = Get-ItemPropertyValue -Path 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run' -Name OneDrive;
