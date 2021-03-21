@@ -97,7 +97,7 @@ if ($env:Username -contains 'Public') {
 	$MappedDownloadsPath = 'X:\Downloads'
 	if (($IsDesktop) -And (Test-Path $MappedDownloadsPath)) {
 		Move-LibraryDirectory 'Downloads' $MappedDownloadsPath -ErrorAction SilentlyContinue
-		New-SymbolicLink -Path (Join-Path $env:UserProfile 'Downloads\') -Value $MappedDownloadsPath -ErrorAction SilentlyContinue
+		New-SymbolicLink -Path (Join-Path $env:UserProfile 'Downloads') -Value $MappedDownloadsPath -ErrorAction SilentlyContinue
 	} elseif (($IsDesktop) -And (Test-Path $ServerDownloadsShare)) {
 		Move-LibraryDirectory 'Downloads' $ServerDownloadsShare -ErrorAction SilentlyContinue
 		New-SymbolicLink -Path (Join-Path $env:UserProfile 'Downloads') -Value $ServerDownloadsShare -ErrorAction SilentlyContinue
