@@ -37,7 +37,8 @@ executeScript 'ChocolateyGUI.ps1';
 #--- Administrative Tools ---
 executeScript 'HardwareMonitoring.ps1';
 executeScript 'NetworkTools.ps1';
-executeScript 'RemoteFileAccess.ps1';
+executeScript 'SQLServerManagementStudio.ps1'
+executeScript 'RemoteAndLocalFileSystem.ps1';
 executeScript 'FileAndStorageUtils.ps1';
 
 #--- SSH Server ---
