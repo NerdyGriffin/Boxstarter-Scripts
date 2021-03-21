@@ -14,7 +14,7 @@ choco install -y sharex
 $SharexCommand = """$env:ProgramFiles\Sharex\sharex.exe"""
 Set-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run' -Name Sharex -Value $SharexCommand
 
-# Modify the OneDrive startup entry to delay, so that it starts after Sharex (to prevent OneDrive from hooking the print hotkey)
-$CurrentOneDriveCommand = Get-ItemPropertyValue -Path 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run' -Name OneDrive;
-$NewOneDriveCommand = "sleep 300; $CurrentOneDriveCommand";
-Set-ItemProperty -Path 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run' -Name OneDrive -Value $NewOneDriveCommand;
+# # Modify the OneDrive startup entry to delay, so that it starts after Sharex (to prevent OneDrive from hooking the print hotkey)
+# $CurrentOneDriveCommand = Get-ItemPropertyValue -Path 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run' -Name OneDrive;
+# $NewOneDriveCommand = "$CurrentOneDriveCommand";
+# Set-ItemProperty -Path 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run' -Name OneDrive -Value $NewOneDriveCommand;
