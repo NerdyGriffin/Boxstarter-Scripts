@@ -71,7 +71,7 @@ To run a recipe script, click a link in the table below from your target machine
 |                                                                                                                                                                                      | Containers (Docker, Kubernetes, etc...)                                                         |
 |                                                                                                                                                                                      | Submit a PR with a recommended configuration!                                                   |
 
-- [Cleanup "tmp\*.tmp" Chocolatey Packages](http://boxstarter.org/package/url?https://raw.githubusercontent.com/NerdyGriffin/Boxstarter-Scripts/main/cleanup_chocolatey.ps1) after you are done with the boxstarter installs
+- [Cleanup "tmp\*.tmp" Chocolatey Packages](http://boxstarter.org/package/nr/url?https://raw.githubusercontent.com/NerdyGriffin/Boxstarter-Scripts/main/cleanup_chocolatey.ps1) after you are done with the boxstarter installs
 
 **Notes:**
 
