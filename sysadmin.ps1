@@ -1,5 +1,10 @@
 $Boxstarter.StopOnPackageFailure = $false
 
+$InstallSSHServer = 'a';
+while (($InstallSSHServer -ne 'y') -and ($InstallSSHServer -ne 'n')) {
+	$InstallSSHServer = Read-Host -Prompt 'Would you like to install and configure OpenSSH Server? (This is not recommended on laptops/mobile devices) [y/n] '
+}
+
 Disable-UAC
 
 # Get the base URI path from the ScriptToCall value
@@ -43,7 +48,9 @@ executeScript 'NetworkTools.ps1';
 executeScript 'RemoteAndLocalFileSystem.ps1';
 
 #--- SSH Server ---
-executeScript 'OpenSSHServer.ps1';
+if ($InstallSSHServer -eq 'y') {
+	executeScript 'OpenSSHServer.ps1';
+}
 
 executeScript 'UnofficialChocolateyTools.ps1';
 
