@@ -13,7 +13,6 @@ if (Get-Command nano -ErrorAction SilentlyContinue) {
 }
 git config --global core.symlinks true
 # git config --global core.autocrlf input
-git config --global core.eol lf
 git config --global color.status auto
 git config --global color.diff auto
 git config --global color.branch auto
