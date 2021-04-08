@@ -89,9 +89,7 @@ If ((Test-Path $WallpaperRealTimeScriptRemotePath) -And (Test-Path $WallpaperBat
 }
 
 If (Test-Path (Join-Path $SambaProgramFiles 'realtimesync.bat')) {
-	If (!(Test-Path (Join-Path $env:ProgramData 'Microsoft\Windows\Start Menu\Programs\Startup\realtimesync.bat'))) {
-		Copy-Item -Path (Join-Path $SambaProgramFiles 'realtimesync.bat') -Destination (Join-Path $env:ProgramData 'Microsoft\Windows\Start Menu\Programs\Startup\realtimesync.bat')
-	}
+	Copy-Item -Path (Join-Path $SambaProgramFiles 'realtimesync.bat') -Destination (Join-Path $env:ProgramData 'Microsoft\Windows\Start Menu\Programs\Startup\realtimesync.bat') -Force
 }
 
 Get-Content -Path $Boxstarter.Log | Select-String -Pattern '^Failures$' -Context 0, 2 >> (Join-Path $env:USERPROFILE 'Desktop\boxstarter-failures.log')
