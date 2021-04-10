@@ -63,7 +63,7 @@ try {
 			'# Dependencies for powerline',
 			# '[console]::InputEncoding = [console]::OutputEncoding = New-Object System.Text.UTF8Encoding', # Workaround for oh-my-posh bug in 2021-03-14
 			'Import-Module posh-git',
-			# 'Import-Module oh-my-posh',
+			# 'Import-Module oh-my-posh # Deprecated',
 			# 'Set-PoshPrompt -Theme paradox'
 			# 'Set-PoshPrompt -Theme slimfat'
 			'Set-PoshPrompt -Theme sorin'
@@ -99,7 +99,7 @@ try {
 			'# Customize PSReadline to make PowerShell behave more like Bash',
 			'Import-Module PSReadLine',
 			'Set-PSReadLineOption -EditMode Emacs -HistoryNoDuplicates -HistorySearchCursorMovesToEnd',
-			'Set-PSReadLineOption -BellStyle Audible -DingTone 512',
+			# 'Set-PSReadLineOption -BellStyle Audible -DingTone 512',
 			'# Creates an alias for ls like I use in Bash',
 			'Set-Alias -Name v -Value Get-ChildItem'
 		)
