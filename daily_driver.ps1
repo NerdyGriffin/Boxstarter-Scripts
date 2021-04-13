@@ -47,7 +47,7 @@ executeScript 'Scientific.ps1';
 
 #--- Windows Settings ---
 Disable-BingSearch
-Disable-GameBarTips
+# Disable-GameBarTips
 
 #--- Setting up custom file sync script if possible ---
 choco install -y freefilesync
