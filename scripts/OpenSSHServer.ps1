@@ -2,6 +2,7 @@
 Write-Output 'Make sure that the OpenSSH features are available for install:'
 Get-WindowsCapability -Online | Where-Object Name -Like 'OpenSSH*'
 Get-WindowsCapability -Online | Where-Object Name -Like 'OpenSSH*' | Where-Object State -NotLike 'Installed' | ForEach-Object {
+	Write-Output "Installing $_.Name"
 	$Result = Add-WindowsCapability -Online -Name $_.Name;
 	if ($Result.RestartNeeded) { Invoke-Reboot }
 	Write-Output 'Make sure that the OpenSSH features were installed correctly'
