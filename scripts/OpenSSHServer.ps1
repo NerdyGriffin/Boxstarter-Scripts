@@ -1,5 +1,6 @@
 #--- SSH ---
 
+# Based on this documentation: https://docs.microsoft.com/en-us/windows-server/administration/openssh/openssh_install_firstuse
 #--- Install OpenSSH using PowerShell ---
 Write-Output 'Make sure that the OpenSSH features are available for install:'
 Get-WindowsCapability -Online | Where-Object Name -Like 'OpenSSH*'
@@ -28,6 +29,7 @@ if (!($ExistingRule)) {
 	$ExistingRule | Enable-NetFirewallRule
 }
 
+# Based on this documentation: https://docs.microsoft.com/en-us/windows-server/administration/openssh/openssh_server_configuration
 #--- Configure the default shell for OpenSSH ---
 $DefaultShellPath = ''
 if (Get-Command pwsh.exe) {
