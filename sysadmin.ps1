@@ -7,20 +7,6 @@ if (!$InstallSSHServer) {
 # Set a default if not passed
 if (!$InstallSSHServer) { $InstallSSHServer = 'n' }
 
-# Prompt user whether to disable sleep
-if (!$DisableSleep) {
-	$DisableSleep = Read-Host -Prompt 'Would you like to disable sleep? [y/n] (default: no)'
-}
-# Set a default if not passed
-if (!$DisableSleep) { $DisableSleep = 'n' }
-
-# Prompt user whether to disable fast startup
-if (!$DisableFastStartup) {
-	$DisableFastStartup = Read-Host -Prompt 'Would you like to disable fast startup? [y/n] (default: yes)'
-}
-# Set a default if not passed
-if (!$DisableFastStartup) { $DisableFastStartup = 'y' }
-
 Disable-UAC
 
 # Get the base URI path from the ScriptToCall value
@@ -69,17 +55,6 @@ executeScript 'RemoteAndLocalFileSystem.ps1';
 if ($InstallSSHServer | Select-String 'y') {
 	executeScript 'OpenSSHServer.ps1';
 }
-
-#--- Disable Sleep ---
-if ($DisableSleep | Select-String 'y') {
-	executeScript 'DisableSleep.ps1';
-}
-
-#--- Disable Fast Startup ---
-if ($DisableFastStartup | Select-String 'y') {
-	executeScript 'DisableFastStartup.ps1';
-}
-
 
 executeScript 'UnofficialChocolateyTools.ps1';
 
