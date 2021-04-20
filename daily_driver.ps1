@@ -28,6 +28,7 @@ executeScript 'FileExplorerSettings.ps1';
 executeScript 'RemoveDefaultApps.ps1';
 executeScript 'CommonDevTools.ps1';
 executeScript 'WindowsPowerUser.ps1';
+executeScript 'CustomBackup.ps1';
 
 #--- Graphics Driver Support
 executeScript 'NvidiaGraphics.ps1';
@@ -48,51 +49,6 @@ executeScript 'Scientific.ps1';
 #--- Windows Settings ---
 Disable-BingSearch
 # Disable-GameBarTips
-
-#--- Setting up custom file sync script if possible ---
-choco install -y freefilesync
-RefreshEnv;
-Start-Sleep -Seconds 1;
-
-$SambaProgramFiles = '\\GRIFFINUNRAID\programfiles'
-
-If (Test-Path $SambaProgramFiles) {
-	$IsLaptop = ($env:USERDOMAIN | Select-String 'LAPTOP')
-	If ($IsLaptop) {
-		$RealTimeScript = 'BackupWindowsLaptop.ffs_real'
-		$BackupScript = 'BackupWindowsLaptop.ffs_batch'
-	} else {
-		$RealTimeScript = 'BackupWindowsDesktop.ffs_real'
-		$BackupScript = 'BackupWindowsDesktop.ffs_batch'
-	}
-
-	$RealTimeScriptRemotePath = (Join-Path $SambaProgramFiles $RealTimeScript)
-	$RealTimeScriptLocalPath = (Join-Path $env:ProgramData $RealTimeScript)
-	$BackupScriptRemotePath = (Join-Path $SambaProgramFiles $BackupScript)
-	$BackupScriptLocalPath = (Join-Path $env:ProgramData $BackupScript)
-
-	If ((Test-Path $RealTimeScriptRemotePath) -And (Test-Path $BackupScriptRemotePath)) {
-		Copy-Item -Path $RealTimeScriptRemotePath -Destination $RealTimeScriptLocalPath -Force
-		Copy-Item -Path $BackupScriptRemotePath -Destination $BackupScriptLocalPath -Force
-	}
-
-	$WallpaperRealTimeScript = 'MirrorCuratedSlideshowWallpaper.ffs_real'
-	$WallpaperBatchScript = 'MirrorCuratedSlideshowWallpaper.ffs_batch'
-
-	$WallpaperRealTimeScriptRemotePath = (Join-Path $SambaProgramFiles $WallpaperRealTimeScript)
-	$WallpaperRealTimeScriptLocalPath = (Join-Path $env:ProgramData $WallpaperRealTimeScript)
-	$WallpaperBatchScriptRemotePath = (Join-Path $SambaProgramFiles $WallpaperBatchScript)
-	$WallpaperBatchScriptLocalPath = (Join-Path $env:ProgramData $WallpaperBatchScript)
-
-	If ((Test-Path $WallpaperRealTimeScriptRemotePath) -And (Test-Path $WallpaperBatchScriptRemotePath)) {
-		Copy-Item -Path $WallpaperRealTimeScriptRemotePath -Destination $WallpaperRealTimeScriptLocalPath -Force
-		Copy-Item -Path $WallpaperBatchScriptRemotePath -Destination $WallpaperBatchScriptLocalPath -Force
-	}
-
-	If (Test-Path (Join-Path $SambaProgramFiles 'realtimesync.bat')) {
-		Copy-Item -Path (Join-Path $SambaProgramFiles 'realtimesync.bat') -Destination (Join-Path $env:ProgramData 'Microsoft\Windows\Start Menu\Programs\Startup\realtimesync.bat') -Force
-	}
-}
 
 Get-Content -Path $Boxstarter.Log | Select-String -Pattern '^Failures$' -Context 0, 2 >> (Join-Path $env:USERPROFILE 'Desktop\boxstarter-failures.log')
 

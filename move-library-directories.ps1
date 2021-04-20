@@ -1,9 +1,20 @@
 $Boxstarter.StopOnPackageFailure = $false
 
 class LibraryInfo {
-	[ValidateNotNullOrEmpty()][string]$LibraryName # The name of the library (must match the expected syntax of Move-LibraryDirectory)
-	[Alias('PSPath')][ValidateNotNullOrEmpty()][string]$OriginalPath # The original (default) path to the library
-	[Alias('Target')][string]$DestinationPath # The destination path where you would like the library to be moved
+	[Alias('Name')]
+	[ValidateNotNullOrEmpty()]
+	[string]
+	$LibraryName # The name of the library (must match the expected syntax of Move-LibraryDirectory)
+
+	[Alias('PSPath')]
+	[ValidateNotNullOrEmpty()]
+	[string]
+	$OriginalPath # The original (default) path to the library
+
+	[Alias('Destination')]
+	[ValidateNotNullOrEmpty()]
+	[string]
+	$DestinationPath # The destination path where you would like the library to be moved
 
 	# Class Constructor
 	LibraryInfo(
@@ -126,7 +137,9 @@ if ($env:Username -contains 'Public') {
 	$LibraryHashTable.Values | ForEach-Object {
 		if ($_.OriginalPath -ne $_.DestinationPath) {
 			$Name = $_.LibraryName
-			Write-Host "Moving library '$Name' from" $_.OriginalPath 'to' $_.DestinationPath | Write-Verbose
+			$Source = $_.OriginalPath
+			$Destination = $_.DestinationPath
+			Write-Host "Moving library ""$Name"" from ""$Source"" to ""$Destination""" | Write-Verbose
 			Move-LibraryDirectory ($_.LibraryName) ($_.DestinationPath)
 			New-SymbolicLink -Path ($_.OriginalPath) -Value ($_.DestinationPath) -ErrorAction SilentlyContinue
 		}
