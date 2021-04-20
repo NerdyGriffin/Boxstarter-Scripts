@@ -37,6 +37,11 @@ if ($env:USERDOMAIN | Select-String 'DESKTOP') {
 }
 executeScript 'GameModdingTools.ps1';
 
+#--- Disable Sticky keys prompt ---
+# Based on https://github.com/ChrisTitusTech/win10script
+Write-Output 'Disabling Sticky keys prompt...'
+Set-ItemProperty -Path 'HKCU:\Control Panel\Accessibility\StickyKeys' -Name 'Flags' -Type String -Value '506'
+
 #--- Service & Registry Tweaks for Origin with Mapped Network Drives
 
 # Disable the "Origin Client Service" to force Origin to execute downloads as Administrator of your User rather than execute under the SYSTEM user account

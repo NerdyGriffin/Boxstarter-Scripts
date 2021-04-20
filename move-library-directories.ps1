@@ -1,5 +1,32 @@
 $Boxstarter.StopOnPackageFailure = $false
 
+class LibraryInfo {
+	[Alias('Name')]
+	[ValidateNotNullOrEmpty()]
+	[string]
+	$LibraryName # The name of the library (must match the expected syntax of Move-LibraryDirectory)
+
+	[Alias('PSPath')]
+	[ValidateNotNullOrEmpty()]
+	[string]
+	$OriginalPath # The original (default) path to the library
+
+	[Alias('Destination')]
+	[ValidateNotNullOrEmpty()]
+	[string]
+	$DestinationPath # The destination path where you would like the library to be moved
+
+	# Class Constructor
+	LibraryInfo(
+		[string]$name,
+		[string]$path
+	) {
+		$this.LibraryName = $name
+		$this.OriginalPath = $path
+		$this.DestinationPath = $path
+	}
+}
+
 Function New-SymbolicLink {
 	param(
 		# Specifies the path of the location of the new link. You must include the name of the new link in Path .
@@ -68,45 +95,54 @@ if ($env:Username -contains 'Public') {
 		Invoke-Expression $MapNetworkDriveScript
 	}
 
+	$LibraryHashTable = @{
+		'Music'     = [LibraryInfo]::new('My Music', (Join-Path $env:UserProfile 'Music'));
+		'Pictures'  = [LibraryInfo]::new('My Pictures', (Join-Path $env:UserProfile 'Pictures'));
+		'Videos'    = [LibraryInfo]::new('My Video', (Join-Path $env:UserProfile 'Videos'));
+		'Downloads' = [LibraryInfo]::new('Downloads', (Join-Path $env:UserProfile 'Downloads'));
+		'Documents' = [LibraryInfo]::new('Personal', (Join-Path $env:UserProfile 'Documents'))
+	}
+
 	$IsDesktop = ($env:USERDOMAIN | Select-String 'DESKTOP')
 
 	if (($IsDesktop) -And (Test-Path $ServerMediaShare)) {
 		Write-Host 'Moving Library Directories to server shares...'
 
-		Move-LibraryDirectory 'My Music' (Join-Path $ServerMediaShare 'Music') -ErrorAction SilentlyContinue
-		New-SymbolicLink -Path (Join-Path $env:UserProfile 'Music') -Value (Join-Path $ServerMediaShare 'Music') -ErrorAction SilentlyContinue
-
-		Move-LibraryDirectory 'My Pictures' (Join-Path $ServerMediaShare 'Pictures') -ErrorAction SilentlyContinue
-		New-SymbolicLink -Path (Join-Path $env:UserProfile 'Pictures') -Value (Join-Path $ServerMediaShare 'Pictures') -ErrorAction SilentlyContinue
-
-		Move-LibraryDirectory 'My Video' (Join-Path $ServerMediaShare 'Videos') -ErrorAction SilentlyContinue
-		New-SymbolicLink -Path (Join-Path $env:UserProfile 'Videos') -Value (Join-Path $ServerMediaShare 'Videos') -ErrorAction SilentlyContinue
+		$LibraryHashTable['Music'].DestinationPath = (Join-Path $ServerMediaShare 'Music')
+		$LibraryHashTable['Pictures'].DestinationPath = (Join-Path $ServerMediaShare 'Pictures')
+		$LibraryHashTable['Videos'].DestinationPath = (Join-Path $ServerMediaShare 'Videos')
 	} elseif (Test-Path 'D:\') {
 		Write-Host 'Moving Library Directories to D:\ ...'
 
-		Move-LibraryDirectory 'My Music' (Join-Path (Join-Path 'D:\Users' $env:Username) 'Music')
-		New-SymbolicLink -Path (Join-Path $env:UserProfile 'Music') -Value (Join-Path (Join-Path 'D:\Users' $env:Username) 'Music') -ErrorAction SilentlyContinue
-
-		Move-LibraryDirectory 'My Pictures' (Join-Path (Join-Path 'D:\Users' $env:Username) 'Pictures')
-		New-SymbolicLink -Path (Join-Path $env:UserProfile 'Pictures') -Value (Join-Path (Join-Path 'D:\Users' $env:Username) 'Pictures') -ErrorAction SilentlyContinue
-
-		Move-LibraryDirectory 'My Video' (Join-Path (Join-Path 'D:\Users' $env:Username) 'Videos')
-		New-SymbolicLink -Path (Join-Path $env:UserProfile 'Videos') -Value (Join-Path (Join-Path 'D:\Users' $env:Username) 'Videos') -ErrorAction SilentlyContinue
+		$LibraryHashTable['Music'].DestinationPath = (Join-Path 'D:\' (Split-Path -Path ($LibraryHashTable['Music'].OriginalPath) -NoQualifier))
+		$LibraryHashTable['Pictures'].DestinationPath = (Join-Path 'D:\' (Split-Path -Path ($LibraryHashTable['Pictures'].OriginalPath) -NoQualifier))
+		$LibraryHashTable['Videos'].DestinationPath = (Join-Path 'D:\' (Split-Path -Path ($LibraryHashTable['Videos'].OriginalPath) -NoQualifier))
 	}
 
 	$MappedDownloadsPath = 'X:\Downloads'
 	if (($IsDesktop) -And (Test-Path $MappedDownloadsPath)) {
-		Move-LibraryDirectory 'Downloads' $MappedDownloadsPath -ErrorAction SilentlyContinue
-		New-SymbolicLink -Path (Join-Path $env:UserProfile 'Downloads') -Value $MappedDownloadsPath -ErrorAction SilentlyContinue
+		$LibraryHashTable['Downloads'].DestinationPath = $MappedDownloadsPath
 	} elseif (($IsDesktop) -And (Test-Path $ServerDownloadsShare)) {
-		Move-LibraryDirectory 'Downloads' $ServerDownloadsShare -ErrorAction SilentlyContinue
-		New-SymbolicLink -Path (Join-Path $env:UserProfile 'Downloads') -Value $ServerDownloadsShare -ErrorAction SilentlyContinue
+		$LibraryHashTable['Downloads'].DestinationPath = $ServerDownloadsShare
 	} elseif (Test-Path 'D:\') {
-		Move-LibraryDirectory 'Personal' (Join-Path (Join-Path 'D:\Users' $env:Username) 'Documents')
-		New-SymbolicLink -Path (Join-Path $env:UserProfile 'Documents') -Value (Join-Path (Join-Path 'D:\Users' $env:Username) 'Documents') -ErrorAction SilentlyContinue
+		$PSBootDrive = Get-PSDrive C
+		# Only move the documents folder if the boot drive of this computer is smaller than the given threshold
+		if (($PSBootDrive.Used + $PSBootDrive.Free) -lt (0.5TB)) {
+			$LibraryHashTable['Documents'].DestinationPath = (Join-Path 'D:\' (Split-Path -Path ($LibraryHashTable['Documents'].OriginalPath) -NoQualifier))
+		}
 
-		Move-LibraryDirectory 'Downloads' (Join-Path (Join-Path 'D:\Users' $env:Username) 'Downloads')
-		New-SymbolicLink -Path (Join-Path $env:UserProfile 'Downloads') -Value (Join-Path (Join-Path 'D:\Users' $env:Username) 'Downloads') -ErrorAction SilentlyContinue
+		$LibraryHashTable['Downloads'].DestinationPath = (Join-Path 'D:\' (Split-Path -Path ($LibraryHashTable['Downloads'].OriginalPath) -NoQualifier))
+	}
+
+	$LibraryHashTable.Values | ForEach-Object {
+		if ($_.OriginalPath -ne $_.DestinationPath) {
+			$Name = $_.LibraryName
+			$Source = $_.OriginalPath
+			$Destination = $_.DestinationPath
+			Write-Host "Moving library ""$Name"" from ""$Source"" to ""$Destination""" | Write-Verbose
+			Move-LibraryDirectory ($_.LibraryName) ($_.DestinationPath)
+			New-SymbolicLink -Path ($_.OriginalPath) -Value ($_.DestinationPath) -ErrorAction SilentlyContinue
+		}
 	}
 }
 
