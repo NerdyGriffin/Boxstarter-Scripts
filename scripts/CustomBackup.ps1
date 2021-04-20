@@ -27,6 +27,8 @@ If (Test-Path $SambaProgramFiles) {
 		Copy-Item -Path $BackupFFSRealRemotePath -Destination $BackupFFSRealLocalPath -Force
 		Copy-Item -Path $BackupFFSBatchRemotePath -Destination $BackupFFSBatchLocalPath -Force
 		Set-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run' -Name RealTimeSyncBackup -Value $BackupCommand -Force
+		Write-Output 'Added the following registry entry for the backup script:'
+		Get-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run' -Name RealTimeSyncBackup
 	}
 
 	$WallpaperFFSReal = 'MirrorCuratedSlideshowWallpaper.ffs_real'
@@ -43,6 +45,8 @@ If (Test-Path $SambaProgramFiles) {
 		Copy-Item -Path $WallpaperFFSRealRemotePath -Destination $WallpaperFFSRealLocalPath -Force
 		Copy-Item -Path $WallpaperFFSBatchRemotePath -Destination $WallpaperFFSBatchLocalPath -Force
 		Set-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run' -Name RealTimeSyncWallpaper -Value $WallpaperCommand -Force
+		Write-Output 'Added the following registry entry for the Wallpaper script:'
+		Get-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run' -Name RealTimeSyncWallpaper
 	}
 
 	# If (Test-Path (Join-Path $SambaProgramFiles 'realtimesync.bat')) {
