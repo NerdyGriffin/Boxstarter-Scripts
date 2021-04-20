@@ -102,8 +102,12 @@ if ($env:Username -contains 'Public') {
 		Move-LibraryDirectory 'Downloads' $ServerDownloadsShare -ErrorAction SilentlyContinue
 		New-SymbolicLink -Path (Join-Path $env:UserProfile 'Downloads') -Value $ServerDownloadsShare -ErrorAction SilentlyContinue
 	} elseif (Test-Path 'D:\') {
-		Move-LibraryDirectory 'Personal' (Join-Path (Join-Path 'D:\Users' $env:Username) 'Documents')
-		New-SymbolicLink -Path (Join-Path $env:UserProfile 'Documents') -Value (Join-Path (Join-Path 'D:\Users' $env:Username) 'Documents') -ErrorAction SilentlyContinue
+		$PSBootDrive = Get-PSDrive C
+		# Only move the documents folder if the boot drive of this computer is smaller than the given threshold
+		if (($PSBootDrive.Used + $PSBootDrive.Free) -lt (0.5TB)) {
+			Move-LibraryDirectory 'Personal' (Join-Path (Join-Path 'D:\Users' $env:Username) 'Documents')
+			New-SymbolicLink -Path (Join-Path $env:UserProfile 'Documents') -Value (Join-Path (Join-Path 'D:\Users' $env:Username) 'Documents') -ErrorAction SilentlyContinue
+		}
 
 		Move-LibraryDirectory 'Downloads' (Join-Path (Join-Path 'D:\Users' $env:Username) 'Downloads')
 		New-SymbolicLink -Path (Join-Path $env:UserProfile 'Downloads') -Value (Join-Path (Join-Path 'D:\Users' $env:Username) 'Downloads') -ErrorAction SilentlyContinue
