@@ -34,21 +34,21 @@ pwsh.exe -Command $ScriptBlock
 #--- Install & Configure the Powerline Modules
 try {
 	Write-Host 'Installing Posh-Git and Oh-My-Posh - [Dependencies for Powerline]'
+	Write-Host 'Installing Posh-Git...'
+	if (-Not(Get-Module -ListAvailable -Name posh-git)) {
+		Install-Module posh-git -Scope CurrentUser -AllowClobber -SkipPublisherCheck -Force -Verbose
+	} else { Write-Host "Module 'posh-git' already installed" }
+	refreshenv
+	Write-Host 'Installing Oh-My-Posh...'
+	if (-Not(Get-Module -ListAvailable -Name oh-my-posh)) {
+		try {
+			Install-Module oh-my-posh -Scope CurrentUser -AllowClobber -SkipPublisherCheck -Force -Verbose -AllowPrerelease
+		} catch {
+			Install-Module oh-my-posh -Scope CurrentUser -AllowClobber -SkipPublisherCheck -Force -Verbose
+		}
+	} else { Write-Host "Module 'oh-my-posh' already installed" }
+	refreshenv
 	[ScriptBlock]$ScriptBlock = {
-		Write-Host 'Installing Posh-Git...'
-		if (-Not(Get-Module -ListAvailable -Name posh-git)) {
-			Install-Module posh-git -Scope CurrentUser -AllowClobber -SkipPublisherCheck -Force -Verbose
-		} else { Write-Host "Module 'posh-git' already installed" }
-		refreshenv
-		Write-Host 'Installing Oh-My-Posh...'
-		if (-Not(Get-Module -ListAvailable -Name oh-my-posh)) {
-			try {
-				Install-Module oh-my-posh -Scope CurrentUser -AllowClobber -SkipPublisherCheck -Force -Verbose -AllowPrerelease
-			} catch {
-				Install-Module oh-my-posh -Scope CurrentUser -AllowClobber -SkipPublisherCheck -Force -Verbose
-			}
-		} else { Write-Host "Module 'oh-my-posh' already installed" }
-		refreshenv
 		Write-Host 'Appending Configuration for Powerline to PowerShell Profile...'
 		$PowerlineProfile = @(
 			'# Dependencies for powerline',
@@ -84,11 +84,11 @@ try {
 #--- Install & Configure the PSReadline Module
 try {
 	Write-Host 'Installing PSReadLine -- [Bash-like CLI features and Optional Dependency for Powerline]'
+	if (-Not(Get-Module -ListAvailable -Name PSReadLine)) {
+		Install-Module -Name PSReadLine -Scope CurrentUser -AllowClobber -SkipPublisherCheck -Force -Verbose
+	} else { Write-Host "Module 'PSReadLine' already installed" }
+	refreshenv
 	[ScriptBlock]$ScriptBlock = {
-		if (-Not(Get-Module -ListAvailable -Name PSReadLine)) {
-			Install-Module -Name PSReadLine -Scope CurrentUser -AllowClobber -SkipPublisherCheck -Force -Verbose
-		} else { Write-Host "Module 'PSReadLine' already installed" }
-		refreshenv
 		Write-Host 'Appending Configuration for PSReadLine to PowerShell Profile...'
 		$PSReadlineProfile = @(
 			'# Customize PSReadline to make PowerShell behave more like Bash',
@@ -178,17 +178,8 @@ try {
 		Install-Module -Name Pipeworks -Scope CurrentUser -AllowClobber -SkipPublisherCheck -Force -Verbose
 	} else { Write-Host "Module 'Pipeworks' already installed" }
 	refreshenv
-	[ScriptBlock]$ScriptBlock = {
-		if (-Not(Get-Module -ListAvailable -Name Pipeworks)) {
-			Install-Module -Name Pipeworks -Scope CurrentUser -AllowClobber -SkipPublisherCheck -Force -Verbose
-		} else { Write-Host "Module 'Pipeworks' already installed" }
-	}
-	# Run the script block in PowerShell
-	powershell.exe -Command $ScriptBlock;
-	# Run the script block in PowerShell Core
-	pwsh.exe -Command $ScriptBlock;
 } catch {
-	Write-Host  'Pipeworks failed to install' | Write-Warning
+	Write-Host 'Pipeworks failed to install' | Write-Warning
 	Write-Host ' See the log for details (' $Boxstarter.Log ').' | Write-Debug
 	# Move on if Pipeworks install fails due to errors
 }
@@ -202,23 +193,19 @@ try {
 		Install-Module -Name CredentialManager
 	} else { Write-Host "Module 'CredentialManager' already installed" }
 	refreshenv
-	[ScriptBlock]$ScriptBlock = {
-		if (-Not(Get-Module -ListAvailable -Name CredentialManager)) {
-			Install-Module -Name CredentialManager
-		} else { Write-Host "Module 'CredentialManager' already installed" }
-	}
-	# Run the script block in PowerShell
-	powershell.exe -Command $ScriptBlock;
-	# Run the script block in PowerShell Core
-	pwsh.exe -Command $ScriptBlock;
 } catch {
 	Write-Host  'CredentialManager failed to install' | Write-Warning
 	Write-Host ' See the log for details (' $Boxstarter.Log ').' | Write-Debug
 	# Move on if CredentialManager install fails due to errors
 }
 
-$WindowsTerminalSettings = (Join-Path $env:LOCALAPPDATA '\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\')
+
+$WindowsTerminalSettingsDir = (Join-Path $env:LOCALAPPDATA '\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\')
 $SymLinkPath = (Join-Path $env:USERPROFILE 'WindowsTerminalSettings')
-if ((-Not(Test-Path $SymLinkPath)) -Or (-Not(Get-Item $SymLinkPath | Where-Object Attributes -Match ReparsePoint))) {
-	New-Item -Path $SymLinkPath -ItemType SymbolicLink -Value $WindowsTerminalSettings -Force -Verbose
+if ((Test-Path $WindowsTerminalSettingsDir) -Or (-Not(Test-Path $SymLinkPath)) -Or (-Not(Get-Item $SymLinkPath | Where-Object Attributes -Match ReparsePoint))) {
+	New-Item -Path $SymLinkPath -ItemType SymbolicLink -Value $WindowsTerminalSettingsDir -Force -Verbose
+	$RemoteBackup = '\\GRIFFINUNRAID\backup\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\.git\'
+	if ((Test-Path $RemoteBackup) -And (-Not(Test-Path (Join-Path $WindowsTerminalSettingsDir '.git')))) {
+		Copy-Item -Path $RemoteBackup -Destination (Join-Path $WindowsTerminalSettingsDir '.git')
+	}
 }
