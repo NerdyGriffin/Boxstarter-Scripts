@@ -216,3 +216,9 @@ try {
 	Write-Host ' See the log for details (' $Boxstarter.Log ').' | Write-Debug
 	# Move on if CredentialManager install fails due to errors
 }
+
+$WindowsTerminalSettings = (Join-Path $env:LOCALAPPDATA '\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\')
+$SymLinkPath = (Join-Path $env:USERPROFILE 'WindowsTerminalSettings')
+if ((-Not(Test-Path $SymLinkPath)) -Or (-Not(Get-Item $SymLinkPath | Where-Object Attributes -Match ReparsePoint))) {
+	New-Item -Path $SymLinkPath -ItemType SymbolicLink -Value $WindowsTerminalSettings -Force -Verbose
+}
