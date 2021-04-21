@@ -25,48 +25,39 @@ refreshenv
 		Set-Content -Path $PROFILE -Value ($ProfileString, (Get-Content $PROFILE))
 	}
 }
-# Add the lines to the $PROFILE for PowerShell
+# Run the script block in PowerShell
 powershell.exe -Command $ScriptBlock
-# Do the same for PowerShell Core
+# Run the script block in PowerShell Core
 pwsh.exe -Command $ScriptBlock
 
 
 #--- Install & Configure the Powerline Modules
-choco install -y poshgit
-choco install -y oh-my-posh
-choco install -y posh-github
-refreshenv
 try {
 	Write-Host 'Installing Posh-Git and Oh-My-Posh - [Dependencies for Powerline]'
-	if (-Not(Get-Module -ListAvailable -Name posh-git)) {
-		Install-Module posh-git -Scope CurrentUser -AllowClobber -SkipPublisherCheck -Force -Verbose
-	} else { Write-Host "Module 'posh-git' already installed" }
-	if (-Not(Get-Module -ListAvailable -Name oh-my-posh)) {
-		try {
-			Install-Module oh-my-posh -Scope CurrentUser -AllowClobber -SkipPublisherCheck -Force -Verbose -AllowPrerelease
-		} catch {
-			Install-Module oh-my-posh -Scope CurrentUser -AllowClobber -SkipPublisherCheck -Force -Verbose
-		}
-	} else { Write-Host "Module 'oh-my-posh' already installed" }
-	refreshenv
 	[ScriptBlock]$ScriptBlock = {
-		Write-Host 'Prepending Custom Message to PowerShell Profile...'
-		$ProfileString = 'Write-Output "Loading Custom PowerShell Profile..."'
-		Write-Host >> $PROFILE # This will create the file if it does not already exist, otherwise it will leave the existing file unchanged
-		if (-Not(Select-String -Pattern $ProfileString -Path $PROFILE )) {
-			Write-Output 'Attempting to add the following line to $PROFILE :' | Write-Debug
-			Write-Output $ProfileString | Write-Debug
-			Set-Content -Path $PROFILE -Value ($ProfileString, (Get-Content $PROFILE))
-		}
+		Write-Host 'Installing Posh-Git...'
+		if (-Not(Get-Module -ListAvailable -Name posh-git)) {
+			Install-Module posh-git -Scope CurrentUser -AllowClobber -SkipPublisherCheck -Force -Verbose
+		} else { Write-Host "Module 'posh-git' already installed" }
+		refreshenv
+		Write-Host 'Installing Oh-My-Posh...'
+		if (-Not(Get-Module -ListAvailable -Name oh-my-posh)) {
+			try {
+				Install-Module oh-my-posh -Scope CurrentUser -AllowClobber -SkipPublisherCheck -Force -Verbose -AllowPrerelease
+			} catch {
+				Install-Module oh-my-posh -Scope CurrentUser -AllowClobber -SkipPublisherCheck -Force -Verbose
+			}
+		} else { Write-Host "Module 'oh-my-posh' already installed" }
+		refreshenv
 		Write-Host 'Appending Configuration for Powerline to PowerShell Profile...'
 		$PowerlineProfile = @(
 			'# Dependencies for powerline',
 			# '[console]::InputEncoding = [console]::OutputEncoding = New-Object System.Text.UTF8Encoding', # Workaround for oh-my-posh bug in 2021-03-14
 			'Import-Module posh-git',
-			# 'Import-Module oh-my-posh # Deprecated',
+			'Set-PoshPrompt -Theme microverse-power'
 			# 'Set-PoshPrompt -Theme paradox'
 			# 'Set-PoshPrompt -Theme slimfat'
-			'Set-PoshPrompt -Theme sorin'
+			# 'Set-PoshPrompt -Theme sorin'
 		)
 		Write-Host >> $PROFILE # This will create the file if it does not already exist, otherwise it will leave the existing file unchanged
 		if (-Not(Select-String -Pattern $PowerlineProfile[0] -Path $PROFILE )) {
@@ -75,10 +66,14 @@ try {
 			Add-Content -Path $PROFILE -Value $PowerlineProfile
 		}
 	}
-	# Add the lines to the $PROFILE for PowerShell
+	# Run the script block in PowerShell
 	powershell.exe -Command $ScriptBlock;
-	# Do the same for PowerShell Core
+	# Run the script block in PowerShell Core
 	pwsh.exe -Command $ScriptBlock;
+	# Install additional Powerline-related packages via chocolatey
+	# choco install -y poshgit
+	# choco install -y posh-github
+	# refreshenv
 } catch {
 	Write-Host  'Powerline failed to install' | Write-Warning
 	Write-Host ' See the log for details (' $Boxstarter.Log ').' | Write-Debug
@@ -89,16 +84,16 @@ try {
 #--- Install & Configure the PSReadline Module
 try {
 	Write-Host 'Installing PSReadLine -- [Bash-like CLI features and Optional Dependency for Powerline]'
-	if (-Not(Get-Module -ListAvailable -Name PSReadLine)) {
-		Install-Module -Name PSReadLine -Scope AllUsers -AllowClobber -SkipPublisherCheck -Force -Verbose
-	} else { Write-Host "Module 'PSReadLine' already installed" }
-	refreshenv
 	[ScriptBlock]$ScriptBlock = {
+		if (-Not(Get-Module -ListAvailable -Name PSReadLine)) {
+			Install-Module -Name PSReadLine -Scope CurrentUser -AllowClobber -SkipPublisherCheck -Force -Verbose
+		} else { Write-Host "Module 'PSReadLine' already installed" }
+		refreshenv
 		Write-Host 'Appending Configuration for PSReadLine to PowerShell Profile...'
 		$PSReadlineProfile = @(
 			'# Customize PSReadline to make PowerShell behave more like Bash',
 			'Import-Module PSReadLine',
-			'Set-PSReadLineOption -EditMode Emacs -HistoryNoDuplicates -HistorySearchCursorMovesToEnd',
+			'Set-PSReadLineOption -DingTone 440 -EditMode Emacs -HistoryNoDuplicates -HistorySearchCursorMovesToEnd',
 			# 'Set-PSReadLineOption -BellStyle Audible -DingTone 512',
 			'# Creates an alias for ls like I use in Bash',
 			'Set-Alias -Name v -Value Get-ChildItem'
@@ -110,9 +105,9 @@ try {
 			Add-Content -Path $PROFILE -Value $PSReadlineProfile
 		}
 	}
-	# Add the lines to the $PROFILE for PowerShell
+	# Run the script block in PowerShell
 	powershell.exe -Command $ScriptBlock;
-	# Do the same for PowerShell Core
+	# Run the script block in PowerShell Core
 	pwsh.exe -Command $ScriptBlock;
 } catch {
 	Write-Host  'PSReadline failed to install' | Write-Warning
@@ -122,6 +117,7 @@ try {
 
 
 #--- Import Chocolatey Modules
+Write-Host 'Appending Configuration for Chocolatey to PowerShell Profile...'
 [ScriptBlock]$ChocoScriptBlock = {
 	Write-Host 'Appending Configuration for Chocolatey to PowerShell Profile...'
 	$ChocolateyProfile = @(
@@ -138,9 +134,9 @@ try {
 		Add-Content -Path $PROFILE -Value $ChocolateyProfile
 	}
 }
-# Add the lines to the $PROFILE for PowerShell
+# Run the script block in PowerShell
 powershell.exe -Command $ChocoScriptBlock
-# Do the same for PowerShell Core
+# Run the script block in PowerShell Core
 pwsh.exe -Command $ChocoScriptBlock
 
 
@@ -168,9 +164,9 @@ pwsh.exe -Command $ChocoScriptBlock
 # 		Add-Content -Path $PROFILE -Value $BoxstarterProfile
 # 	}
 # }
-# # Add the lines to the $PROFILE for PowerShell
+# # Run the script block in PowerShell
 # powershell.exe -Command $BoxstarterScriptBlock
-# # Do the same for PowerShell Core
+# # Run the script block in PowerShell Core
 # pwsh.exe -Command $BoxstarterScriptBlock
 
 
@@ -182,6 +178,15 @@ try {
 		Install-Module -Name Pipeworks -Scope CurrentUser -AllowClobber -SkipPublisherCheck -Force -Verbose
 	} else { Write-Host "Module 'Pipeworks' already installed" }
 	refreshenv
+	[ScriptBlock]$ScriptBlock = {
+		if (-Not(Get-Module -ListAvailable -Name Pipeworks)) {
+			Install-Module -Name Pipeworks -Scope CurrentUser -AllowClobber -SkipPublisherCheck -Force -Verbose
+		} else { Write-Host "Module 'Pipeworks' already installed" }
+	}
+	# Run the script block in PowerShell
+	powershell.exe -Command $ScriptBlock;
+	# Run the script block in PowerShell Core
+	pwsh.exe -Command $ScriptBlock;
 } catch {
 	Write-Host  'Pipeworks failed to install' | Write-Warning
 	Write-Host ' See the log for details (' $Boxstarter.Log ').' | Write-Debug
@@ -197,6 +202,15 @@ try {
 		Install-Module -Name CredentialManager
 	} else { Write-Host "Module 'CredentialManager' already installed" }
 	refreshenv
+	[ScriptBlock]$ScriptBlock = {
+		if (-Not(Get-Module -ListAvailable -Name CredentialManager)) {
+			Install-Module -Name CredentialManager
+		} else { Write-Host "Module 'CredentialManager' already installed" }
+	}
+	# Run the script block in PowerShell
+	powershell.exe -Command $ScriptBlock;
+	# Run the script block in PowerShell Core
+	pwsh.exe -Command $ScriptBlock;
 } catch {
 	Write-Host  'CredentialManager failed to install' | Write-Warning
 	Write-Host ' See the log for details (' $Boxstarter.Log ').' | Write-Debug
