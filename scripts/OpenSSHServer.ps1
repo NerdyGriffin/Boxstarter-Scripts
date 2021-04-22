@@ -1,5 +1,12 @@
 #--- SSH ---
 
+# See https://gitlab.com/DarwinJS/ChocoPackages/tree/master/openssh#package-parameters
+choco install openssh -y -params '"/SSHServerFeature /PathSpecsToProbeForShellEXEString:$env:ProgramFiles\PowerShell\*\pwsh.exe;$env:windir\System32\WindowsPowerShell\v1.0\powershell.exe"'
+
+# if (Test-Path 'C:\Program Files\OpenSSH-Win64\FixHostFilePermissions.ps1') {
+# 	. 'C:\Program Files\OpenSSH-Win64\FixHostFilePermissions.ps1'
+# }
+
 # # Based on this documentation: https://docs.microsoft.com/en-us/windows-server/administration/openssh/openssh_install_firstuse
 # #--- Install OpenSSH using PowerShell ---
 # Write-Output 'Make sure that the OpenSSH features are available for install:'
@@ -12,13 +19,6 @@
 # 	Write-Output 'Make sure that the OpenSSH features were installed correctly'
 # 	Get-WindowsCapability -Online | Where-Object Name -Like 'OpenSSH*' | Write-Output
 # }
-
-# See https://gitlab.com/DarwinJS/ChocoPackages/tree/master/openssh#package-parameters
-choco install openssh -y -params '"/SSHServerFeature /PathSpecsToProbeForShellEXEString:$env:ProgramFiles\PowerShell\*\pwsh.exe;$env:windir\System32\WindowsPowerShell\v1.0\powershell.exe"' --force
-
-if (Test-Path 'C:\Program Files\OpenSSH-Win64\FixHostFilePermissions.ps1') {
-	. 'C:\Program Files\OpenSSH-Win64\FixHostFilePermissions.ps1'
-}
 
 #--- Start and configure SSH Server ---
 Write-Output "Starting 'sshd' service..."
