@@ -26,6 +26,8 @@ choco install openssh -y -params '"/SSHServerFeature /PathSpecsToProbeForShellEX
 Write-Output "Starting 'sshd' service..."
 Start-Service sshd
 
+Write-Host 'If ''sshd'' service fails to start, try manually running ''sshd.exe -d'' to see more specific error messaged' -ForegroundColor Cyan
+
 # OPTIONAL but recommended:
 Write-Output "Setting 'sshd' startup type to 'Automatic'..."
 Set-Service -Name sshd -StartupType 'Automatic'
