@@ -62,7 +62,26 @@ Set-Service -Name sshd -StartupType 'Automatic'
 
 # 	# $SSHDConfigPath = (Join-Path $env:ProgramData '\ssh\sshd_config')
 # 	# $SSHSubsystemString = 'Subsystem powershell c:/progra~1/powershell/7/pwsh.exe -sshs -NoLogo'
-# 	# if (-Not(Select-String -Pattern $SSHSubsystemString -Path $SSHDConfigPath )) {
-# 	# 	Add-Content -Path $SSHDConfigPath -Value $SSHSubsystemString
+# 	# if (-Not(Select-String -SimpleMatch $SSHSubsystemString -Path $SSHDConfigPath )) {
+# 	# 	# Only add the new subsystem line if it is not already in the sshd_config
+# 	# 	$OldContent = @(Get-Content $SSHDConfigPath)
+# 	# 	$ExistingSubsystemLines = @($OldContent | Select-String -SimpleMatch 'Subsystem' | Select-Object -ExpandProperty Line)
+# 	# 	if ($ExistingSubsystemLines) {
+# 	# 		# Get the last member of the array
+# 	# 		$LastSubsystemLine = $ExistingSubsystemLines[$ExistingSubsystemLines.Count - 1]
+# 	# 		# Add the new line after the last existing subsystem line
+# 	# 		$OldContent | ForEach-Object {
+# 	# 			# Output the existing line to pipeline in any case
+# 	# 			$_
+
+# 	# 			# If line matches the last existing subsystem line
+# 	# 			if ($_ -like $LastSubsystemLine) {
+# 	# 				# Add output additional line right after it
+# 	# 				$SSHSubsystemString
+# 	# 			}
+# 	# 		} | Set-Content -Path $SSHDConfigPath
+# 	# 	} else {
+# 	# 		Add-Content -Path $SSHDConfigPath -Value $SSHSubsystemString
+# 	# 	}
 # 	# }
 # }
