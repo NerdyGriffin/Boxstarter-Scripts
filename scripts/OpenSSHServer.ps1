@@ -3,6 +3,8 @@
 # See https://gitlab.com/DarwinJS/ChocoPackages/tree/master/openssh#package-parameters
 choco install openssh -y -params '"/SSHServerFeature /PathSpecsToProbeForShellEXEString:$env:ProgramFiles\PowerShell\*\pwsh.exe;$env:windir\System32\WindowsPowerShell\v1.0\powershell.exe"'
 
+# ssh-keygen.exe -A
+
 # if (Test-Path 'C:\Program Files\OpenSSH-Win64\FixHostFilePermissions.ps1') {
 # 	. 'C:\Program Files\OpenSSH-Win64\FixHostFilePermissions.ps1'
 # }
