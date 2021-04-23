@@ -43,7 +43,7 @@ If (Test-Path $SambaProgramFiles) {
 		}
 		# Export-ScheduledTask -TaskName 'FreeFileSyncBackup' #! DEBUG: This line is for debug testing
 
-		if (Get-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run' -Name RealTimeSyncBackup) {
+		if (Get-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run' -Name RealTimeSyncBackup -ErrorAction SilentlyContinue) {
 			Write-Host "Removing deprecated registry entry for the 'RealTimeSyncBackup' script"
 			Remove-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run' -Name RealTimeSyncBackup
 		}
@@ -81,7 +81,7 @@ If (Test-Path $SambaProgramFiles) {
 		}
 		# Export-ScheduledTask -TaskName 'FreeFileSyncWallpaper' #! DEBUG: This line is for debug testing
 
-		if (Get-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run' -Name RealTimeSyncWallpaper) {
+		if (Get-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run' -Name RealTimeSyncWallpaper -ErrorAction SilentlyContinue) {
 			Write-Host "Removing deprecated registry entry for the 'RealTimeSyncWallpaper' script"
 			Remove-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run' -Name RealTimeSyncWallpaper
 		}
