@@ -1,32 +1,5 @@
 $Boxstarter.StopOnPackageFailure = $false
 
-class LibraryInfo {
-	[Alias('Name')]
-	[ValidateNotNullOrEmpty()]
-	[string]
-	$LibraryName # The name of the library (must match the expected syntax of Move-LibraryDirectory)
-
-	[Alias('PSPath')]
-	[ValidateNotNullOrEmpty()]
-	[string]
-	$OriginalPath # The original (default) path to the library
-
-	[Alias('Destination')]
-	[ValidateNotNullOrEmpty()]
-	[string]
-	$DestinationPath # The destination path where you would like the library to be moved
-
-	# Class Constructor
-	LibraryInfo(
-		[string]$name,
-		[string]$path
-	) {
-		$this.LibraryName = $name
-		$this.OriginalPath = $path
-		$this.DestinationPath = $path
-	}
-}
-
 Function New-SymbolicLink {
 	param(
 		# Specifies the path of the location of the new link. You must include the name of the new link in Path .
@@ -80,11 +53,64 @@ Function New-SymbolicLink {
 	}
 }
 
-# try {
+Function New-LibraryLinks {
+	param(
+		# Specifies the path of the location of the new link. You must exclude the name of the new link in Path .
+		[Parameter(Mandatory = $true,
+			Position = 0,
+			ParameterSetName = 'ParameterSetName',
+			ValueFromPipeline = $true,
+			ValueFromPipelineByPropertyName = $true,
+			HelpMessage = 'Specifies the path of the location of the new link. You must exclude the name of the new link in Path .')]
+		[Alias('PSPath')]
+		[ValidateNotNullOrEmpty()]
+		[string]
+		$Path,
+
+		[Parameter(Mandatory = $true,
+			Position = 1,
+			HelpMessage = 'Specifies the name of the new link.')]
+		[Alias('LinkName')]
+		[ValidateNotNullOrEmpty()]
+		[string]
+		$Name,
+
+		# Specifies the path of the location that you would like the link to point to.
+		[Parameter(Mandatory = $true,
+			Position = 2,
+			HelpMessage = 'Specifies the path of the location that you would like the link to point to.')]
+		[Alias('Target')]
+		[ValidateNotNullOrEmpty()]
+		[string]
+		$Value
+	)
+
+	$PossibleLinkPaths = @(
+		(Join-Path $env:USERPROFILE "$Name"),
+		(Join-Path (Split-Path -Path "$Path" -Parent) "$Name")
+	)
+
+	# TODO: Add a check that (Split-Path -Path "$Path" -Qualifier) is not a mapped network drive
+
+	$DownloadsPath = ((Get-LibraryNames).'{374DE290-123F-4565-9164-39C4925E467B}')
+	if (-Not("$Path".ToLower().StartsWith("$DownloadsPath".ToLower()))) {
+		$PossibleLinkPaths += (Join-Path "$Path" "$Name")
+	}
+
+	$PossibleLinkPaths
+
+	foreach ($LinkPath in $PossibleLinkPaths) {
+		if (-Not(Test-Path "$LinkPath")) {
+			New-Item -Path "$LinkPath" -ItemType SymbolicLink -Value "$Value" -Verbose -ErrorAction SilentlyContinue
+		}
+	}
+}
+
 Disable-UAC
 
 $ServerRootPath = '\\GRIFFINUNRAID\'
 $ServerMediaShare = (Join-Path $ServerRootPath 'media')
+$ServerDocumentsShare = (Join-Path $ServerRootPath 'personal\Documents')
 $ServerDownloadsShare = (Join-Path $ServerRootPath 'personal\Downloads')
 $MapNetworkDriveScript = '\\GRIFFINUNRAID\scripts\MapNetworkDrives.ps1'
 
@@ -95,54 +121,60 @@ if ($env:Username -contains 'Public') {
 		Invoke-Expression $MapNetworkDriveScript
 	}
 
-	$LibraryHashTable = @{
-		'Music'     = [LibraryInfo]::new('My Music', (Join-Path $env:UserProfile 'Music'));
-		'Pictures'  = [LibraryInfo]::new('My Pictures', (Join-Path $env:UserProfile 'Pictures'));
-		'Videos'    = [LibraryInfo]::new('My Video', (Join-Path $env:UserProfile 'Videos'));
-		'Downloads' = [LibraryInfo]::new('Downloads', (Join-Path $env:UserProfile 'Downloads'));
-		'Documents' = [LibraryInfo]::new('Personal', (Join-Path $env:UserProfile 'Documents'))
-	}
+	$LibrariesToMove = @('My Music', 'My Pictures', 'My Video')
 
-	$IsDesktop = ($env:USERDOMAIN | Select-String 'DESKTOP')
-
-	if (($IsDesktop) -And (Test-Path $ServerMediaShare)) {
-		Write-Host 'Moving Library Directories to server shares...'
-
-		$LibraryHashTable['Music'].DestinationPath = (Join-Path $ServerMediaShare 'Music')
-		$LibraryHashTable['Pictures'].DestinationPath = (Join-Path $ServerMediaShare 'Pictures')
-		$LibraryHashTable['Videos'].DestinationPath = (Join-Path $ServerMediaShare 'Videos')
-	} elseif (Test-Path 'D:\') {
+	if (Test-Path 'D:\') {
 		Write-Host 'Moving Library Directories to D:\ ...'
 
-		$LibraryHashTable['Music'].DestinationPath = (Join-Path 'D:\' (Split-Path -Path ($LibraryHashTable['Music'].OriginalPath) -NoQualifier))
-		$LibraryHashTable['Pictures'].DestinationPath = (Join-Path 'D:\' (Split-Path -Path ($LibraryHashTable['Pictures'].OriginalPath) -NoQualifier))
-		$LibraryHashTable['Videos'].DestinationPath = (Join-Path 'D:\' (Split-Path -Path ($LibraryHashTable['Videos'].OriginalPath) -NoQualifier))
-	}
-
-	$MappedDownloadsPath = 'X:\Downloads'
-	if (($IsDesktop) -And (Test-Path $MappedDownloadsPath)) {
-		$LibraryHashTable['Downloads'].DestinationPath = $MappedDownloadsPath
-	} elseif (($IsDesktop) -And (Test-Path $ServerDownloadsShare)) {
-		$LibraryHashTable['Downloads'].DestinationPath = $ServerDownloadsShare
-	} elseif (Test-Path 'D:\') {
 		$PSBootDrive = Get-PSDrive C
 		# Only move the documents folder if the boot drive of this computer is smaller than the given threshold
 		if (($PSBootDrive.Used + $PSBootDrive.Free) -lt (0.5TB)) {
-			$LibraryHashTable['Documents'].DestinationPath = (Join-Path 'D:\' (Split-Path -Path ($LibraryHashTable['Documents'].OriginalPath) -NoQualifier))
+			$LibrariesToMove += 'Documents'
+			$LibrariesToMove += 'Downloads'
+			$LibrariesToMove += '{374DE290-123F-4565-9164-39C4925E467B}' # This is a name for the downloads library... I have no idea why it does not use an alias
 		}
 
-		$LibraryHashTable['Downloads'].DestinationPath = (Join-Path 'D:\' (Split-Path -Path ($LibraryHashTable['Downloads'].OriginalPath) -NoQualifier))
+		$LibrariesToMove | ForEach-Object {
+			$Source = ''
+			$Source = (Get-LibraryNames).$_
+			if ($Source) {
+				$Destination = (Join-Path 'D:\' (Split-Path -Path $Source -NoQualifier)) # Convert all the existing library paths from 'C:\' to 'D:\'
+				Write-Output "Moving library ""$_"" from ""$Source"" to ""$Destination""" | Write-Verbose
+				Move-LibraryDirectory -libraryName $_ -newPath $Destination -ErrorAction SilentlyContinue
+				New-SymbolicLink -Path $Source -Value $Destination -ErrorAction SilentlyContinue
+			}
+		}
 	}
 
-	$LibraryHashTable.Values | ForEach-Object {
-		if ($_.OriginalPath -ne $_.DestinationPath) {
-			$Name = $_.LibraryName
-			$Source = $_.OriginalPath
-			$Destination = $_.DestinationPath
-			Write-Host "Moving library ""$Name"" from ""$Source"" to ""$Destination""" | Write-Verbose
-			Move-LibraryDirectory ($_.LibraryName) ($_.DestinationPath)
-			New-SymbolicLink -Path ($_.OriginalPath) -Value ($_.DestinationPath) -ErrorAction SilentlyContinue
+	if (Test-Path $ServerMediaShare) {
+		Write-Host 'Making Symbolic Links to media server shares...'
+		@('My Music', 'My Pictures', 'My Video') | ForEach-Object {
+			$LibraryPath = (Get-LibraryNames).$_
+			$LibraryName = Split-Path -Path $LibraryPath -Leaf -Resolve
+			$LinkName = "Server$LibraryName"
+			$LinkTarget = (Join-Path "$ServerMediaShare" "$_")
+			New-LibraryLinks -Path "$LibraryPath" -Name "$LinkName" -Value "$LinkTarget"
 		}
+	}
+
+	if (Test-Path $ServerDocumentsShare) {
+		Write-Host 'Making Symbolic Links to documents server share...'
+		$DocumentsPath = ((Get-LibraryNames).Personal)
+		New-LibraryLinks -Path "$DocumentsPath" -Name 'ServerDocuments' -Value "$ServerDocumentsShare"
+	}
+
+	$DownloadsShareLinkTarget = ''
+	$MappedDownloadsPath = 'X:\Downloads'
+	if (Test-Path $MappedDownloadsPath) {
+		$DownloadsShareLinkTarget = $MappedDownloadsPath
+	} elseif (Test-Path $ServerDownloadsShare) {
+		$DownloadsShareLinkTarget = $ServerDownloadsShare
+	}
+
+	$DownloadsPath = ((Get-LibraryNames).'{374DE290-123F-4565-9164-39C4925E467B}')
+	if ($DownloadsShareLinkTarget) {
+		Write-Host 'Making Symbolic Links to downloads server share...'
+		New-LibraryLinks -Path "$DownloadsPath" -Name 'ServerDownloads' -Value "$DownloadsShareLinkTarget"
 	}
 }
 
@@ -157,11 +189,3 @@ Install-WindowsUpdate -acceptEula
 if (Test-Path $MapNetworkDriveScript) {
 	Write-Host 'You must manually run the' $MapNetworkDriveScript 'script again as your non-admin user in order for the mapped drives to be visible in the File Explorer'
 }
-
-# 	Write-Host 'nerdygriffin.Move-Libraries completed successfully' | Write-Debug
-# 	Write-Host ' See the log for details (' $Boxstarter.Log ').' | Write-Debug
-# } catch {
-# 	Write-Host 'Error occurred in nerdygriffin.Move-Libraries' $($_.Exception.Message) | Write-Debug
-# 	Write-Host ' See the log for details (' $Boxstarter.Log ').' | Write-Debug
-# 	throw $_.Exception
-# }
