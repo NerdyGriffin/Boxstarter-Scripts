@@ -4,7 +4,8 @@ RefreshEnv;
 Start-Sleep -Seconds 1;
 
 $SambaProgramFiles = '\\GRIFFINUNRAID\programfiles'
-$RealTimeSyncExe = 'C:\Program Files\FreeFileSync\RealTimeSync.exe'
+$FreeFileSyncExe = (Join-Path $env:ProgramFiles '\FreeFileSync\FreeFileSync.exe')
+# $RealTimeSyncExe = (Join-Path $env:ProgramFiles '\FreeFileSync\RealTimeSync.exe')
 
 If (Test-Path $SambaProgramFiles) {
 	$IsLaptop = ($env:USERDOMAIN | Select-String 'LAPTOP')
@@ -21,15 +22,36 @@ If (Test-Path $SambaProgramFiles) {
 	$BackupFFSRealRemotePath = (Join-Path $SambaProgramFiles $BackupFFSReal)
 	$BackupFFSBatchRemotePath = (Join-Path $SambaProgramFiles $BackupFFSBatch)
 
-	$BackupCommand = """$RealTimeSyncExe"" ""$BackupFFSRealLocalPath"""
+	# $BackupCommand = """$RealTimeSyncExe"" ""$BackupFFSRealLocalPath"""
 
 	If ((Test-Path $BackupFFSRealRemotePath) -And (Test-Path $BackupFFSBatchRemotePath)) {
 		Copy-Item -Path $BackupFFSRealRemotePath -Destination $BackupFFSRealLocalPath -Force
 		Copy-Item -Path $BackupFFSBatchRemotePath -Destination $BackupFFSBatchLocalPath -Force
-		Set-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run' -Name RealTimeSyncBackup -Value $BackupCommand -Force
-		Write-Output 'Added the following registry entry for the backup script:'
-		Get-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run' -Name RealTimeSyncBackup
+
+		# Set-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run' -Name RealTimeSyncBackup -Value $BackupCommand -Force
+		# Write-Output 'Added the following registry entry for the backup script:'
+		if (Get-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run' -Name RealTimeSyncBackup) {
+			Remove-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run' -Name RealTimeSyncBackup
+		}
+
+		$STAction = New-ScheduledTaskAction -Execute "$FreeFileSyncExe" -Argument "$BackupFFSBatchLocalPath"
+		$STTrigger = @(
+			$(New-ScheduledTaskTrigger -Daily -At 3am),
+			$(New-ScheduledTaskTrigger -Daily -At 3pm)
+		)
+		$STPrin = New-ScheduledTaskPrincipal -UserId 'NT AUTHORITY\SYSTEM' -RunLevel Highest
+		$STSetings = New-ScheduledTaskSettingsSet -DisallowStartOnRemoteAppSession -ExecutionTimeLimit (New-TimeSpan -Hours 8) -IdleDuration (New-TimeSpan -Minutes 10) -IdleWaitTimeout (New-TimeSpan -Hours 8) -MultipleInstances IgnoreNew -Priority 5 -RestartOnIdle -RunOnlyIfIdle -RunOnlyIfNetworkAvailable
+
+		if (Get-ScheduledTask -TaskName 'FreeFileSyncBackup' -ErrorAction SilentlyContinue) {
+			Set-ScheduledTask -TaskName 'FreeFileSyncBackup' -Action $STAction -Principal $STPrin -Settings $STSetings -Trigger $STTrigger
+		} else {
+			Register-ScheduledTask -TaskName 'FreeFileSyncBackup' -Action $STAction -Principal $STPrin -Settings $STSetings -Trigger $STTrigger
+		}
+
+		Export-ScheduledTask -TaskName 'FreeFileSyncBackup'
 	}
+	Clear-Variable STAction, STPrin, STSetings, STTrigger
+
 
 	$WallpaperFFSReal = 'MirrorCuratedSlideshowWallpaper.ffs_real'
 	$WallpaperFFSBatch = 'MirrorCuratedSlideshowWallpaper.ffs_batch'
@@ -39,14 +61,34 @@ If (Test-Path $SambaProgramFiles) {
 	$WallpaperFFSRealRemotePath = (Join-Path $SambaProgramFiles $WallpaperFFSReal)
 	$WallpaperFFSBatchRemotePath = (Join-Path $SambaProgramFiles $WallpaperFFSBatch)
 
-	$WallpaperCommand = """$RealTimeSyncExe"" ""$WallpaperFFSRealLocalPath"""
+	# $WallpaperCommand = """$RealTimeSyncExe"" ""$WallpaperFFSRealLocalPath"""
 
 	If ((Test-Path $WallpaperFFSRealRemotePath) -And (Test-Path $WallpaperFFSBatchRemotePath)) {
 		Copy-Item -Path $WallpaperFFSRealRemotePath -Destination $WallpaperFFSRealLocalPath -Force
 		Copy-Item -Path $WallpaperFFSBatchRemotePath -Destination $WallpaperFFSBatchLocalPath -Force
-		Set-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run' -Name RealTimeSyncWallpaper -Value $WallpaperCommand -Force
-		Write-Output 'Added the following registry entry for the Wallpaper script:'
-		Get-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run' -Name RealTimeSyncWallpaper
+
+		# Set-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run' -Name RealTimeSyncWallpaper -Value $WallpaperCommand -Force
+		# Write-Output 'Added the following registry entry for the Wallpaper script:'
+		if (Get-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run' -Name RealTimeSyncWallpaper) {
+			Remove-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run' -Name RealTimeSyncWallpaper
+		}
+
+		$STAction = New-ScheduledTaskAction -Execute "$FreeFileSyncExe" -Argument "$WallpaperFFSBatchLocalPath"
+		$STTrigger = @(
+			$(New-ScheduledTaskTrigger -Daily -At 12am),
+			$(New-ScheduledTaskTrigger -Daily -At 6am),
+			$(New-ScheduledTaskTrigger -Daily -At 12pm),
+			$(New-ScheduledTaskTrigger -Daily -At 6pm)
+		)
+		$STSetings = New-ScheduledTaskSettingsSet -DisallowStartOnRemoteAppSession -DontStopIfGoingOnBatteries -DontStopOnIdleEnd -ExecutionTimeLimit (New-TimeSpan -Hours 1) -IdleDuration (New-TimeSpan -Minutes 1) -IdleWaitTimeout (New-TimeSpan -Hours 4) -MultipleInstances IgnoreNew -Priority 5 -RestartOnIdle -RunOnlyIfNetworkAvailable
+
+		if (Get-ScheduledTask -TaskName 'FreeFileSyncWallpaper' -ErrorAction SilentlyContinue) {
+			Set-ScheduledTask -TaskName 'FreeFileSyncWallpaper' -Action $STAction -Settings $STSetings -Trigger $STTrigger
+		} else {
+			Register-ScheduledTask -TaskName 'FreeFileSyncWallpaper' -Action $STAction -Settings $STSetings -Trigger $STTrigger
+		}
+
+		Export-ScheduledTask -TaskName 'FreeFileSyncWallpaper'
 	}
 
 	# If (Test-Path (Join-Path $SambaProgramFiles 'realtimesync.bat')) {
