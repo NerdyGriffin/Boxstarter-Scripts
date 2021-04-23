@@ -97,10 +97,11 @@ Function New-LibraryLinks {
 		$PossibleLinkPaths += (Join-Path "$Path" "$Name")
 	}
 
-	$PossibleLinkPaths
+	# $PossibleLinkPaths #! DEBUG:
 
 	foreach ($LinkPath in $PossibleLinkPaths) {
 		if (-Not(Test-Path "$LinkPath")) {
+			Write-Host "Creating SymLink '$LinkPath' pointing to '$Value'" | Write-Verbose
 			New-Item -Path "$LinkPath" -ItemType SymbolicLink -Value "$Value" -Verbose -ErrorAction SilentlyContinue
 		}
 	}
@@ -114,7 +115,7 @@ $ServerDocumentsShare = (Join-Path $ServerRootPath 'personal\Documents')
 $ServerDownloadsShare = (Join-Path $ServerRootPath 'personal\Downloads')
 $MapNetworkDriveScript = '\\GRIFFINUNRAID\scripts\MapNetworkDrives.ps1'
 
-if ($env:Username -contains 'Public') {
+if ("$env:Username".ToLower().StartsWith('Public'.ToLower())) {
 	Write-Host  'Somehow the current username is "Public"...', '  That should not be possible, so the libraries will not be moved.' | Write-Warning
 } else {
 	if (Test-Path $MapNetworkDriveScript) {
@@ -139,9 +140,11 @@ if ($env:Username -contains 'Public') {
 			$Source = (Get-LibraryNames).$_
 			if ($Source) {
 				$Destination = (Join-Path 'D:\' (Split-Path -Path $Source -NoQualifier)) # Convert all the existing library paths from 'C:\' to 'D:\'
-				Write-Output "Moving library ""$_"" from ""$Source"" to ""$Destination""" | Write-Verbose
-				Move-LibraryDirectory -libraryName $_ -newPath $Destination -ErrorAction SilentlyContinue
-				New-SymbolicLink -Path $Source -Value $Destination -ErrorAction SilentlyContinue
+				if ("$Destination".ToLower().StartsWith("$Source".ToLower())) {
+					Write-Output "Moving library ""$_"" from ""$Source"" to ""$Destination""" | Write-Verbose
+					Move-LibraryDirectory -libraryName $_ -newPath $Destination -ErrorAction SilentlyContinue
+					New-SymbolicLink -Path $Source -Value $Destination -ErrorAction SilentlyContinue
+				}
 			}
 		}
 	}
