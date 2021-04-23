@@ -28,12 +28,6 @@ If (Test-Path $SambaProgramFiles) {
 		Copy-Item -Path $BackupFFSRealRemotePath -Destination $BackupFFSRealLocalPath -Force
 		Copy-Item -Path $BackupFFSBatchRemotePath -Destination $BackupFFSBatchLocalPath -Force
 
-		# Set-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run' -Name RealTimeSyncBackup -Value $BackupCommand -Force
-		# Write-Output 'Added the following registry entry for the backup script:'
-		if (Get-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run' -Name RealTimeSyncBackup) {
-			Remove-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run' -Name RealTimeSyncBackup
-		}
-
 		$STAction = New-ScheduledTaskAction -Execute "$FreeFileSyncExe" -Argument "$BackupFFSBatchLocalPath"
 		$STTrigger = @(
 			$(New-ScheduledTaskTrigger -Daily -At 3am),
@@ -47,8 +41,12 @@ If (Test-Path $SambaProgramFiles) {
 		} else {
 			Register-ScheduledTask -TaskName 'FreeFileSyncBackup' -Action $STAction -Principal $STPrin -Settings $STSetings -Trigger $STTrigger
 		}
+		# Export-ScheduledTask -TaskName 'FreeFileSyncBackup' #! DEBUG: This line is for debug testing
 
-		Export-ScheduledTask -TaskName 'FreeFileSyncBackup'
+		if (Get-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run' -Name RealTimeSyncBackup) {
+			Write-Host "Removing deprecated registry entry for the 'RealTimeSyncBackup' script"
+			Remove-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run' -Name RealTimeSyncBackup
+		}
 	}
 	Clear-Variable STAction, STPrin, STSetings, STTrigger
 
@@ -67,12 +65,6 @@ If (Test-Path $SambaProgramFiles) {
 		Copy-Item -Path $WallpaperFFSRealRemotePath -Destination $WallpaperFFSRealLocalPath -Force
 		Copy-Item -Path $WallpaperFFSBatchRemotePath -Destination $WallpaperFFSBatchLocalPath -Force
 
-		# Set-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run' -Name RealTimeSyncWallpaper -Value $WallpaperCommand -Force
-		# Write-Output 'Added the following registry entry for the Wallpaper script:'
-		if (Get-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run' -Name RealTimeSyncWallpaper) {
-			Remove-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run' -Name RealTimeSyncWallpaper
-		}
-
 		$STAction = New-ScheduledTaskAction -Execute "$FreeFileSyncExe" -Argument "$WallpaperFFSBatchLocalPath"
 		$STTrigger = @(
 			$(New-ScheduledTaskTrigger -Daily -At 12am),
@@ -87,11 +79,11 @@ If (Test-Path $SambaProgramFiles) {
 		} else {
 			Register-ScheduledTask -TaskName 'FreeFileSyncWallpaper' -Action $STAction -Settings $STSetings -Trigger $STTrigger
 		}
+		# Export-ScheduledTask -TaskName 'FreeFileSyncWallpaper' #! DEBUG: This line is for debug testing
 
-		Export-ScheduledTask -TaskName 'FreeFileSyncWallpaper'
+		if (Get-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run' -Name RealTimeSyncWallpaper) {
+			Write-Host "Removing deprecated registry entry for the 'RealTimeSyncWallpaper' script"
+			Remove-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run' -Name RealTimeSyncWallpaper
+		}
 	}
-
-	# If (Test-Path (Join-Path $SambaProgramFiles 'realtimesync.bat')) {
-	# 	Copy-Item -Path (Join-Path $SambaProgramFiles 'realtimesync.bat') -Destination (Join-Path $env:ProgramData 'Microsoft\Windows\Start Menu\Programs\Startup\realtimesync.bat') -Force
-	# }
 }
