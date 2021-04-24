@@ -143,8 +143,9 @@ if ("$env:Username" -match 'Public') {
 				$NewLibraryPath = (Join-Path "$NewDrive" (Split-Path -Path $PrevLibraryPath -NoQualifier)) # Convert all the existing library paths from 'C:\' to 'D:\'
 				# $FolderName = (Split-Path -Path $PrevLibraryPath -Leaf -Resolve)
 				# $LinkPath = (Join-Path "$env:USERPROFILE" "$FolderName")
-				Write-Output "Moving library ""$_"" from ""$PrevLibraryPath"" to ""$NewLibraryPath""" | Write-Verbose
+				Write-Verbose "Moving library ""$_"" from ""$PrevLibraryPath"" to ""$NewLibraryPath""..."
 				Move-LibraryDirectory -libraryName $_ -newPath $NewLibraryPath -ErrorAction SilentlyContinue
+				Write-Verbose "Attempting to create SymLink at '$PrevLibraryPath' pointing to '$NewLibraryPath'..."
 				New-SymbolicLink -Path $PrevLibraryPath -Value $NewLibraryPath -ErrorAction SilentlyContinue
 			}
 		}
