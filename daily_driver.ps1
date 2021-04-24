@@ -63,3 +63,9 @@ if (Test-Path $MackieDriverSetupExe) {
 	Write-Verbose 'Attempt installing driver for Mackie mixer board'
 	Invoke-Expression $MackieDriverSetupExe
 }
+
+$SimpleLog = (Join-Path $env:USERPROFILE 'Desktop\last-installed.log')
+if (-not(Test-Path $SimpleLog)) {
+	New-Item -Path $SimpleLog -ItemType File
+}
+Add-Content -Path $SimpleLog -Value 'daily_driver'
