@@ -90,19 +90,14 @@ Function New-LibraryLinks {
 		$Value
 	)
 
-	$PossibleLinkPaths = @(
-		(Join-Path $env:USERPROFILE "$Name"),
-		(Join-Path (Split-Path -Path "$Path" -Parent) "$Name"),
-		(Join-Path "$Path" "$Name")
-	)
-
 	# TODO: Add a check that (Split-Path -Path "$Path" -Qualifier) is not a mapped network drive
 
 	$DownloadsPath = ((Get-LibraryNames).'{374DE290-123F-4565-9164-39C4925E467B}')
-	foreach ($LinkPath in $PossibleLinkPaths) {
-		if ((-not(Test-Path "$LinkPath")) -and ("$LinkPath" | Select-String -SimpleMatch "$DownloadsPath" -NotMatch)) {
-			Write-Host "Creating SymLink at '$LinkPath' pointing to '$Value'" | Write-Verbose
-			New-Item -Path "$LinkPath" -ItemType SymbolicLink -Value "$Value" -Verbose -ErrorAction SilentlyContinue
+
+	@( ($env:USERPROFILE), (Split-Path -Path $Path -Parent), ($Path) ) | ForEach-Object {
+		if ((-not(Test-Path $_)) -and ("$_" | Select-String -SimpleMatch "$DownloadsPath" -NotMatch)) {
+			Write-Verbose "Creating SymLink at '$_' named '$Name' pointing to '$Value'"
+			New-Item -Path $_ -Name $Name -ItemType SymbolicLink -Value $Value -Verbose -ErrorAction SilentlyContinue -
 		}
 	}
 }
