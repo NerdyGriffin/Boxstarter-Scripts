@@ -119,7 +119,7 @@ if ("$env:Username" -match 'Public') {
 	Write-Host  'Somehow the current username is "Public"...', '  That should not be possible, so the libraries will not be moved.' | Write-Warning
 } else {
 	if (Test-Path $MapNetworkDriveScript) {
-		Invoke-Expression $MapNetworkDriveScript
+		Invoke-Expression $MapNetworkDriveScript -ErrorAction Continue
 	}
 
 	$LibrariesToMove = @('My Music', 'My Pictures', 'My Video')
@@ -159,7 +159,7 @@ if ("$env:Username" -match 'Public') {
 			$LibraryPath = (Get-LibraryNames).$_
 			$LibraryName = (Split-Path -Path $LibraryPath -Leaf -Resolve)
 			$LinkName = "Server$LibraryName"
-			$LinkTarget = (Join-Path "$ServerMediaShare" "$_")
+			$LinkTarget = (Join-Path "$ServerMediaShare" "$LibraryName")
 			New-LibraryLinks -Path "$LibraryPath" -Name "$LinkName" -Value "$LinkTarget"
 		}
 	}
