@@ -49,7 +49,7 @@ Function New-SymbolicLink {
 		}
 		$Result = New-Item -Path $Path -ItemType SymbolicLink -Value $Value -Force -Verbose
 		if ($Result) {
-			Write-Verbose "Successfully created SymLink at $Path pointing to $Value" | Write-Host
+			Write-Verbose "Successfully created SymLink $Path --> $Value" | Write-Host
 			Return $true
 		} else {
 			Write-Warning "The following error occured while trying to make symlink: $Result" | Write-Host
@@ -95,8 +95,8 @@ Function New-LibraryLinks {
 	$DownloadsPath = ((Get-LibraryNames).'{374DE290-123F-4565-9164-39C4925E467B}')
 
 	@( ($env:USERPROFILE), (Split-Path -Path $Path -Parent), ($Path) ) | ForEach-Object {
-		if ((-not(Test-Path $_)) -and ("$_" | Select-String -SimpleMatch "$DownloadsPath" -NotMatch)) {
-			Write-Verbose "Creating SymLink at '$_' named '$Name' pointing to '$Value'"
+		if ((-not(Test-Path (Join-Path $_ $Name))) -and ("$_" | Select-String -SimpleMatch "$DownloadsPath" -NotMatch)) {
+			Write-Verbose "Creating new SymLink: '$(Join-Path $_ $Name)' --> '$Value'"
 			New-Item -Path $_ -Name $Name -ItemType SymbolicLink -Value $Value -Verbose -ErrorAction SilentlyContinue -
 		}
 	}
@@ -111,7 +111,7 @@ $ServerDownloadsShare = (Join-Path $SMBServerName 'personal\Downloads')
 $MapNetworkDriveScript = '\\GRIFFINUNRAID\scripts\MapNetworkDrives.ps1'
 
 if ("$env:Username" -like '*Public*') {
-	Write-Host  'Somehow the current username is "Public"...', '  That should not be possible, so the libraries will not be moved.' | Write-Warning
+	Write-Warning 'Somehow the current username is "Public"...`n  That should not be possible, so the libraries will not be moved.'
 } else {
 	if (Test-Path $MapNetworkDriveScript) {
 		Invoke-Expression $MapNetworkDriveScript -ErrorAction Continue
@@ -140,7 +140,7 @@ if ("$env:Username" -like '*Public*') {
 				# $LinkPath = (Join-Path "$env:USERPROFILE" "$FolderName")
 				Write-Verbose "Moving library ""$_"" from ""$PrevLibraryPath"" to ""$NewLibraryPath""..."
 				Move-LibraryDirectory -libraryName $_ -newPath $NewLibraryPath -ErrorAction SilentlyContinue
-				Write-Verbose "Attempting to create SymLink at '$PrevLibraryPath' pointing to '$NewLibraryPath'..."
+				Write-Verbose "Attempting to create SymLink '$PrevLibraryPath' --> '$NewLibraryPath'..."
 				New-SymbolicLink -Path $PrevLibraryPath -Value $NewLibraryPath -ErrorAction SilentlyContinue
 			}
 		}
@@ -181,8 +181,10 @@ if ("$env:Username" -like '*Public*') {
 	}
 }
 
+$MapNetworkDriveMessage = "You must manually run the '$MapNetworkDriveScript' script again as your non-admin user in order for the mapped drives to be visible in the File Explorer"
+
 if (Test-Path $MapNetworkDriveScript) {
-	Write-Host 'You must manually run the' $MapNetworkDriveScript 'script again as your non-admin user in order for the mapped drives to be visible in the File Explorer'
+	Write-Host "$MapNetworkDriveMessage"
 }
 
 Enable-UAC
@@ -190,5 +192,5 @@ Enable-MicrosoftUpdate
 Install-WindowsUpdate -acceptEula
 
 if (Test-Path $MapNetworkDriveScript) {
-	Write-Host 'You must manually run the' $MapNetworkDriveScript 'script again as your non-admin user in order for the mapped drives to be visible in the File Explorer'
+	Write-Host "$MapNetworkDriveMessage"
 }
