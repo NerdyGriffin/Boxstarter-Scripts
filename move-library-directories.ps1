@@ -24,32 +24,37 @@ Function New-SymbolicLink {
 		$Value
 	)
 
-	if ((Test-Path $Path) -And (Get-Item $Path | Where-Object Attributes -Match ReparsePoint)) {
-		Write-Host  $Path 'is already a reparse point.' | Write-Warning
+	if ((Resolve-Path -Path "$Path") -match (Resolve-Path -Path "$Value")) {
+		Write-Warning "The link path cannot be the same as the link target! `n  Path: $Path `nTarget: $Value" | Write-Host
 		Return $false
-	}
-	if (Test-Path "$Path\*") {
-		# $MoveResult = (Move-Item -Path $Path\* -Destination $Value -Force -PassThru -Verbose)
-		$MoveResult = (robocopy $Path $Value /ZB /FFT)
-		if (-Not($MoveResult)) {
-			Write-Host  'Something went wrong while trying to move the contents of' $Path 'to' $Value | Write-Warning
-			Return $MoveResult
-		}
-		Remove-Item -Path $Path\* -Recurse -Force -ErrorAction Inquire
-	}
-	if (Test-Path $Path) {
-		Remove-Item $Path -Recurse -Force
-	}
-	if (-Not(Test-Path $Value)) {
-		New-Item -Path $Value -ItemType Directory
-	}
-	$Result = New-Item -Path $Path -ItemType SymbolicLink -Value $Value -Force -Verbose
-	if ($Result) {
-		Write-Host  'Successfully created SymLink at' $Path 'pointing to' $Value | Write-Verbose
-		Return $true
+	} elseif ((Test-Path $Path) -and (Get-Item $Path | Where-Object Attributes -Match ReparsePoint)) {
+		Write-Warning "'$Path' is already a reparse point." | Write-Host
+		Return $false
 	} else {
-		Write-Host 'The following error occured while trying to make symlink: ' $Result | Write-Warning
-		Return $false
+		if (Test-Path "$Path\*") {
+			# $MoveResult = (Move-Item -Path $Path\* -Destination $Value -Force -PassThru -Verbose)
+			$MoveResult = (robocopy $Path $Value /ZB /FFT)
+			if (-Not($MoveResult)) {
+				Write-Warning "Something went wrong while trying to move the contents of '$Path' to '$Value'" | Write-Host
+				Return $MoveResult
+			} else {
+				Remove-Item -Path $Path\* -Recurse -Force
+			}
+		}
+		if (Test-Path $Path) {
+			Remove-Item $Path -Recurse -Force
+		}
+		if (-Not(Test-Path $Value)) {
+			New-Item -Path $Value -ItemType Directory
+		}
+		$Result = New-Item -Path $Path -ItemType SymbolicLink -Value $Value -Force -Verbose
+		if ($Result) {
+			Write-Verbose "Successfully created SymLink at $Path pointing to $Value" | Write-Host
+			Return $true
+		} else {
+			Write-Warning "The following error occured while trying to make symlink: $Result" | Write-Host
+			Return $false
+		}
 	}
 }
 
@@ -101,7 +106,7 @@ Function New-LibraryLinks {
 
 	foreach ($LinkPath in $PossibleLinkPaths) {
 		if (-Not(Test-Path "$LinkPath")) {
-			Write-Host "Creating SymLink '$LinkPath' pointing to '$Value'" | Write-Verbose
+			Write-Host "Creating SymLink at '$LinkPath' pointing to '$Value'" | Write-Verbose
 			New-Item -Path "$LinkPath" -ItemType SymbolicLink -Value "$Value" -Verbose -ErrorAction SilentlyContinue
 		}
 	}
@@ -109,13 +114,13 @@ Function New-LibraryLinks {
 
 Disable-UAC
 
-$ServerRootPath = '\\GRIFFINUNRAID\'
-$ServerMediaShare = (Join-Path $ServerRootPath 'media')
-$ServerDocumentsShare = (Join-Path $ServerRootPath 'personal\Documents')
-$ServerDownloadsShare = (Join-Path $ServerRootPath 'personal\Downloads')
+$SMBServerName = '\\GRIFFINUNRAID\'
+$ServerMediaShare = (Join-Path $SMBServerName 'media')
+$ServerDocumentsShare = (Join-Path $SMBServerName 'personal\Documents')
+$ServerDownloadsShare = (Join-Path $SMBServerName 'personal\Downloads')
 $MapNetworkDriveScript = '\\GRIFFINUNRAID\scripts\MapNetworkDrives.ps1'
 
-if ("$env:Username".ToLower().StartsWith('Public'.ToLower())) {
+if ("$env:Username" -match 'Public') {
 	Write-Host  'Somehow the current username is "Public"...', '  That should not be possible, so the libraries will not be moved.' | Write-Warning
 } else {
 	if (Test-Path $MapNetworkDriveScript) {
@@ -136,18 +141,21 @@ if ("$env:Username".ToLower().StartsWith('Public'.ToLower())) {
 		}
 
 		$LibrariesToMove | ForEach-Object {
-			$Source = ''
-			$Source = (Get-LibraryNames).$_
-			if ($Source) {
-				$Destination = (Join-Path 'D:\' (Split-Path -Path $Source -NoQualifier)) # Convert all the existing library paths from 'C:\' to 'D:\'
-				if ("$Destination".ToLower().StartsWith("$Source".ToLower())) {
-					Write-Output "Moving library ""$_"" from ""$Source"" to ""$Destination""" | Write-Verbose
-					Move-LibraryDirectory -libraryName $_ -newPath $Destination -ErrorAction SilentlyContinue
-					New-SymbolicLink -Path $Source -Value $Destination -ErrorAction SilentlyContinue
-				}
+			$PrevLibraryPath = ''
+			$PrevLibraryPath = (Get-LibraryNames).$_
+			if (($PrevLibraryPath) -and ((Split-Path -Path $PrevLibraryPath -Qualifier) -notmatch 'D:')) {
+				$NewLibraryPath = (Join-Path 'D:\' (Split-Path -Path $PrevLibraryPath -NoQualifier)) # Convert all the existing library paths from 'C:\' to 'D:\'
+				# $FolderName = (Split-Path -Path $PrevLibraryPath -Leaf -Resolve)
+				# $LinkPath = (Join-Path "$env:USERPROFILE" "$FolderName")
+				Write-Output "Moving library ""$_"" from ""$PrevLibraryPath"" to ""$NewLibraryPath""" | Write-Verbose
+				Move-LibraryDirectory -libraryName $_ -newPath $NewLibraryPath -ErrorAction SilentlyContinue
+				New-SymbolicLink -Path $PrevLibraryPath -Value $NewLibraryPath -ErrorAction SilentlyContinue
 			}
 		}
 	}
+
+	RefreshEnv;
+	Start-Sleep -Seconds 1;
 
 	if (Test-Path $ServerMediaShare) {
 		Write-Host 'Making Symbolic Links to media server shares...'
@@ -174,8 +182,8 @@ if ("$env:Username".ToLower().StartsWith('Public'.ToLower())) {
 		$DownloadsShareLinkTarget = $ServerDownloadsShare
 	}
 
-	$DownloadsPath = ((Get-LibraryNames).'{374DE290-123F-4565-9164-39C4925E467B}')
 	if ($DownloadsShareLinkTarget) {
+		$DownloadsPath = ((Get-LibraryNames).'{374DE290-123F-4565-9164-39C4925E467B}')
 		Write-Host 'Making Symbolic Links to downloads server share...'
 		New-LibraryLinks -Path "$DownloadsPath" -Name 'ServerDownloads' -Value "$DownloadsShareLinkTarget"
 	}
