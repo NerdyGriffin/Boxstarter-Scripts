@@ -3,9 +3,9 @@ choco upgrade -y powershell-core
 refreshenv
 
 #--- Fonts ---
-choco install -y cascadiafonts
-choco install -y cascadia-code-nerd-font
-choco install -y firacodenf
+# choco install -y cascadiafonts
+# choco install -y cascadia-code-nerd-font
+# choco install -y firacodenf
 
 #--- Windows Terminal ---
 choco upgrade -y microsoft-windows-terminal; choco upgrade -y microsoft-windows-terminal # Does this twice because the first attempt often fails but leaves the install partially completed, and then it completes successfully the second time.

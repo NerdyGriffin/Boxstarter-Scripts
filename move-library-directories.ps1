@@ -104,6 +104,10 @@ Function New-LibraryLinks {
 
 Disable-UAC
 
+#--- Enable Powershell Script Execution
+Set-ExecutionPolicy Bypass -Scope CurrentUser -Force
+refreshenv
+
 $SMBServerName = '\\GRIFFINUNRAID\'
 $ServerMediaShare = (Join-Path $SMBServerName 'media')
 $ServerDocumentsShare = (Join-Path $SMBServerName 'personal\Documents')
