@@ -124,8 +124,9 @@ if ("$env:Username" -match 'Public') {
 
 	$LibrariesToMove = @('My Music', 'My Pictures', 'My Video')
 
-	if (Test-Path 'D:\') {
-		Write-Host 'Moving Library Directories to D:\ ...'
+	$NewDrive = 'D:'
+	if (Test-Path "$NewDrive") {
+		Write-Host "Moving Library Directories to '$NewDrive' ..."
 
 		$PSBootDrive = Get-PSDrive C
 		# Only move the documents folder if the boot drive of this computer is smaller than the given threshold
@@ -138,8 +139,8 @@ if ("$env:Username" -match 'Public') {
 		$LibrariesToMove | ForEach-Object {
 			$PrevLibraryPath = ''
 			$PrevLibraryPath = (Get-LibraryNames).$_
-			if (($PrevLibraryPath) -and ((Split-Path -Path $PrevLibraryPath -Qualifier) -notmatch 'D:')) {
-				$NewLibraryPath = (Join-Path 'D:\' (Split-Path -Path $PrevLibraryPath -NoQualifier)) # Convert all the existing library paths from 'C:\' to 'D:\'
+			if (($PrevLibraryPath) -and ((Split-Path -Path $PrevLibraryPath -Qualifier) -notmatch "$NewDrive")) {
+				$NewLibraryPath = (Join-Path "$NewDrive" (Split-Path -Path $PrevLibraryPath -NoQualifier)) # Convert all the existing library paths from 'C:\' to 'D:\'
 				# $FolderName = (Split-Path -Path $PrevLibraryPath -Leaf -Resolve)
 				# $LinkPath = (Join-Path "$env:USERPROFILE" "$FolderName")
 				Write-Output "Moving library ""$_"" from ""$PrevLibraryPath"" to ""$NewLibraryPath""" | Write-Verbose
