@@ -95,8 +95,11 @@ Function New-LibraryLinks {
 	$DownloadsPath = ((Get-LibraryNames).'{374DE290-123F-4565-9164-39C4925E467B}')
 
 	@( ($env:USERPROFILE), (Split-Path -Path $Path -Parent), ($Path) ) | ForEach-Object {
-		if ((-not(Test-Path (Join-Path $_ $Name))) -and ("$_" | Select-String -SimpleMatch "$DownloadsPath" -NotMatch)) {
-			Write-Verbose "Creating new SymLink: '$(Join-Path $_ $Name)' --> '$Value'"
+		$LinkPath = (Join-Path $_ $Name)
+		if (Test-Path $LinkPath) {
+			Write-Verbose "Path already exists: $LinkPath"
+		} elseif ("$_" | Select-String -SimpleMatch "$DownloadsPath" -NotMatch) {
+			Write-Verbose "Creating new SymLink: '$LinkPath' --> '$Value'"
 			New-Item -Path $_ -Name $Name -ItemType SymbolicLink -Value $Value -Verbose -ErrorAction SilentlyContinue -
 		}
 	}
