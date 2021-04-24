@@ -24,7 +24,7 @@ Function New-SymbolicLink {
 		$Value
 	)
 
-	if (("$Path".ToLower()) -match ("$Value".ToLower())) {
+	if ("$Path" | Select-String -SimpleMatch "$Value") {
 		Write-Warning "The link path cannot be the same as the link target! `n  Path: $Path `nTarget: $Value" | Write-Host
 		Return $false
 	} elseif ((Test-Path $Path -ErrorAction SilentlyContinue) -and (Get-Item $Path -ErrorAction SilentlyContinue | Where-Object Attributes -Match ReparsePoint)) {
@@ -100,7 +100,7 @@ Function New-LibraryLinks {
 
 	$DownloadsPath = ((Get-LibraryNames).'{374DE290-123F-4565-9164-39C4925E467B}')
 	foreach ($LinkPath in $PossibleLinkPaths) {
-		if ((-not(Test-Path "$LinkPath")) -and (-not("$LinkPath".ToLower().StartsWith("$DownloadsPath".ToLower())))) {
+		if ((-not(Test-Path "$LinkPath")) -and ("$LinkPath" | Select-String -SimpleMatch "$DownloadsPath" -NotMatch)) {
 			Write-Host "Creating SymLink at '$LinkPath' pointing to '$Value'" | Write-Verbose
 			New-Item -Path "$LinkPath" -ItemType SymbolicLink -Value "$Value" -Verbose -ErrorAction SilentlyContinue
 		}
@@ -115,7 +115,7 @@ $ServerDocumentsShare = (Join-Path $SMBServerName 'personal\Documents')
 $ServerDownloadsShare = (Join-Path $SMBServerName 'personal\Downloads')
 $MapNetworkDriveScript = '\\GRIFFINUNRAID\scripts\MapNetworkDrives.ps1'
 
-if ("$env:Username" -match 'Public') {
+if ("$env:Username" -like '*Public*') {
 	Write-Host  'Somehow the current username is "Public"...', '  That should not be possible, so the libraries will not be moved.' | Write-Warning
 } else {
 	if (Test-Path $MapNetworkDriveScript) {
@@ -139,7 +139,7 @@ if ("$env:Username" -match 'Public') {
 		$LibrariesToMove | ForEach-Object {
 			$PrevLibraryPath = ''
 			$PrevLibraryPath = (Get-LibraryNames).$_
-			if (($PrevLibraryPath) -and (-not(Split-Path -Path $PrevLibraryPath -Qualifier).ToLower().StartsWith("$NewDrive".ToLower()))) {
+			if (($PrevLibraryPath) -and (Split-Path -Path "$PrevLibraryPath" -Qualifier | Select-String -NotMatch "$NewDrive")) {
 				$NewLibraryPath = (Join-Path "$NewDrive" (Split-Path -Path $PrevLibraryPath -NoQualifier)) # Convert all the existing library paths from 'C:\' to 'D:\'
 				# $FolderName = (Split-Path -Path $PrevLibraryPath -Leaf -Resolve)
 				# $LinkPath = (Join-Path "$env:USERPROFILE" "$FolderName")
