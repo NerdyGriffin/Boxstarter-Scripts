@@ -21,6 +21,8 @@ function executeScript {
 	Start-Sleep -Seconds 1;
 }
 
+Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
+
 #--- Powershell Module Repository
 Set-PSRepository -Name 'PSGallery' -InstallationPolicy Trusted
 
@@ -33,7 +35,7 @@ executeScript 'CommonDevTools.ps1';
 #--- Windows Dev Essentials
 executeScript 'DotNetTools.ps1';
 # choco install -y dotpeek # Installer appears to be broken on my machine
-choco install -y linqpad
+# choco install -y linqpad
 
 executeScript 'ConfigureGit.ps1';
 choco install -y lepton
