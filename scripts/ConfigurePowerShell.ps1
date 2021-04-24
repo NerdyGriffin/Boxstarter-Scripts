@@ -14,8 +14,23 @@ choco upgrade -y microsoft-windows-terminal; choco upgrade -y microsoft-windows-
 Set-ExecutionPolicy Bypass -Scope CurrentUser -Force
 refreshenv
 
+#--- Update all modules ---
+[ScriptBLock]$ScriptBlock = {
+	Write-Host 'Updating all modules...'
+	Update-Module
+}
+# Run the script block in PowerShell
+powershell.exe -Command $ScriptBlock
+# Run the script block in PowerShell Core
+pwsh.exe -Command $ScriptBlock
+
+
 #--- Prepend a Custom Printed Message to the PowerShell Profile
 [ScriptBlock]$ScriptBlock = {
+	if (-not(Test-Path $PROFILE)) {
+		Write-Verbose "`$PROFILE does not exist at $PROFILE`nCreating new `$PROFILE..."
+		New-Item -Path $PROFILE -ItemType File -Force
+	}
 	Write-Host 'Prepending Custom Message to PowerShell Profile...'
 	$ProfileString = 'Write-Output "Loading Custom PowerShell Profile..."'
 	Write-Host >> $PROFILE # This will create the file if it does not already exist, otherwise it will leave the existing file unchanged
@@ -200,12 +215,29 @@ try {
 }
 
 
-$WindowsTerminalSettingsDir = (Join-Path $env:LOCALAPPDATA '\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\')
+#--- Update all modules ---
+[ScriptBLock]$ScriptBlock = {
+	Write-Host 'Updating all modules...'
+	Update-Module
+}
+# Run the script block in PowerShell
+powershell.exe -Command $ScriptBlock
+# Run the script block in PowerShell Core
+pwsh.exe -Command $ScriptBlock
+
+
+$WindowsTerminalSettingsDir = (Join-Path $env:LOCALAPPDATA '\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState')
 $SymLinkPath = (Join-Path $env:USERPROFILE 'WindowsTerminalSettings')
-if ((Test-Path $WindowsTerminalSettingsDir) -or (-not(Test-Path $SymLinkPath)) -or (-not(Get-Item $SymLinkPath | Where-Object Attributes -Match ReparsePoint))) {
-	New-Item -Path $SymLinkPath -ItemType SymbolicLink -Value $WindowsTerminalSettingsDir -Force -Verbose
-	$RemoteBackup = '\\GRIFFINUNRAID\backup\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\.git\'
+if (Test-Path $WindowsTerminalSettingsDir) {
+	if ((-not(Test-Path $SymLinkPath)) -or (-not(Get-Item $SymLinkPath | Where-Object Attributes -Match ReparsePoint))) {
+		New-Item -Path $SymLinkPath -ItemType SymbolicLink -Value $WindowsTerminalSettingsDir -Force -Verbose
+	}
+	$RemoteBackup = '\\GRIFFINUNRAID\backup\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\.git'
 	if ((Test-Path $RemoteBackup) -and (-not(Test-Path (Join-Path $WindowsTerminalSettingsDir '.git')))) {
+		$PrevLocation = Get-Location
+		Set-Location -Path $RemoteBackup
+		git.exe fetch; git.exe pull;
 		Copy-Item -Path $RemoteBackup -Destination (Join-Path $WindowsTerminalSettingsDir '.git')
+		Set-Location -Path $PrevLocation
 	}
 }
