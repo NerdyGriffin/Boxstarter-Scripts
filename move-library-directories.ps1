@@ -24,7 +24,7 @@ Function New-SymbolicLink {
 		$Value
 	)
 
-	if ((Resolve-Path -Path "$Path") -match (Resolve-Path -Path "$Value")) {
+	if ("$Path" -match "$Value") {
 		Write-Warning "The link path cannot be the same as the link target! `n  Path: $Path `nTarget: $Value" | Write-Host
 		Return $false
 	} elseif ((Test-Path $Path) -and (Get-Item $Path | Where-Object Attributes -Match ReparsePoint)) {
@@ -92,20 +92,15 @@ Function New-LibraryLinks {
 
 	$PossibleLinkPaths = @(
 		(Join-Path $env:USERPROFILE "$Name"),
-		(Join-Path (Split-Path -Path "$Path" -Parent) "$Name")
+		(Join-Path (Split-Path -Path "$Path" -Parent) "$Name"),
+		(Join-Path "$Path" "$Name")
 	)
 
 	# TODO: Add a check that (Split-Path -Path "$Path" -Qualifier) is not a mapped network drive
 
 	$DownloadsPath = ((Get-LibraryNames).'{374DE290-123F-4565-9164-39C4925E467B}')
-	if (-Not("$Path".ToLower().StartsWith("$DownloadsPath".ToLower()))) {
-		$PossibleLinkPaths += (Join-Path "$Path" "$Name")
-	}
-
-	# $PossibleLinkPaths #! DEBUG:
-
 	foreach ($LinkPath in $PossibleLinkPaths) {
-		if (-Not(Test-Path "$LinkPath")) {
+		if ((-Not(Test-Path "$LinkPath")) -and (-Not("$LinkPath".ToLower().StartsWith("$DownloadsPath".ToLower())))) {
 			Write-Host "Creating SymLink at '$LinkPath' pointing to '$Value'" | Write-Verbose
 			New-Item -Path "$LinkPath" -ItemType SymbolicLink -Value "$Value" -Verbose -ErrorAction SilentlyContinue
 		}
@@ -161,7 +156,7 @@ if ("$env:Username" -match 'Public') {
 		Write-Host 'Making Symbolic Links to media server shares...'
 		@('My Music', 'My Pictures', 'My Video') | ForEach-Object {
 			$LibraryPath = (Get-LibraryNames).$_
-			$LibraryName = Split-Path -Path $LibraryPath -Leaf -Resolve
+			$LibraryName = (Split-Path -Path $LibraryPath -Leaf -Resolve)
 			$LinkName = "Server$LibraryName"
 			$LinkTarget = (Join-Path "$ServerMediaShare" "$_")
 			New-LibraryLinks -Path "$LibraryPath" -Name "$LinkName" -Value "$LinkTarget"
