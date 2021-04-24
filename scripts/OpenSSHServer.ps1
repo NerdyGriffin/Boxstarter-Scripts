@@ -13,7 +13,7 @@ choco install openssh -y -params '"/SSHServerFeature /PathSpecsToProbeForShellEX
 # #--- Install OpenSSH using PowerShell ---
 # Write-Output 'Make sure that the OpenSSH features are available for install:'
 # Get-WindowsCapability -Online | Where-Object Name -Like 'OpenSSH*' | Write-Output
-# Get-WindowsCapability -Online | Where-Object Name -Like 'OpenSSH*' | Where-Object State -NotLike 'Installed' | ForEach-Object {
+# Get-WindowsCapability -Online | Where-Object Name -Like 'OpenSSH*' | Where-Object State -notLike 'Installed' | ForEach-Object {
 # 	$Name = $_.Name
 # 	Write-Output "Installing '$Name' ..."
 # 	$Result = Add-WindowsCapability -Online -Name $Name;
@@ -37,12 +37,12 @@ Set-Service -Name sshd -StartupType 'Automatic'
 # Get-NetFirewallRule -Name *ssh* | Write-Output
 # # There should be a firewall rule named "OpenSSH-Server-In-TCP", which should be enabled
 # $ExistingRule = Get-NetFirewallRule -Name *ssh* | Where-Object Name -Like 'OpenSSH-Server-In-TCP'
-# if (!($ExistingRule)) {
+# if (-not($ExistingRule)) {
 # 	# If the firewall does not exist, create one
 # 	Write-Warning "Firewall rule not found for 'OpenSSH Server (sshd)'."
 # 	Write-Output "Creating a firewall rule for 'OpenSSH Server (sshd)'..."
 # 	New-NetFirewallRule -Name sshd -DisplayName 'OpenSSH Server (sshd)' -Enabled True -Direction Inbound -Protocol TCP -Action Allow -LocalPort 22
-# } elseif (!($ExistingRule.Enabled)) {
+# } elseif (-not($ExistingRule.Enabled)) {
 # 	# If the firewall exists but is not enabled, then enable it
 # 	Write-Warning 'Firewall rule found, but is not enabled.'
 # 	Write-Output "Enabling the firewall rule for 'OpenSSH Server (sshd)'..."
@@ -66,7 +66,7 @@ Set-Service -Name sshd -StartupType 'Automatic'
 
 # 	# $SSHDConfigPath = (Join-Path $env:ProgramData '\ssh\sshd_config')
 # 	# $SSHSubsystemString = 'Subsystem powershell c:/progra~1/powershell/7/pwsh.exe -sshs -NoLogo'
-# 	# if (-Not(Select-String -SimpleMatch $SSHSubsystemString -Path $SSHDConfigPath )) {
+# 	# if (-not(Select-String -SimpleMatch $SSHSubsystemString -Path $SSHDConfigPath )) {
 # 	# 	# Only add the new subsystem line if it is not already in the sshd_config
 # 	# 	$OldContent = @(Get-Content $SSHDConfigPath)
 # 	# 	$ExistingSubsystemLines = @($OldContent | Select-String -SimpleMatch 'Subsystem' | Select-Object -ExpandProperty Line)

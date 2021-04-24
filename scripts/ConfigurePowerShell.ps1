@@ -19,7 +19,7 @@ refreshenv
 	Write-Host 'Prepending Custom Message to PowerShell Profile...'
 	$ProfileString = 'Write-Output "Loading Custom PowerShell Profile..."'
 	Write-Host >> $PROFILE # This will create the file if it does not already exist, otherwise it will leave the existing file unchanged
-	if (-Not(Select-String -Pattern $ProfileString -Path $PROFILE )) {
+	if (-not(Select-String -Pattern $ProfileString -Path $PROFILE )) {
 		Write-Output 'Attempting to add the following line to $PROFILE :' | Write-Debug
 		Write-Output $ProfileString | Write-Debug
 		Set-Content -Path $PROFILE -Value ($ProfileString, (Get-Content $PROFILE))
@@ -35,12 +35,12 @@ pwsh.exe -Command $ScriptBlock
 try {
 	Write-Host 'Installing Posh-Git and Oh-My-Posh - [Dependencies for Powerline]'
 	Write-Host 'Installing Posh-Git...'
-	if (-Not(Get-Module -ListAvailable -Name posh-git)) {
+	if (-not(Get-Module -ListAvailable -Name posh-git)) {
 		Install-Module posh-git -Scope CurrentUser -AllowClobber -SkipPublisherCheck -Force -Verbose
 	} else { Write-Host "Module 'posh-git' already installed" }
 	refreshenv
 	Write-Host 'Installing Oh-My-Posh...'
-	if (-Not(Get-Module -ListAvailable -Name oh-my-posh)) {
+	if (-not(Get-Module -ListAvailable -Name oh-my-posh)) {
 		try {
 			Install-Module oh-my-posh -Scope CurrentUser -AllowClobber -SkipPublisherCheck -Force -Verbose -AllowPrerelease
 		} catch {
@@ -60,7 +60,7 @@ try {
 			# 'Set-PoshPrompt -Theme sorin'
 		)
 		Write-Host >> $PROFILE # This will create the file if it does not already exist, otherwise it will leave the existing file unchanged
-		if (-Not(Select-String -Pattern $PowerlineProfile[0] -Path $PROFILE )) {
+		if (-not(Select-String -Pattern $PowerlineProfile[0] -Path $PROFILE )) {
 			Write-Output 'Attempting to add the following lines to $PROFILE :' | Write-Debug
 			Write-Output $PowerlineProfile | Write-Debug
 			Add-Content -Path $PROFILE -Value $PowerlineProfile
@@ -84,7 +84,7 @@ try {
 #--- Install & Configure the PSReadline Module
 try {
 	Write-Host 'Installing PSReadLine -- [Bash-like CLI features and Optional Dependency for Powerline]'
-	if (-Not(Get-Module -ListAvailable -Name PSReadLine)) {
+	if (-not(Get-Module -ListAvailable -Name PSReadLine)) {
 		Install-Module -Name PSReadLine -Scope CurrentUser -AllowClobber -SkipPublisherCheck -Force -Verbose
 	} else { Write-Host "Module 'PSReadLine' already installed" }
 	refreshenv
@@ -99,7 +99,7 @@ try {
 			'Set-Alias -Name v -Value Get-ChildItem'
 		)
 		Write-Host >> $PROFILE # This will create the file if it does not already exist, otherwise it will leave the existing file unchanged
-		if (-Not(Select-String -Pattern $PSReadlineProfile[0] -Path $PROFILE)) {
+		if (-not(Select-String -Pattern $PSReadlineProfile[0] -Path $PROFILE)) {
 			Write-Output 'Attempting to add the following lines to $PROFILE :' | Write-Debug
 			Write-Output $PSReadlineProfile | Write-Debug
 			Add-Content -Path $PROFILE -Value $PSReadlineProfile
@@ -128,7 +128,7 @@ Write-Host 'Appending Configuration for Chocolatey to PowerShell Profile...'
 		'}'
 	)
 	Write-Host >> $PROFILE # This will create the file if it does not already exist, otherwise it will leave the existing file unchanged
-	if (-Not(Select-String -Pattern $ChocolateyProfile[0] -Path $PROFILE)) {
+	if (-not(Select-String -Pattern $ChocolateyProfile[0] -Path $PROFILE)) {
 		Write-Output 'Attempting to add the following lines to $PROFILE :' | Write-Debug
 		Write-Output $ChocolateyProfile | Write-Debug
 		Add-Content -Path $PROFILE -Value $ChocolateyProfile
@@ -158,7 +158,7 @@ pwsh.exe -Command $ChocoScriptBlock
 # 		'Import-Module $BoxstarterInstall\Boxstarter.Common\Boxstarter.Common.psd1 -Function Test-Admin'
 # 	)
 # 	Write-Host >> $PROFILE # This will create the file if it does not already exist, otherwise it will leave the existing file unchanged
-# 	if (-Not(Select-String -Pattern $BoxstarterProfile[0] -Path $PROFILE)) {
+# 	if (-not(Select-String -Pattern $BoxstarterProfile[0] -Path $PROFILE)) {
 # 		Write-Output 'Attempting to add the following lines to $PROFILE :' | Write-Debug
 # 		Write-Output $BoxstarterProfile | Write-Debug
 # 		Add-Content -Path $PROFILE -Value $BoxstarterProfile
@@ -174,7 +174,7 @@ pwsh.exe -Command $ChocoScriptBlock
 try {
 	Write-Host 'Installing Pipeworks -- [CLI Tools for PowerShell]'
 	Write-Host 'Description: PowerShell Pipeworks is a framework for writing Sites and Software Services in Windows PowerShell modules.'
-	if (-Not(Get-Module -ListAvailable -Name Pipeworks)) {
+	if (-not(Get-Module -ListAvailable -Name Pipeworks)) {
 		Install-Module -Name Pipeworks -Scope CurrentUser -AllowClobber -SkipPublisherCheck -Force -Verbose
 	} else { Write-Host "Module 'Pipeworks' already installed" }
 	refreshenv
@@ -189,7 +189,7 @@ try {
 try {
 	Write-Host 'Installing CredentialManager'
 	Write-Host 'Description: Provides access to credentials in the Windows Credential Manager.'
-	if (-Not(Get-Module -ListAvailable -Name CredentialManager)) {
+	if (-not(Get-Module -ListAvailable -Name CredentialManager)) {
 		Install-Module -Name CredentialManager
 	} else { Write-Host "Module 'CredentialManager' already installed" }
 	refreshenv
@@ -202,10 +202,10 @@ try {
 
 $WindowsTerminalSettingsDir = (Join-Path $env:LOCALAPPDATA '\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\')
 $SymLinkPath = (Join-Path $env:USERPROFILE 'WindowsTerminalSettings')
-if ((Test-Path $WindowsTerminalSettingsDir) -Or (-Not(Test-Path $SymLinkPath)) -Or (-Not(Get-Item $SymLinkPath | Where-Object Attributes -Match ReparsePoint))) {
+if ((Test-Path $WindowsTerminalSettingsDir) -or (-not(Test-Path $SymLinkPath)) -or (-not(Get-Item $SymLinkPath | Where-Object Attributes -Match ReparsePoint))) {
 	New-Item -Path $SymLinkPath -ItemType SymbolicLink -Value $WindowsTerminalSettingsDir -Force -Verbose
 	$RemoteBackup = '\\GRIFFINUNRAID\backup\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\.git\'
-	if ((Test-Path $RemoteBackup) -And (-Not(Test-Path (Join-Path $WindowsTerminalSettingsDir '.git')))) {
+	if ((Test-Path $RemoteBackup) -and (-not(Test-Path (Join-Path $WindowsTerminalSettingsDir '.git')))) {
 		Copy-Item -Path $RemoteBackup -Destination (Join-Path $WindowsTerminalSettingsDir '.git')
 	}
 }

@@ -22,14 +22,14 @@ Function New-SymbolicLink {
 		$Value
 	)
 
-	if ((Test-Path $Path) -And (Get-Item $Path | Where-Object Attributes -Match ReparsePoint)) {
+	if ((Test-Path $Path) -and (Get-Item $Path | Where-Object Attributes -Match ReparsePoint)) {
 		Write-Host  $Path 'is already a reparse point.' | Write-Warning
 		Return $false
 	}
 	if (Test-Path "$Path\*") {
 		# $MoveResult = (Move-Item -Path $Path\* -Destination $Value -Force -PassThru -Verbose)
 		$MoveResult = (robocopy $Path $Value /ZB /FFT)
-		if (-Not($MoveResult)) {
+		if (-not($MoveResult)) {
 			Write-Host  'Something went wrong while trying to move the contents of' $Path 'to' $Value | Write-Warning
 			Return $MoveResult
 		}
@@ -38,7 +38,7 @@ Function New-SymbolicLink {
 	if (Test-Path $Path) {
 		Remove-Item $Path -Recurse -Force
 	}
-	if (-Not(Test-Path $Value)) {
+	if (-not(Test-Path $Value)) {
 		New-Item -Path $Value -ItemType Directory
 	}
 	$Result = New-Item -Path $Path -ItemType SymbolicLink -Value $Value -Force -Verbose
@@ -51,7 +51,7 @@ Function New-SymbolicLink {
 	}
 }
 
-if (-Not(Get-Command New-SymbolicLink)) {
+if (-not(Get-Command New-SymbolicLink)) {
 	Write-Error "The 'New-SymbolicLink' helper function was not found."
 	throw
 }

@@ -16,7 +16,7 @@ class PackageInfo {
 	}
 }
 
-if (-Not(Get-Command New-BoxstarterPackage -ErrorAction SilentlyContinue)) {
+if (-not(Get-Command New-BoxstarterPackage -ErrorAction SilentlyContinue)) {
 	if (Get-Command choco -ErrorAction SilentlyContinue) {
 		choco upgrade -y Boxstarter
 	} else {
@@ -25,7 +25,7 @@ if (-Not(Get-Command New-BoxstarterPackage -ErrorAction SilentlyContinue)) {
 }
 refreshenv
 
-if ((Test-Path '\\GRIFFINUNRAID\Boxstarter') -And (-Not($Boxstarter.LocalRepo -eq '\\GRIFFINUNRAID\Boxstarter'))) {
+if ((Test-Path '\\GRIFFINUNRAID\Boxstarter') -and (-not($Boxstarter.LocalRepo -eq '\\GRIFFINUNRAID\Boxstarter'))) {
 	Set-BoxStarterConfig -LocalRepo '\\GRIFFINUNRAID\Boxstarter\BuildPackages'
 }
 

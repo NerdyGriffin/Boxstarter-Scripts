@@ -1,11 +1,11 @@
 $Boxstarter.StopOnPackageFailure = $false
 
 # Prompt user whether to install SSH Server
-if (!$InstallSSHServer) {
+if (-not$InstallSSHServer) {
 	$InstallSSHServer = Read-Host -Prompt 'Would you like to install and configure OpenSSH Server? (This is not recommended on laptops/mobile devices) [y/n] (default: no)'
 }
 # Set a default if not passed
-if (!$InstallSSHServer) { $InstallSSHServer = 'n' }
+if (-not$InstallSSHServer) { $InstallSSHServer = 'n' }
 
 Disable-UAC
 
@@ -28,7 +28,7 @@ function executeScript {
 	Start-Sleep -Seconds 1;
 }
 
-if (!($env:USERDOMAIN | Select-String 'LAPTOP')) {
+if (-not($env:USERDOMAIN | Select-String 'LAPTOP')) {
 	# Do nothing if Enable-RemoteDesktop fails, because it will fail if RemoteDesktop is already enabled
 	try { Enable-RemoteDesktop } catch {}
 }

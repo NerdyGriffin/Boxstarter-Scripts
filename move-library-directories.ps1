@@ -24,17 +24,17 @@ Function New-SymbolicLink {
 		$Value
 	)
 
-	if ("$Path" -match "$Value") {
+	if (("$Path".ToLower()) -match ("$Value".ToLower())) {
 		Write-Warning "The link path cannot be the same as the link target! `n  Path: $Path `nTarget: $Value" | Write-Host
 		Return $false
-	} elseif ((Test-Path $Path) -and (Get-Item $Path | Where-Object Attributes -Match ReparsePoint)) {
+	} elseif ((Test-Path $Path -ErrorAction SilentlyContinue) -and (Get-Item $Path -ErrorAction SilentlyContinue | Where-Object Attributes -Match ReparsePoint)) {
 		Write-Warning "'$Path' is already a reparse point." | Write-Host
 		Return $false
 	} else {
 		if (Test-Path "$Path\*") {
 			# $MoveResult = (Move-Item -Path $Path\* -Destination $Value -Force -PassThru -Verbose)
-			$MoveResult = (robocopy $Path $Value /ZB /FFT)
-			if (-Not($MoveResult)) {
+			$MoveResult = (robocopy "$Path" "$Value" /ZB /FFT)
+			if (-not($MoveResult)) {
 				Write-Warning "Something went wrong while trying to move the contents of '$Path' to '$Value'" | Write-Host
 				Return $MoveResult
 			} else {
@@ -44,7 +44,7 @@ Function New-SymbolicLink {
 		if (Test-Path $Path) {
 			Remove-Item $Path -Recurse -Force
 		}
-		if (-Not(Test-Path $Value)) {
+		if (-not(Test-Path $Value)) {
 			New-Item -Path $Value -ItemType Directory
 		}
 		$Result = New-Item -Path $Path -ItemType SymbolicLink -Value $Value -Force -Verbose
@@ -100,7 +100,7 @@ Function New-LibraryLinks {
 
 	$DownloadsPath = ((Get-LibraryNames).'{374DE290-123F-4565-9164-39C4925E467B}')
 	foreach ($LinkPath in $PossibleLinkPaths) {
-		if ((-Not(Test-Path "$LinkPath")) -and (-Not("$LinkPath".ToLower().StartsWith("$DownloadsPath".ToLower())))) {
+		if ((-not(Test-Path "$LinkPath")) -and (-not("$LinkPath".ToLower().StartsWith("$DownloadsPath".ToLower())))) {
 			Write-Host "Creating SymLink at '$LinkPath' pointing to '$Value'" | Write-Verbose
 			New-Item -Path "$LinkPath" -ItemType SymbolicLink -Value "$Value" -Verbose -ErrorAction SilentlyContinue
 		}
@@ -139,7 +139,7 @@ if ("$env:Username" -match 'Public') {
 		$LibrariesToMove | ForEach-Object {
 			$PrevLibraryPath = ''
 			$PrevLibraryPath = (Get-LibraryNames).$_
-			if (($PrevLibraryPath) -and ((Split-Path -Path $PrevLibraryPath -Qualifier) -notmatch "$NewDrive")) {
+			if (($PrevLibraryPath) -and (-not(Split-Path -Path $PrevLibraryPath -Qualifier).ToLower().StartsWith("$NewDrive".ToLower()))) {
 				$NewLibraryPath = (Join-Path "$NewDrive" (Split-Path -Path $PrevLibraryPath -NoQualifier)) # Convert all the existing library paths from 'C:\' to 'D:\'
 				# $FolderName = (Split-Path -Path $PrevLibraryPath -Leaf -Resolve)
 				# $LinkPath = (Join-Path "$env:USERPROFILE" "$FolderName")

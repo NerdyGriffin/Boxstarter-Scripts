@@ -24,7 +24,7 @@ If (Test-Path $SambaProgramFiles) {
 
 	# $BackupCommand = """$RealTimeSyncExe"" ""$BackupFFSRealLocalPath"""
 
-	If ((Test-Path $BackupFFSRealRemotePath) -And (Test-Path $BackupFFSBatchRemotePath)) {
+	If ((Test-Path $BackupFFSRealRemotePath) -and (Test-Path $BackupFFSBatchRemotePath)) {
 		Copy-Item -Path $BackupFFSRealRemotePath -Destination $BackupFFSRealLocalPath -Force
 		Copy-Item -Path $BackupFFSBatchRemotePath -Destination $BackupFFSBatchLocalPath -Force
 
@@ -61,7 +61,7 @@ If (Test-Path $SambaProgramFiles) {
 
 	# $WallpaperCommand = """$RealTimeSyncExe"" ""$WallpaperFFSRealLocalPath"""
 
-	If ((Test-Path $WallpaperFFSRealRemotePath) -And (Test-Path $WallpaperFFSBatchRemotePath)) {
+	If ((Test-Path $WallpaperFFSRealRemotePath) -and (Test-Path $WallpaperFFSBatchRemotePath)) {
 		Copy-Item -Path $WallpaperFFSRealRemotePath -Destination $WallpaperFFSRealLocalPath -Force
 		Copy-Item -Path $WallpaperFFSBatchRemotePath -Destination $WallpaperFFSBatchLocalPath -Force
 
