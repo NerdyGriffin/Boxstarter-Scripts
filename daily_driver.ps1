@@ -56,3 +56,9 @@ Get-Content -Path $Boxstarter.Log | Select-String -Pattern '^Failures$' -Context
 Enable-UAC
 Enable-MicrosoftUpdate
 Install-WindowsUpdate -acceptEula
+
+$MackieDriverSetupExe = '\\GRIFFINUNRAID\personal\Downloads\Mackie_USB_Driver_v4_67_0\Mackie_USB_Driver_Setup.exe'
+if (Test-Path $MackieDriverSetupExe) {
+	Write-Verbose 'Attempt installing driver for Mackie mixer board'
+	Invoke-Expression $MackieDriverSetupExe
+}
