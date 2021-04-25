@@ -87,3 +87,5 @@ If (Test-Path $SambaProgramFiles) {
 		}
 	}
 }
+
+# TODO: Look into using ShadowCopy (Chris Titus) or TeraCopy
