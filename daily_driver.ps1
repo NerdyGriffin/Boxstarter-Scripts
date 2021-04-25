@@ -28,7 +28,15 @@ executeScript 'FileExplorerSettings.ps1';
 # executeScript 'TaskbarSettings.ps1';
 executeScript 'RemoveDefaultApps.ps1';
 executeScript 'CommonDevTools.ps1';
+
+executeScript 'ConfigurePowerShell.ps1';
+executeScript 'ConfigureGit.ps1';
+
 executeScript 'WindowsPowerUser.ps1';
+
+executeScript 'PowerShellTools.ps1';
+executeScript 'GNU.ps1';
+
 executeScript 'CustomBackup.ps1';
 
 #--- Graphics Driver Support
