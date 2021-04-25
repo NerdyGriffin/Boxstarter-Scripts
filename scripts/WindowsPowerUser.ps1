@@ -8,6 +8,7 @@ choco install -y reshack
 choco install -y shutup10
 choco install -y sharex
 choco install -y sdio
+choco install -y tcpview --ignore-checksums
 # choco install -y winaero-tweaker
 # choco install -y xyplorer
 
