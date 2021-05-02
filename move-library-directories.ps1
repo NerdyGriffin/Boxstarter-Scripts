@@ -1,5 +1,7 @@
 $Boxstarter.StopOnPackageFailure = $false
 
+choco upgrade -y boxstarter
+
 Function New-SymbolicLink {
 	param(
 		# Specifies the path of the location of the new link. You must include the name of the new link in Path .
@@ -146,9 +148,9 @@ if ("$env:Username" -like '*Public*') {
 				# $FolderName = (Split-Path -Path $PrevLibraryPath -Leaf -Resolve)
 				# $LinkPath = (Join-Path "$env:USERPROFILE" "$FolderName")
 				Write-Verbose "Moving library ""$_"" from ""$PrevLibraryPath"" to ""$NewLibraryPath""..."
-				Move-LibraryDirectory -libraryName $_ -newPath $NewLibraryPath -ErrorAction SilentlyContinue
+				Move-LibraryDirectory -libraryName $_ -newPath $NewLibraryPath -ErrorAction Continue
 				Write-Verbose "Attempting to create SymLink '$PrevLibraryPath' --> '$NewLibraryPath'..."
-				New-SymbolicLink -Path $PrevLibraryPath -Value $NewLibraryPath -ErrorAction SilentlyContinue
+				New-SymbolicLink -Path $PrevLibraryPath -Value $NewLibraryPath -ErrorAction Continue
 			}
 		}
 	}
