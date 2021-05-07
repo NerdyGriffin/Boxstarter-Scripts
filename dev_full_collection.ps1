@@ -124,14 +124,7 @@ try {
 }
 
 # checkout recent projects
-Set-Location C:\Github
-git.exe clone https://github.com/microsoft/windows-dev-box-setup-scripts
-git.exe clone https://github.com/microsoft/winappdriver
-git.exe clone https://github.com/microsoft/wsl
-git.exe clone https://github.com/PowerShell/PowerShell
-git.exe clone https://github.com/NerdyGriffin/Boxstarter-Scripts
-git.exe clone https://github.com/gordon-cs/gordon-360-ui
-git.exe clone https://github.com/gordon-cs/gordon-360-api
+executeScript 'GetFavoriteProjects.ps1'
 
 executeScript 'GetUwpSamplesOffGithub.ps1';
 executeScript 'WindowsTemplateStudio.ps1';
