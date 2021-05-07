@@ -191,3 +191,5 @@ if (Test-Path $WindowsTerminalSettingsDir) {
 		Set-Location -Path $PrevLocation
 	}
 }
+
+[System.Environment]::SetEnvironmentVariable('PYTHONSTARTUP',(Join-Path $env:USERPROFILE '.pystartup'))
