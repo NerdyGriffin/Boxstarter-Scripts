@@ -171,10 +171,10 @@ refreshenv
 } # End of $ScriptBlock
 
 # Run the script block in PowerShell
-powershell.exe -Command $ScriptBlock
+powershell -Command $ScriptBlock
 
 # Run the script block in PowerShell Core
-pwsh.exe -Command $ScriptBlock
+pwsh -Command $ScriptBlock
 
 $WindowsTerminalSettingsDir = (Join-Path $env:LOCALAPPDATA '\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState')
 $SymLinkPath = (Join-Path $env:USERPROFILE 'WindowsTerminalSettings')
@@ -186,7 +186,7 @@ if (Test-Path $WindowsTerminalSettingsDir) {
 	if ((Test-Path $RemoteBackup) -and (-not(Test-Path (Join-Path $WindowsTerminalSettingsDir '.git')))) {
 		$PrevLocation = Get-Location
 		Set-Location -Path $RemoteBackup
-		git.exe fetch; git.exe pull;
+		git fetch; git pull;
 		Copy-Item -Path $RemoteBackup -Destination (Join-Path $WindowsTerminalSettingsDir '.git')
 		Set-Location -Path $PrevLocation
 	}
