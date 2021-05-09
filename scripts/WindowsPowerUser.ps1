@@ -19,6 +19,6 @@ Set-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run' -Name Pow
 # Add a custom registry entry for running Sharex at startup
 $SharexCommand = """$env:ProgramFiles\Sharex\sharex.exe"""
 Set-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run' -Name Sharex -Value $SharexCommand
-# We want Sharex to always startup BEFORE OneDrive (to prevent OneDrive from hooking the print hotkey)
-# This Sharex entry is added to 'HKLM:\...\Run' whereas the OneDrive startup entry is in 'HKCU:\...\Run' by default,
+# We want Sharex to always startup BEFORE OneDrive (to prevent OneDrive from hooking the "print screen" hotkey)
+# This Sharex entry is added to 'HKLM:\...\Run', whereas the OneDrive startup entry is in 'HKCU:\...\Run' by default.
 # Therefore we know that Sharex will always be started before OneDrive (because Windows always parses entries in 'HKLM:' first)
