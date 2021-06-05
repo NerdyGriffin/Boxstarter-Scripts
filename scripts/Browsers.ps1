@@ -7,3 +7,4 @@ try {
 } catch {
 	choco install -y googlechrome --ignore-checksums
 }
+choco install -y opera-gx
