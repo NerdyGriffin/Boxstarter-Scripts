@@ -64,13 +64,13 @@ Enable-MicrosoftUpdate
 Install-WindowsUpdate -acceptEula
 
 $MackieDriverSetupExe = '\\GRIFFINUNRAID\personal\Downloads\Mackie_USB_Driver_v4_67_0\Mackie_USB_Driver_Setup.exe'
-if (Test-Path $MackieDriverSetupExe) {
+If (Test-Path $MackieDriverSetupExe) {
 	Write-Verbose 'Attempt installing driver for Mackie mixer board'
 	Invoke-Expression $MackieDriverSetupExe
 }
 
 $SimpleLog = (Join-Path $env:USERPROFILE 'Desktop\last-installed.log')
-if (-not(Test-Path $SimpleLog)) {
+If (-not(Test-Path $SimpleLog)) {
 	New-Item -Path $SimpleLog -ItemType File
 }
 Add-Content -Path $SimpleLog -Value 'daily_driver'
