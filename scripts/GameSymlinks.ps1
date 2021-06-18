@@ -59,7 +59,7 @@ if (-not(Get-Command New-SymbolicLink)) {
 if (Test-Path 'D:\') {
 	# SymbolicLinks in AppData
 	$SymbolicLinkNames = @('Citra')
-	if ($env:USERDOMAIN | Select-String 'LAPTOP') { $SymbolicLinkNames += @('.minecraft') }
+	# if ($env:USERDOMAIN | Select-String 'LAPTOP') { $SymbolicLinkNames += @('.minecraft') }
 	foreach ($FolderName in $SymbolicLinkNames) {
 		New-SymbolicLink -Path (Join-Path $env:APPDATA $FolderName) -Value (Join-Path 'D:\' $FolderName)
 	}
