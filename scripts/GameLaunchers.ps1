@@ -1,6 +1,7 @@
 #--- Game Launchers ---
 choco install -y cemu
 choco install -y dolphin
+choco install -y ds4windows
 choco install -y epicgameslauncher
 choco install -y goggalaxy
 choco install -y minecraft-launcher
