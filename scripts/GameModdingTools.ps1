@@ -26,6 +26,8 @@ try {
 		Invoke-WebRequest -Uri $source -OutFile $python38Installer
 	}
 
+	Set-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem -Name LongPathsEnabled -Value 1
+
 	Write-Verbose 'Running Python 3.8 installer...'
 	Invoke-Expression "$python38Installer /quiet InstallAllUsers=0 PrependPath=1"
 
