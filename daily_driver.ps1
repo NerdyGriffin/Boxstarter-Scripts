@@ -45,6 +45,7 @@ executeScript 'ChocolateyGUI.ps1';
 
 #--- Setting up programs for typical every-day use
 executeScript 'PasswordManager.ps1';
+executeScript 'NordVPN.ps1';
 executeScript 'Browsers.ps1';
 executeScript 'Multimedia.ps1';
 executeScript 'CommunicationApps.ps1';
