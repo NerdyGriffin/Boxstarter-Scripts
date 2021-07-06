@@ -102,7 +102,7 @@ Function New-LibraryLinks {
 			Write-Verbose "Path already exists: $LinkPath"
 		} elseif ("$_" | Select-String -SimpleMatch "$DownloadsPath" -NotMatch) {
 			Write-Verbose "Creating new SymLink: '$LinkPath' --> '$Value'"
-			New-Item -Path $_ -Name $Name -ItemType SymbolicLink -Value $Value -Verbose -ErrorAction SilentlyContinue -
+			New-Item -Path $_ -Name $Name -ItemType SymbolicLink -Value $Value -Verbose -ErrorAction SilentlyContinue
 		}
 	}
 }
