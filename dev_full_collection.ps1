@@ -126,8 +126,8 @@ executeScript 'PythonMLTools.ps1';
 # checkout recent projects
 executeScript 'GetFavoriteProjects.ps1'
 
-executeScript 'GetUwpSamplesOffGithub.ps1';
-executeScript 'WindowsTemplateStudio.ps1';
+# executeScript 'GetUwpSamplesOffGithub.ps1';
+# executeScript 'WindowsTemplateStudio.ps1';
 
 Get-Content -Path $Boxstarter.Log | Select-String -Pattern '^Failures$' -Context 0, 2 >> (Join-Path $env:USERPROFILE 'Desktop\boxstarter-failures.log')
 
