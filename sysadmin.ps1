@@ -1,4 +1,4 @@
-$Boxstarter.StopOnPackageFailure = $false
+If ($Boxstarter.StopOnPackageFailure) { $Boxstarter.StopOnPackageFailure = $false }
 
 # Prompt user whether to install SSH Server
 if (-not$InstallSSHServer) {

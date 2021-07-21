@@ -1,4 +1,4 @@
-$Boxstarter.StopOnPackageFailure = $false
+If ($Boxstarter.StopOnPackageFailure) { $Boxstarter.StopOnPackageFailure = $false }
 
 choco upgrade -y boxstarter
 
