@@ -29,7 +29,7 @@ executeScript 'GameSymlinks.ps1';
 executeScript 'NvidiaGraphics.ps1';
 executeScript 'CorsairICue.ps1';
 executeScript 'LogitechGaming.ps1';
-executeScript 'RemoteDesktop';
+executeScript 'RemoteDesktop.ps1';
 executeScript 'HardwareMonitoring.ps1';
 executeScript 'BenchmarkUtils.ps1';
 # if ($env:USERDOMAIN | Select-String 'DESKTOP') {
