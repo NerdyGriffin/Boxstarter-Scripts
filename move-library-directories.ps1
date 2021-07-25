@@ -135,7 +135,7 @@ if ("$env:Username" -like '*Public*') {
 		$PSBootDrive = Get-PSDrive C
 		# Only move the documents folder if the boot drive of this computer is smaller than the given threshold
 		if (($PSBootDrive.Used + $PSBootDrive.Free) -lt (0.5TB)) {
-			$LibrariesToMove += 'Documents'
+			# $LibrariesToMove += 'Documents'
 			$LibrariesToMove += 'Downloads'
 			$LibrariesToMove += '{374DE290-123F-4565-9164-39C4925E467B}' # This is a name for the downloads library... I have no idea why it does not use an alias
 		}
@@ -160,7 +160,8 @@ if ("$env:Username" -like '*Public*') {
 
 	if (Test-Path $ServerMediaShare) {
 		Write-Host 'Making Symbolic Links to media server shares...'
-		@('My Music', 'My Pictures', 'My Video') | ForEach-Object {
+		# @('My Music', 'My Pictures', 'My Video') | ForEach-Object {
+		@('My Music', 'My Video') | ForEach-Object {
 			$LibraryPath = (Get-LibraryNames).$_
 			$LibraryName = (Split-Path -Path $LibraryPath -Leaf -Resolve)
 			$LinkName = "Server$LibraryName"
