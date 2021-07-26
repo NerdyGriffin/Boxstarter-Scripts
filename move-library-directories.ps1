@@ -160,7 +160,6 @@ if ("$env:Username" -like '*Public*') {
 
 	if (Test-Path $ServerMediaShare) {
 		Write-Host 'Making Symbolic Links to media server shares...'
-		# @('My Music', 'My Video') | ForEach-Object {
 		@('My Music', 'My Pictures', 'My Video') | ForEach-Object {
 			$LibraryPath = (Get-LibraryNames).$_
 			$LibraryName = (Split-Path -Path $LibraryPath -Leaf -Resolve)
