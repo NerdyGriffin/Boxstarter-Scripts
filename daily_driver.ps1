@@ -13,14 +13,7 @@ $helperUri = $helperUri.Substring(0, $helperUri.LastIndexOf('/'))
 $helperUri += '/scripts'
 Write-Host "helper script base URI is $helperUri"
 
-function drawLine([int]$length) {
-	# Draw the Beginning of the line
-	Write-Host '*' -NoNewline
-	# Draw the length of the line
-	foreach ($count in 1..($length)) { Write-Host '-' -NoNewline }
-	# Draw the end
-	Write-Host '*' -NoNewline
-}
+function drawLine { Write-Host '------------------------------' }
 
 function executeScript {
 	Param ([string]$script)
