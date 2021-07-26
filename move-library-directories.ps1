@@ -99,9 +99,9 @@ Function New-LibraryLinks {
 	@( ($env:USERPROFILE), (Split-Path -Path $Path -Parent), ($Path) ) | ForEach-Object {
 		$LinkPath = (Join-Path $_ $Name)
 		if (Test-Path $LinkPath) {
-			Write-Verbose "Path already exists: $LinkPath"
+			Write-Verbose "Path already exists: $LinkPath" | Write-Host
 		} elseif ("$_" | Select-String -SimpleMatch "$DownloadsPath" -NotMatch) {
-			Write-Verbose "Creating new SymLink: '$LinkPath' --> '$Value'"
+			Write-Verbose "Creating new SymLink: '$LinkPath' --> '$Value'" | Write-Host
 			New-Item -Path $_ -Name $Name -ItemType SymbolicLink -Value $Value -Verbose -ErrorAction SilentlyContinue
 		}
 	}
@@ -147,9 +147,9 @@ if ("$env:Username" -like '*Public*') {
 				$NewLibraryPath = (Join-Path "$NewDrive" (Split-Path -Path $PrevLibraryPath -NoQualifier)) # Convert all the existing library paths from 'C:\' to 'D:\'
 				# $FolderName = (Split-Path -Path $PrevLibraryPath -Leaf -Resolve)
 				# $LinkPath = (Join-Path "$env:USERPROFILE" "$FolderName")
-				Write-Verbose "Moving library ""$_"" from ""$PrevLibraryPath"" to ""$NewLibraryPath""..."
+				Write-Verbose "Moving library ""$_"" from ""$PrevLibraryPath"" to ""$NewLibraryPath""..." | Write-Host
 				Move-LibraryDirectory -libraryName $_ -newPath $NewLibraryPath -ErrorAction Continue
-				Write-Verbose "Attempting to create SymLink '$PrevLibraryPath' --> '$NewLibraryPath'..."
+				Write-Verbose "Attempting to create SymLink '$PrevLibraryPath' --> '$NewLibraryPath'..." | Write-Host
 				New-SymbolicLink -Path $PrevLibraryPath -Value $NewLibraryPath -ErrorAction Continue
 			}
 		}
