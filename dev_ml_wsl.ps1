@@ -15,10 +15,21 @@ $helperUri = $helperUri.Substring(0, $helperUri.LastIndexOf('/'))
 $helperUri += '/scripts'
 Write-Host "helper script base URI is $helperUri"
 
+function drawLine([int]$length) {
+	# Draw the Beginning of the line
+	Write-Host '*' -NoNewline
+	# Draw the length of the line
+	foreach ($count in 1..($length)) { Write-Host '-' -NoNewline }
+	# Draw the end
+	Write-Host '*' -NoNewline
+}
+
 function executeScript {
 	Param ([string]$script)
+	drawLine 30
 	Write-Host "executing $helperUri/$script ..."
 	Invoke-Expression ((New-Object net.webclient).DownloadString("$helperUri/$script")) -ErrorAction Continue
+	drawLine 30
 	RefreshEnv;
 	Start-Sleep -Seconds 1;
 }
